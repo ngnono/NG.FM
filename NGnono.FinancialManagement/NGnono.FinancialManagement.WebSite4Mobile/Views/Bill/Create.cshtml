@@ -1,0 +1,42 @@
+﻿@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill.IndexDto
+
+
+@{
+    ViewBag.Title = "记账";
+}
+
+<ul data-role="listview" data-divider-theme="a" data-inset="true">
+    <li data-role="list-divider" role="heading">3月/2013年
+            </li>
+    <li data-theme="c">收入总额：￥100.00
+            </li>
+    <li data-theme="c">支出总额：￥200.00
+            </li>
+</ul>
+
+<a data-role="button" href="#page1">记帐
+        </a>
+
+<ul data-role="listview" data-split-icon="arrow-r">
+    <li>
+        <img alt="今天日期的图" src="" />
+        <h3>今天</h3>
+        <p>@this.Model.Taday</p>
+
+        <p class="ui-li-aside"></p>
+    </li>
+    <li>
+        <img alt="今天日期的图" src="" />
+        <h3>本周</h3>
+        <p>@this.Model.WeekRange</p>
+
+        <p class="ui-li-aside"></p>
+    </li>
+    <li>
+        <img alt="今天日期的图" src="" />
+        <h3>本月</h3>
+        <p>@this.Model.Month</p>
+
+        <p class="ui-li-aside"></p>
+    </li>
+</ul>
