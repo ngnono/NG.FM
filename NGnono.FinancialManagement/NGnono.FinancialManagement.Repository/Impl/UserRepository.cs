@@ -14,5 +14,10 @@ namespace NGnono.FinancialManagement.Repository.Impl
         {
             return base.Find(key);
         }
+
+        public UserEntity GetItem(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

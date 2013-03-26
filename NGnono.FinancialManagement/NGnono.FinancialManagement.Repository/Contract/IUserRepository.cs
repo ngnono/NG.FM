@@ -9,5 +9,6 @@ namespace NGnono.FinancialManagement.Repository.Contract
 {
     public interface IUserRepository : IRepository<UserEntity, int>
     {
+        UserEntity GetItem(string username, string password);
     }
 }

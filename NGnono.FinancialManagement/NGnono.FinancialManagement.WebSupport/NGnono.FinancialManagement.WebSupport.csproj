@@ -73,7 +73,11 @@
     <Compile Include="Ioc\RequestLifetimeHttpModule.cs" />
     <Compile Include="Ioc\ServiceIocRegister.cs" />
     <Compile Include="Ioc\UnfinishedIocRegister.cs" />
-    <Compile Include="Mvc\Controllers\Class1.cs" />
+    <Compile Include="Auth\AuthenticationService.cs" />
+    <Compile Include="Auth\IAuthenticationService.cs" />
+    <Compile Include="Mvc\Controllers\UserController.cs" />
+    <Compile Include="Models\WebSiteUser.cs" />
+    <Compile Include="Mvc\Filters\AdminAuthorizeAttribute.cs" />
     <Compile Include="Mvc\MvcApplicaton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -86,10 +90,17 @@
       <Project>{55ccba5f-4a1c-40bd-acd7-0944e6bbb59b}</Project>
       <Name>NGnono.FinancialManagement.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NGnono.FinancialManagement.Models\NGnono.FinancialManagement.Models.csproj">
+      <Project>{86df66b0-0bbe-4825-b1e0-be5df56d4c81}</Project>
+      <Name>NGnono.FinancialManagement.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NGnono.FinancialManagement.Repository\NGnono.FinancialManagement.Repository.csproj">
       <Project>{a425d642-cc1f-406d-8f7a-4609a8d58bb4}</Project>
       <Name>NGnono.FinancialManagement.Repository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\Enums\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

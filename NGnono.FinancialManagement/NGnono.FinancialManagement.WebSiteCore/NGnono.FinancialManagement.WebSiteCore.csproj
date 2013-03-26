@@ -80,6 +80,10 @@
       <Project>{a425d642-cc1f-406d-8f7a-4609a8d58bb4}</Project>
       <Name>NGnono.FinancialManagement.Repository</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NGnono.FinancialManagement.Services\NGnono.FinancialManagement.Services.csproj">
+      <Project>{20195f79-3c06-4f1a-9992-25a7efa6703d}</Project>
+      <Name>NGnono.FinancialManagement.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NGnono.FinancialManagement.WebSupport\NGnono.FinancialManagement.WebSupport.csproj">
       <Project>{30143ebe-7eeb-4f20-8da5-2e05984d5dd8}</Project>
       <Name>NGnono.FinancialManagement.WebSupport</Name>

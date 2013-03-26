@@ -1,7 +1,14 @@
 ﻿using System;
 using System.Web.Mvc;
 using System.Web.Security;
+using NGnono.FinancialManagement.Repository.Contract;
+using NGnono.FinancialManagement.Services;
+using NGnono.FinancialManagement.Services.Contract;
 using NGnono.FinancialManagement.WebSiteCore.Models;
+using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
+using NGnono.FinancialManagement.WebSupport.Models;
+using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
+using NGnono.FinancialManagement.WebSupport.Mvc.Filters;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
@@ -11,133 +18,68 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
     /// 
     /// </summary>
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : UserController
     {
-        //
-        // GET: /Account/Index
+        private readonly IUserService _userService;
 
-        public ActionResult Index()
+        public AccountController(IUserService userService)
         {
+            _userService = userService;
+        }
+
+        public ActionResult Login(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
-        //
-        // GET: /Account/Login
+        ////
+        //// POST: /Account/Login
 
-        [AllowAnonymous]
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/Login
-
-        [AllowAnonymous]
         [HttpPost]
-        public ActionResult Login(LoginModel model, string returnUrl)
+        public ActionResult Login(FormCollection formCollection, LoginViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                var userModel = _userService.Get(model.UserName, model.Password);
+                if (userModel == null)
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    ModelState.AddModelError("", "用户名或密码错误.");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "提供的用户名或密码不正确。");
+                    //写认证
+                    SetAuthorize(new WebSiteUser(userModel.Name, userModel.Id, userModel.Nickname, userModel.UserRole));
+
+                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    {
+                        return Redirect(returnUrl);
+                    }
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
+            ModelState.AddModelError("", "参数验证失败.");
+
             return View(model);
         }
 
-        //
-        // GET: /Account/LogOff
+        ////
+        //// POST: /Account/LogOff
 
         public ActionResult LogOff()
         {
-            FormsAuthentication.SignOut();
+            base.Signout();
 
             return RedirectToAction("Index", "Home");
         }
 
-        //
-        // GET: /Account/Register
-
-        [AllowAnonymous]
+        ////
+        //// GET: /Account/Register
+        [AdminAuthorize]
         public ActionResult Register()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/Register
-
-        [AllowAnonymous]
-        [HttpPost]
-        public ActionResult Register(RegisterModel model)
-        {
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            return View(model);
-        }
-
-        //
-        // GET: /Account/ChangePassword
-
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Account/ChangePassword
-
-        [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordModel model)
-        {
-            if (ModelState.IsValid)
-            {
-
-                // 在某些出错情况下，ChangePassword 将引发异常，
-                // 而不是返回 false。
-                bool changePasswordSucceeded;
-                try
-                {
-
-                }
-                catch (Exception)
-                {
-                    changePasswordSucceeded = false;
-                }
-
-                //if (changePasswordSucceeded)
-                //{
-                //    return RedirectToAction("ChangePasswordSuccess");
-                //}
-                //else
-                //{
-                //    ModelState.AddModelError("", "当前密码不正确或新密码无效。");
-                //}
-            }
-
-            // 如果我们进行到这一步时某个地方出错，则重新显示表单
-            return View(model);
-        }
-
-        //
-        // GET: /Account/ChangePasswordSuccess
-
-        public ActionResult ChangePasswordSuccess()
         {
             return View();
         }

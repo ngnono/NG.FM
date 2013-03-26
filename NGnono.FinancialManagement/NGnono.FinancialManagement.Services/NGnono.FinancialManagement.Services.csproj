@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{86DF66B0-0BBE-4825-B1E0-BE5DF56D4C81}</ProjectGuid>
+    <ProjectGuid>{20195F79-3C06-4F1A-9992-25A7EFA6703D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NGnono.FinancialManagement.Models</RootNamespace>
-    <AssemblyName>NGnono.FinancialManagement.Models</AssemblyName>
+    <RootNamespace>NGnono.FinancialManagement.Services</RootNamespace>
+    <AssemblyName>NGnono.FinancialManagement.Services</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -39,19 +39,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\BillSortOrder.cs" />
-    <Compile Include="Enums\BillType.cs" />
-    <Compile Include="Enums\Class1.cs" />
-    <Compile Include="Enums\CustomerSortOrder.cs" />
-    <Compile Include="Enums\DataStatus.cs" />
-    <Compile Include="Filters\BillFilter.cs" />
+    <Compile Include="Contract\IUserService.cs" />
+    <Compile Include="Contract\IUserAccountService.cs" />
+    <Compile Include="Impl\BaseService.cs" />
+    <Compile Include="Impl\Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NGnono.Framework\NGnono.Framework.Tools.ImageTools\NGnono.Framework.Tools.ImageTools.csproj">
+      <Project>{8ce466ec-9511-48cd-a510-c638083c9e8d}</Project>
+      <Name>NGnono.Framework.Tools.ImageTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NGnono.Framework\NGnono.Framework\NGnono.Framework.csproj">
       <Project>{ac5ac3e2-09f3-4682-ab40-7a70bc4430c1}</Project>
       <Name>NGnono.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NGnono.FinancialManagement.Data\NGnono.FinancialManagement.Data.csproj">
+      <Project>{55ccba5f-4a1c-40bd-acd7-0944e6bbb59b}</Project>
+      <Name>NGnono.FinancialManagement.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NGnono.FinancialManagement.Models\NGnono.FinancialManagement.Models.csproj">
+      <Project>{86df66b0-0bbe-4825-b1e0-be5df56d4c81}</Project>
+      <Name>NGnono.FinancialManagement.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NGnono.FinancialManagement.Repository\NGnono.FinancialManagement.Repository.csproj">
+      <Project>{a425d642-cc1f-406d-8f7a-4609a8d58bb4}</Project>
+      <Name>NGnono.FinancialManagement.Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
