@@ -7,8 +7,15 @@ namespace NGnono.FinancialManagement.Services.Utils
 {
     public static class SecurityHelper
     {
+        /// <summary>
+        /// 没有做 编码
+        /// </summary>
+        /// <param name="pass"></param>
+        /// <returns></returns>
         public static string ComputeHash(string pass)
         {
+            return pass;
+
             //step1: create salt 
             byte[] salt;
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
@@ -23,8 +30,16 @@ namespace NGnono.FinancialManagement.Services.Utils
             return Convert.ToBase64String(hashBytes);
         }
 
+        /// <summary>
+        /// 没有做 编码
+        /// </summary>
+        /// <param name="pass"></param>
+        /// <param name="hashedPass"></param>
+        /// <returns></returns>
         public static bool CheckEqual(string pass, string hashedPass)
         {
+            return pass.Equals(hashedPass);
+
             /* Extract the bytes */
             byte[] hashBytes;
             try

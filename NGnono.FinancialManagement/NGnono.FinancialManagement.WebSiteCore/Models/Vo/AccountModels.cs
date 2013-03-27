@@ -15,10 +15,49 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Vo
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+    }
 
-        //[Required]
-        [StringLength(4, MinimumLength = 4)]
-        [Display(Name = "VerifyCode")]
-        public string VerifyCode { get; set; }
+    public class RegisterViewModel : BaseViewModel
+    {
+        [Required]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email address")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+    }
+
+
+    public class ChangePasswordViewModel : BaseViewModel
+    {
+        [Required]
+        [StringLength(32, MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "OldPassword")]
+        public string OldPassword { get; set; }
+
+        [Required]
+        [StringLength(32, MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "NewPassword")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm new password")]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
     }
 }

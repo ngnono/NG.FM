@@ -4,6 +4,7 @@ using System.Web.Security;
 using NGnono.FinancialManagement.Repository.Contract;
 using NGnono.FinancialManagement.Services;
 using NGnono.FinancialManagement.Services.Contract;
+using NGnono.FinancialManagement.Services.Utils;
 using NGnono.FinancialManagement.WebSiteCore.Models;
 using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 using NGnono.FinancialManagement.WebSupport.Models;
@@ -76,10 +77,45 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(FormCollection formCollection, ChangePasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                if (_userService.SetPassword(CurrentUser.CustomerId, viewModel.OldPassword, viewModel.NewPassword))
+                {
+                    return View("ChangePasswordSuccess");
+                }
+
+                ModelState.AddModelError("", "OldPassword 错误.");
+            }
+            else
+            {
+                ModelState.AddModelError("", "验证错误.");
+            }
+
+            return View(viewModel);
+        }
+
         ////
         //// GET: /Account/Register
         [AdminAuthorize]
         public ActionResult Register()
+        {
+            return View();
+        }
+
+
+        ////
+        //// GET: /Account/Register
+        [AdminAuthorize]
+        [HttpPost]
+        public ActionResult Register(FormCollection formCollection)
         {
             return View();
         }

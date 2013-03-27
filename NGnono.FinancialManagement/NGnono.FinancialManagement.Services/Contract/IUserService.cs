@@ -76,7 +76,15 @@ namespace NGnono.FinancialManagement.Services.Contract
         /// <returns></returns>
         UserModel UserRoleDeleted(int userId, UserRole userRole, int authUserId);
 
-
         void SetCardBinder(int userId, bool? binded);
+
+        /// <summary>
+        /// 设置密码
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        bool SetPassword(int userId, string oldPassword, string newPassword);
     }
 }

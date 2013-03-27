@@ -246,6 +246,22 @@ namespace NGnono.FinancialManagement.Services.Impl
             throw new NotImplementedException();
         }
 
+        public bool SetPassword(int userId, string oldPassword, string newPassword)
+        {
+            var user = _customerRepository.GetItem(userId);
+
+            if (SecurityHelper.CheckEqual(oldPassword, user.Password))
+            {
+                user.Password = newPassword;
+
+                _customerRepository.Update(user);
+
+                return true;
+            }
+
+            return false;
+        }
+
         public void AddFover(int userId, int foverCount, int updateUserId)
         {
             AddCount(userId, AccountType.FavorCount, foverCount, updateUserId);
