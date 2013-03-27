@@ -23,6 +23,9 @@ namespace NGnono.FinancialManagement.Models.Enums
         /// </summary>
         PendingReview = 2,
 
-
+        /// <summary>
+        /// 软删除
+        /// </summary>
+        Deleted = -1
     }
 }

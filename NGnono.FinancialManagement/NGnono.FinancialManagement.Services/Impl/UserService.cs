@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NGnono.FinancialManagement.Data.Models;
+﻿using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.Models;
 using NGnono.FinancialManagement.Models.Enums;
 using NGnono.FinancialManagement.Repository.Contract;
 using NGnono.FinancialManagement.Services.Contract;
-using NGnono.Framework.ServiceLocation;
+using NGnono.FinancialManagement.Services.Manager;
+using NGnono.FinancialManagement.Services.Utils;
+using System;
+using System.Linq;
 
 namespace NGnono.FinancialManagement.Services.Impl
 {
@@ -18,6 +16,7 @@ namespace NGnono.FinancialManagement.Services.Impl
         private readonly IUserRoleRepository _userRoleRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IUserAccountRepository _userAccountRepository;
+        private readonly MappingManagerV2 _mapping = new MappingManagerV2();
 
 
         public UserService( IUserAccountRepository userAccountRepository, ICustomerRepository customerRepository, IUserRoleRepository userRoleRepository, IRoleRepository roleRepository)

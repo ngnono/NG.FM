@@ -10,6 +10,14 @@ namespace NGnono.FinancialManagement.WebSupport.Ioc
         public override void Register()
         {
             Current.Register<IBillRepository, BillRepository>();
+
+            Current.Register<ICustomerRepository, CustomerRepository>();
+
+            Current.Register<IUserAccountRepository, UserAccountRepository>();
+        
+            Current.Register<IUserRoleRepository, UserRoleRepository>();
+            Current.Register<IVUserRoleRepository, VUserRoleRepository>();
+
         }
 
         #endregion

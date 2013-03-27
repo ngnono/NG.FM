@@ -43,13 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IBillRepository.cs" />
     <Compile Include="Contract\IRepository.cs" />
     <Compile Include="Contract\IUserRepository.cs" />
     <Compile Include="Impl\BillRepository.cs" />
+    <Compile Include="Contract\IVUserRoleRepository.cs" />
+    <Compile Include="Impl\Class1.cs" />
+    <Compile Include="Impl\CustomerRepository.cs" />
     <Compile Include="Impl\RepositoryBase.cs" />
     <Compile Include="Impl\UserRepository.cs" />
+    <Compile Include="Impl\UserRoleRepository.cs" />
+    <Compile Include="Impl\VUserRoleRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
