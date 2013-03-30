@@ -1,11 +1,5 @@
-﻿using System;
-using System.Web.Mvc;
-using System.Web.Security;
-using NGnono.FinancialManagement.Repository.Contract;
-using NGnono.FinancialManagement.Services;
+﻿using System.Web.Mvc;
 using NGnono.FinancialManagement.Services.Contract;
-using NGnono.FinancialManagement.Services.Utils;
-using NGnono.FinancialManagement.WebSiteCore.Models;
 using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 using NGnono.FinancialManagement.WebSupport.Models;
 using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
@@ -18,7 +12,6 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
     /// 2.资料修改，密码，邮箱验证
     /// 
     /// </summary>
-    [Authorize]
     public class AccountController : UserController
     {
         private readonly IUserService _userService;

@@ -98,8 +98,6 @@ namespace NGnono.FinancialManagement.Repository.Impl
 
         public IEnumerable<BillEntity> GetResult(BillFilter filter)
         {
-            return new List<BillEntity>(0);
-
             return base.Get(Filter(filter));
         }
 

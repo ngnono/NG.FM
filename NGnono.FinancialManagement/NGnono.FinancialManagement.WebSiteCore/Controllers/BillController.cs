@@ -17,7 +17,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
     public class BillController : UserController
     {
-        private IBillRepository _repository;
+        private readonly IBillRepository _repository;
 
         public BillController(IBillRepository repository)
         {
@@ -52,9 +52,11 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
             dto.Taday = DateTime.Now.ToString("yyyy年M月d日");
             dto.WeekRange = DateTimeUtil.FirstDayOfWeek(DateTime.Now).ToString("M月d日") + " - " +
-                            DateTimeUtil.LastDayOfWeek(DateTime.Now);
+                            DateTimeUtil.LastDayOfWeek(DateTime.Now).ToString("M月d日");
 
             var t = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+
+            int? customerId = base.CurrentUser == null ? new int?() : base.CurrentUser.CustomerId;
             var r1 = _repository.GetResult(new BillFilter
                 {
                     DataDateRange = new DateTimeRangeInfo
@@ -64,7 +66,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                         },
                     DataStatus = DataStatus.Normal,
                     IsDeleted = false,
-                    UserId = base.CurrentUser.CustomerId
+                    UserId = customerId
                 });
 
             dto.ThisToday = new IaeVo()
@@ -82,7 +84,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                 },
                 DataStatus = DataStatus.Normal,
                 IsDeleted = false,
-                UserId = base.CurrentUser.CustomerId
+                UserId = customerId
             });
 
             dto.ThisMonth = new IaeVo()
@@ -100,7 +102,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                 },
                 DataStatus = DataStatus.Normal,
                 IsDeleted = false,
-                UserId = base.CurrentUser.CustomerId
+                UserId = customerId
             });
 
             dto.ThisWeek = new IaeVo()
@@ -113,7 +115,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             {
                 DataStatus = DataStatus.Normal,
                 IsDeleted = false,
-                UserId = base.CurrentUser.CustomerId
+                UserId = customerId
             });
 
             dto.Whole = new IaeVo()
