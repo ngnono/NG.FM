@@ -7,15 +7,15 @@
 
 <ul data-role="listview" data-divider-theme="a" data-inset="true">
     <li data-role="list-divider" role="heading">3月/2013年
-            </li>
-    <li data-theme="c">收入总额：￥100.00
-            </li>
-    <li data-theme="c">支出总额：￥200.00
-            </li>
+    </li>
+    <li data-theme="c">收入总额：￥@this.Model.Whole.Revenue
+    </li>
+    <li data-theme="c">支出总额：￥@this.Model.Whole.Expenses
+    </li>
 </ul>
 
 <a data-role="button" href="#page1">记帐
-        </a>
+</a>
 
 <ul data-role="listview" data-split-icon="arrow-r" data-inset="true">
     <li>
@@ -23,20 +23,37 @@
         <h3>今天</h3>
         <p>@this.Model.Taday</p>
 
-        <p class="ui-li-aside"></p>
+        <p class="ui-li-aside">
+            <span style="color: green"><strong>￥</strong>@this.Model.ThisToday.Expenses</span>
+            <br />
+            <br />
+            <span style="color: red"><strong>￥</strong>@this.Model.ThisToday.Revenue</span>
+        </p>
+
     </li>
     <li>
         @*<img alt="今天日期的图" src="/images/read_more_32x32.png" style="" />*@
         <h3>本周</h3>
         <p>@this.Model.WeekRange</p>
 
-        <p class="ui-li-aside"></p>
+        <p class="ui-li-aside">
+            <span style="color: green"><strong>￥</strong>@this.Model.ThisWeek.Expenses</span>
+            <br />
+            <br />
+            <span style="color: red"><strong>￥</strong>@this.Model.ThisWeek.Revenue</span>
+        </p>
     </li>
     <li>
         @*<img alt="今天日期的图" src="/images/read_more_32x32.png" />*@
         <h3>本月</h3>
         <p>@this.Model.MonthRange</p>
 
-        <p class="ui-li-aside"></p>
+        <p class="ui-li-aside">
+            <span style="color: green"><strong>￥</strong>@this.Model.ThisMonth.Expenses</span>
+            <br />
+            <br />
+            <span style="color: red"><strong>￥</strong>@this.Model.ThisMonth.Revenue</span>
+
+        </p>
     </li>
 </ul>
