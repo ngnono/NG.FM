@@ -210,8 +210,11 @@
     <Content Include="Configurations\unity.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\Def.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="images\read_more_32x32.png" />
+    <Content Include="js\widgets\cordova.webos-debug.js" />
+    <Content Include="js\widgets\cordova.webos.js" />
     <Content Include="js\base\jquery.js" />
     <Content Include="js\widgets\jquery.mobile-1.3.0.js" />
     <Content Include="js\widgets\jquery.mobile-1.3.0.min.js" />

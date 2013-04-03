@@ -5,3 +5,165 @@
     ViewBag.Title = "记账";
 }
 
+<form>
+    <ul data-role="listview" data-divider-theme="a" data-inset="true">
+        <li>
+            <fieldset data-role="controlgroup" data-type="horizontal">
+                <input type="radio" name="chbMode" id="chb_mode_1" checked="checked" />
+                <label for="chb_mode_1">收入</label>
+                <input type="radio" name="chbMode" id="chb_mode_2" />
+                <label for="chb_mode_2">支出</label>
+            </fieldset>
+        </li>
+
+        <li>
+            <img id="cameraImage" src="/images/read_more_32x32.png" alt="" /></li>
+    </ul>
+
+</form>
+
+@section PageAreas
+{
+    <div data-role="page" id="setting">
+        <div data-role="header">
+            <h1>头像设置</h1>
+        </div>
+        <div data-role="settingContent">
+            <p>头像</p>
+            <img id="settingImage" src="" />
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    <div data-role="button" id="takePhoto">take photo</div>
+                </div>
+                <div class="ui-block-b">
+                    <div data-role="button" id="upload">upload</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+
+@section FooterScripts
+{
+//device.js
+function init() { 
+        document.addEventListener("deviceready", onDeviceReady, true); 
+    }
+    
+        var onDeviceReady = function() { 
+        console.log("deviceready event fired"); 
+          
+    // api-camera  Photo URI 
+        pictureSource=navigator.camera.PictureSourceType; 
+        destinationType=navigator.camera.DestinationType; 
+        //这里是初始化主页,如果,已经有头像的话,就加载 
+        var saveImage = kget("image"); 
+        if(saveImage){ 
+             //console.log("have image"+saveImage); 
+              var cameraImage = document.getElementById('cameraImage'); 
+              cameraImage.style.visibility = 'visible'; 
+              cameraImage.src = "data:image/jpeg;base64," + saveImage; 
+               
+        } 
+        //系统的事件,按需求实现自己的回调方法,这里就默认了.. 
+        document.addEventListener("searchbutton", onSearchKeyDown, false);   
+        document.addEventListener("menubutton", onMenuButtonDown, false); 
+        document.addEventListener("pause", onEventFired, false); 
+        document.addEventListener("resume", onEventFired, false); 
+        document.addEventListener("online", onEventFired, false); 
+        document.addEventListener("offline", onEventFired, false); 
+        document.addEventListener("backbutton", onEventFired, false); 
+        document.addEventListener("batterycritical", onEventFired, false); 
+        document.addEventListener("batterylow", onEventFired, false); 
+        document.addEventListener("batterystatus", onEventFired, false); 
+        document.addEventListener("startcallbutton", onEventFired, false); 
+        document.addEventListener("endcallbutton", onEventFired, false); 
+        document.addEventListener("volumedownbutton", onEventFired, false); 
+        document.addEventListener("volumeupbutton", onEventFired, false); 
+    }; 
+    
+    //camera.js
+    function take_pic() { 
+    navigator.camera.getPicture(onPhotoDataSuccess, function(ex) { 
+        alert("Camera Error!"); 
+    }, { 
+    //这里的更多设置参数参见官方文档 
+        quality : 50, 
+    targetWidth: 320, 
+    targetHeight: 240, 
+    //用data_url,而不用file_url的原因是,file_url在不同平台有差异 
+    //不好编写,而用data_url就可以不考虑这个,加上,拍张图片,不要太好的话,就几十k存到数据库里面也没多慢.. 
+    destinationType:destinationType.DATA_URL 
+        }); 
+} 
+function onPhotoDataSuccess(imageData) { 
+    console.log("* * * onPhotoDataSuccess"); 
+    var cameraImage = document.getElementById('cameraImage'); 
+    cameraImage.style.visibility = 'visible'; 
+    //把图片存进数据库里面 
+    kset("image",imageData); 
+   cameraImage.src = "data:image/jpeg;base64," + imageData; 
+     
+    }
+    
+    
+    //storage.js
+        function kset(key, value){ 
+        console.log("key"+key+"value"+value); 
+        window.localStorage.setItem(key, value); 
+    } 
+     
+    function kget(key){ 
+        console.log(key); 
+        return window.localStorage.getItem(key); 
+    } 
+     
+    function kremove(key){ 
+        window.localStorage.removeItem(key); 
+    } 
+     
+    function kclear(){ 
+        window.localStorage.clear(); 
+    } 
+     
+    //测试更新方法 
+    function kupdate(key,value){ 
+        window.localStorage.removeItem(key); 
+        window.localStorage.setItem(key, value); 
+    } 
+    
+    //在页面初始化的时候,利用phonegap初始化我们的应用 
+            $('body').live("pageinit",function(){ 
+               init(); 
+            }); 
+            //为页面添加swip 事件 
+            $("#home").live("pageinit",function(){ 
+                //当我们向左滑动的时候,进入setting页面 
+                $('#homeContent').bind("swipeleft",function(){ 
+                  $.mobile.changePage('#setting', { transition: "fade"}); 
+                }); 
+ 
+            }); 
+            $('#setting').live("pageinit",function(){ 
+                //显示头像图片 
+                var saveImage = kget("image"); 
+                if(saveImage){ 
+                    //console.log("have image"+saveImage); 
+                    var cameraImage = document.getElementById('settingImage'); 
+                    cameraImage.style.visibility = 'visible'; 
+                    cameraImage.src = "data:image/jpeg;base64," + saveImage; 
+ 
+                } 
+                //当我们向右滑动的时候,回到主页 
+                $('#settingContent').bind("swiperight",function(){ 
+                    $.mobile.changePage('#home',{ transition: "fade"}); 
+                }); 
+                //进行拍照 
+                $('#takePhoto').bind("tap",function(){ 
+                    take_pic(); 
+                }); 
+            }); 
+
+}

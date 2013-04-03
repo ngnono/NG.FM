@@ -72,20 +72,23 @@ namespace NGnono.Framework.ServiceLocation.Adapter
         {
             get
             {
-                var needCreate = false;
                 IUnityContainer childContainer = null;
                 if (HttpContext.Current != null)
                 {
                     var cachedContainer = HttpContext.Current.Items[HttpContextKey];
 
                     if (cachedContainer is IUnityContainer)
-                        childContainer = HttpContext.Current.Items[HttpContextKey] as IUnityContainer;
-                    if (cachedContainer == null || childContainer == null)
-                        needCreate = true;
+                    {
+                        childContainer = cachedContainer as IUnityContainer;
+                    }
+                    else
+                    {
+                        HttpContext.Current.Items[HttpContextKey] = childContainer = _container.CreateChildContainer();
+                    }
                 }
 
-                if (needCreate)
-                    HttpContext.Current.Items[HttpContextKey] = childContainer = _container.CreateChildContainer();
+                if (childContainer == null)
+                    childContainer = _container;
 
 
                 return childContainer;
