@@ -213,6 +213,9 @@
     <None Include="Properties\PublishProfiles\Def.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="images\read_more_32x32.png" />
+    <Content Include="js\c\camera.js" />
+    <Content Include="js\c\device.js" />
+    <Content Include="js\c\storage.js" />
     <Content Include="js\widgets\cordova.webos-debug.js" />
     <Content Include="js\widgets\cordova.webos.js" />
     <Content Include="js\base\jquery.js" />
