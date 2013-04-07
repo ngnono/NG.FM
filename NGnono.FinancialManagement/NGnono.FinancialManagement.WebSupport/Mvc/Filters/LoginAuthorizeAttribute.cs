@@ -1,26 +1,26 @@
-﻿using NGnono.FinancialManagement.WebSupport.Auth;
+﻿using System;
+using System.Web;
+using System.Web.Mvc;
+using NGnono.FinancialManagement.WebSupport.Auth;
 using NGnono.FinancialManagement.WebSupport.Models;
 using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
 using NGnono.Framework.Logger;
 using NGnono.Framework.Models;
 using NGnono.Framework.ServiceLocation;
 using NGnono.Framework.Web.Mvc.ActionResults;
-using System;
-using System.Web;
-using System.Web.Mvc;
 
 namespace NGnono.FinancialManagement.WebSupport.Mvc.Filters
 {
-    public class AdminAuthorizeAttribute : AuthorizeAttribute
+    public class LoginAuthorizeAttribute : AuthorizeAttribute
     {
         private WebSiteUser _webSiteUser;
         private static readonly ILog _log;
 
-        public AdminAuthorizeAttribute()
+        public LoginAuthorizeAttribute()
         {
         }
 
-        static AdminAuthorizeAttribute()
+        static LoginAuthorizeAttribute()
         {
             _log = LoggerManager.Current();
         }
@@ -40,21 +40,21 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Filters
                     filterContext.Result = new HttpUnauthorizedResult("您的身份认证失败");
 
                     break;
-                //}
+                    //}
                 case 402:
                     filterContext.HttpContext.ClearError();
                     //if (filterContext.HttpContext.Response.SubStatusCode == 2)
                     //{
                     filterContext.Result = new RestfulResult()
-                    {
-                        Data = new ExecuteResult()
                         {
-                            StatusCode = StatusCode.Unauthorized,
-                            Message = "您已经很长时候没有使用啦,为保证你的账户安全,请重新登录."
-                        }
-                    };
+                            Data = new ExecuteResult()
+                                {
+                                    StatusCode = StatusCode.Unauthorized,
+                                    Message = "您已经很长时候没有使用啦,为保证你的账户安全,请重新登录."
+                                }
+                        };
                     break;
-                //}
+                    //}
                 default:
                     break;
             }
@@ -65,9 +65,9 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Filters
             //获取SessionKey
             //var token = httpContext.Request[Define.Token];
 
-            var _authenticationService = ServiceLocator.Current.Resolve<IAuthenticationService>();
+            var authenticationService = ServiceLocator.Current.Resolve<IAuthenticationService>();
 
-            if (!_authenticationService.Islogged(httpContext))
+            if (!authenticationService.Islogged(httpContext))
             {
                 httpContext.Response.StatusCode = 400;
                 return false;
@@ -76,7 +76,7 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Filters
             //验证用户信息
             try
             {
-                _webSiteUser = _authenticationService.GetCurrentUser(httpContext);
+                _webSiteUser = authenticationService.GetCurrentUser(httpContext);
             }
             catch (Exception ex)
             {
@@ -94,7 +94,6 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Filters
 
             return true;
         }
-
 
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
@@ -147,6 +146,5 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Filters
             }
 
         }
-
     }
 }

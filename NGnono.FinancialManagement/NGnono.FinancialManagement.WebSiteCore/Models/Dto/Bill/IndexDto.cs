@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
 {
@@ -87,6 +88,6 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
 
         public int Month { get; set; }
 
-        public Dictionary<int, List<BillVo>> Data { get; set; }
+        public Dictionary<int, List<BillViewModel>> Data { get; set; }
     }
 }

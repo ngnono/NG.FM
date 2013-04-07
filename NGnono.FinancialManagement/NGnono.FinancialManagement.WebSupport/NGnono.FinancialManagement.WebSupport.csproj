@@ -62,6 +62,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Binder\BrandModelBinder.cs" />
     <Compile Include="Binder\PagerRequestBinder.cs" />
+    <Compile Include="Binder\ProductModelBinder.cs" />
+    <Compile Include="Binder\StoreModelBinder.cs" />
     <Compile Include="Configurations\ConfigManager.cs" />
     <Compile Include="Ioc\BaseIocRegister.cs" />
     <Compile Include="Ioc\ConfigIocRegister.cs" />
@@ -75,9 +77,13 @@
     <Compile Include="Ioc\UnfinishedIocRegister.cs" />
     <Compile Include="Auth\AuthenticationService.cs" />
     <Compile Include="Auth\IAuthenticationService.cs" />
+    <Compile Include="Mvc\Controllers\BaseController.cs" />
+    <Compile Include="Mvc\Controllers\DefController.cs" />
     <Compile Include="Mvc\Controllers\UserController.cs" />
     <Compile Include="Models\WebSiteUser.cs" />
     <Compile Include="Mvc\Filters\AdminAuthorizeAttribute.cs" />
+    <Compile Include="Mvc\Filters\ModelOwnerCheckFilter.cs" />
+    <Compile Include="Mvc\Filters\LoginAuthorizeAttribute.cs" />
     <Compile Include="Mvc\MvcApplicaton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

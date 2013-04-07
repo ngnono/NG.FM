@@ -45,8 +45,10 @@
     <Compile Include="Enums\CustomerSortOrder.cs" />
     <Compile Include="Enums\DataStatus.cs" />
     <Compile Include="Enums\DateType.cs" />
+    <Compile Include="Enums\ProductSort.cs" />
     <Compile Include="Enums\SourceType.cs" />
     <Compile Include="Filters\BillFilter.cs" />
+    <Compile Include="Filters\ProductFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserModel.cs" />
   </ItemGroup>

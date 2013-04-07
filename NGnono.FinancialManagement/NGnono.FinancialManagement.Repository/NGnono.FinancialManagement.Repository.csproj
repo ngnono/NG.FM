@@ -44,9 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Contract\IBrandRepository.cs" />
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IBillRepository.cs" />
+    <Compile Include="Contract\IProductRepository.cs" />
     <Compile Include="Contract\IRepository.cs" />
+    <Compile Include="Contract\IStoreRepository.cs" />
+    <Compile Include="Contract\ITagRepository.cs" />
     <Compile Include="Contract\IUserRepository.cs" />
     <Compile Include="Impl\BillRepository.cs" />
     <Compile Include="Contract\IVUserRoleRepository.cs" />

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NGnono.FinancialManagement.Models.Enums;
 using NGnono.Framework.Models;
 
-namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
+namespace NGnono.FinancialManagement.WebSiteCore.Models.Vo
 {
-    public class BillVo
+    public class BillViewModel
     {
         public int Id { get; set; }
         public decimal Amount { get; set; }
@@ -28,30 +24,30 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
         public string ExtendedContent { get; set; }
     }
 
-    public class BillCollectionVo : PagerInfoBaseVo
+    public class BillCollectionViewModel : PagerInfoBaseViewModel
     {
-        public BillCollectionVo(PagerRequest request)
+        public BillCollectionViewModel(PagerRequest request)
             : base(request)
         {
         }
 
-        public BillCollectionVo(PagerRequest request, int totalCount)
+        public BillCollectionViewModel(PagerRequest request, int totalCount)
             : base(request, totalCount)
         {
         }
 
-        public List<BillVo> Datas { get; set; }
+        public List<BillViewModel> Datas { get; set; }
     }
 
-    public class BillCreateVo : BillVo
+    public class BillCreateViewModel : BillViewModel
     {
     }
 
-    public class BillUpdateVo : BillVo
+    public class BillUpdateViewModel : BillViewModel
     {
     }
 
-    public class DateRangeDetailInfo : BaseVo
+    public class DateRangeDetailInfo : BaseViewModel
     {
         public int Num { get; set; }
 

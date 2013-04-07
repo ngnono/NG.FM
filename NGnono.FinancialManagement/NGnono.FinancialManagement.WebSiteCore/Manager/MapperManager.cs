@@ -1,38 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using NGnono.FinancialManagement.Data.Models;
-using NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill;
+using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 using NGnono.Framework.Mapping;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Manager
 {
     public class MapperManager
     {
-        #region bill
+        #region user
 
-        public BillEntity BillMapper(BillVo source)
+        #endregion
+
+        #region product
+
+        public ProductEntity ProductMapper(CreatedProductViewModel source)
         {
             if (source == null)
             {
                 return null;
             }
 
-            var target = Mapper.Map<BillVo, BillEntity>(source);
+            var target = Mapper.Map<CreatedProductViewModel, ProductEntity>(source);
 
             return target;
         }
 
-        public BillVo BillMapper(BillEntity source)
+        public ProductViewModel ProductMapper(ProductEntity source)
         {
             if (source == null)
             {
                 return null;
             }
 
-            var target = Mapper.Map<BillEntity, BillVo>(source);
+            var target = Mapper.Map<ProductEntity, ProductViewModel>(source);
+
+            return target;
+        }
+
+        #endregion
+
+
+        #region bill
+
+        public BillEntity BillMapper(BillViewModel source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            var target = Mapper.Map<BillViewModel, BillEntity>(source);
+
+            return target;
+        }
+
+        public BillViewModel BillMapper(BillEntity source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            var target = Mapper.Map<BillEntity, BillViewModel>(source);
 
             return target;
         }

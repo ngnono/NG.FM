@@ -8,11 +8,10 @@ using NGnono.Framework.ServiceLocation;
 
 namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
 {
-    public abstract class UserController : System.Web.Mvc.Controller
+    public abstract class UserController : BaseController
     {
         protected UserController()
         {
-            Log = ServiceLocator.Current.Resolve<ILog>();
             AuthenticationService = ServiceLocator.Current.Resolve<IAuthenticationService>();
         }
 
@@ -30,15 +29,6 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
         /// 当前登录用户
         /// </summary>
         private WebSiteUser _currentUser;
-
-        /// <summary>
-        /// Gets or sets ILog.
-        /// </summary>
-        public ILog Log
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Gets or sets AuthenticationService.

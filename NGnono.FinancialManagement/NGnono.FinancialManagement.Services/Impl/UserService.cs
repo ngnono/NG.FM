@@ -19,7 +19,7 @@ namespace NGnono.FinancialManagement.Services.Impl
         private readonly MappingManagerV2 _mapping = new MappingManagerV2();
 
 
-        public UserService( IUserAccountRepository userAccountRepository, ICustomerRepository customerRepository, IUserRoleRepository userRoleRepository, IRoleRepository roleRepository)
+        public UserService(IUserAccountRepository userAccountRepository, ICustomerRepository customerRepository, IUserRoleRepository userRoleRepository, IRoleRepository roleRepository)
         {
             _customerRepository = customerRepository;
             _userRoleRepository = userRoleRepository;
@@ -260,6 +260,13 @@ namespace NGnono.FinancialManagement.Services.Impl
             }
 
             return false;
+        }
+
+        public UserModel Insert(UserEntity entity)
+        {
+            var e = _customerRepository.Insert(entity);
+
+            return Get(e.Id);
         }
 
         public void AddFover(int userId, int foverCount, int updateUserId)

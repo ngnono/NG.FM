@@ -148,7 +148,7 @@ namespace NGnono.FinancialManagement.Models
     public enum UserLevel
     {
         /// <summary>
-        /// 啥都不是
+        /// 
         /// </summary>
         [Description("默认")]
         None = 0,

@@ -56,13 +56,18 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BillController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Manager\MapperManager.cs" />
-    <Compile Include="Models\Dto\Bill\BillVo.cs" />
+    <Compile Include="Models\Dto\Product\DetailsDto.cs" />
+    <Compile Include="Models\Requests\Product\ProductRequest.cs" />
+    <Compile Include="Models\Vo\BillVo.cs" />
     <Compile Include="Models\Dto\Bill\IndexDto.cs" />
     <Compile Include="Models\Vo\AccountModels.cs" />
     <Compile Include="Models\BaseDto.cs" />
     <Compile Include="Models\BaseVo.cs" />
     <Compile Include="Models\Dto\Account\LoginDto.cs" />
+    <Compile Include="Models\Vo\ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\DateTimeUtil.cs" />
   </ItemGroup>

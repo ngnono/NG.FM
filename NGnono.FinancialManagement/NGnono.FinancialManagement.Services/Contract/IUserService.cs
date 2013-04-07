@@ -1,4 +1,5 @@
-﻿using NGnono.FinancialManagement.Models;
+﻿using NGnono.FinancialManagement.Data.Models;
+using NGnono.FinancialManagement.Models;
 
 namespace NGnono.FinancialManagement.Services.Contract
 {
@@ -86,5 +87,12 @@ namespace NGnono.FinancialManagement.Services.Contract
         /// <param name="newPassword"></param>
         /// <returns></returns>
         bool SetPassword(int userId, string oldPassword, string newPassword);
+
+        /// <summary>
+        /// 创建一个用户
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        UserModel Insert(UserEntity entity);
     }
 }

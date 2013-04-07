@@ -133,6 +133,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public DbSet<NotificationLogEntity> NotificationLogs { get; set; }
         public DbSet<OutsiteUserEntity> OutsiteUsers { get; set; }
         public DbSet<PointHistoryEntity> PointHistories { get; set; }
+        public DbSet<PriceSettingEntity> PriceSettings { get; set; }
         public DbSet<ProductEntity> Products { get; set; }
         public DbSet<ProductStageEntity> ProductStages { get; set; }
         public DbSet<ProductUploadJobEntity> ProductUploadJobs { get; set; }
@@ -179,6 +180,7 @@ namespace NGnono.FinancialManagement.Data.Models
             modelBuilder.Configurations.Add(new NotificationLogEntityMap());
             modelBuilder.Configurations.Add(new OutsiteUserEntityMap());
             modelBuilder.Configurations.Add(new PointHistoryEntityMap());
+            modelBuilder.Configurations.Add(new PriceSettingEntityMap());
             modelBuilder.Configurations.Add(new ProductEntityMap());
             modelBuilder.Configurations.Add(new ProductStageEntityMap());
             modelBuilder.Configurations.Add(new ProductUploadJobEntityMap());

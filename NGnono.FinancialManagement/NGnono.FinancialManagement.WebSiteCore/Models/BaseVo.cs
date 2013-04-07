@@ -5,7 +5,7 @@ using NGnono.Framework.Models;
 namespace NGnono.FinancialManagement.WebSiteCore.Models
 {
     [Serializable]
-    public abstract class BaseVo
+    public abstract class BaseViewModel
     {
     }
 
@@ -33,14 +33,14 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models
     }
 
     [DataContract]
-    public abstract class PagerInfoBaseVo : BaseVo, IPagerInfo
+    public abstract class PagerInfoBaseViewModel : BaseViewModel, IPagerInfo
     {
-        protected PagerInfoBaseVo(PagerRequest request)
+        protected PagerInfoBaseViewModel(PagerRequest request)
             : this(request, 0)
         {
         }
 
-        protected PagerInfoBaseVo(PagerRequest request, int totalCount)
+        protected PagerInfoBaseViewModel(PagerRequest request, int totalCount)
         {
             this.Index = request.PageIndex;
             this.Size = request.PageSize;
@@ -94,5 +94,28 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models
         }
 
         #endregion
+    }
+
+    [DataContract]
+    public abstract class PagerInfoBaseViewModel<TData> : PagerInfoBaseViewModel
+    {
+        protected PagerInfoBaseViewModel(PagerRequest request)
+            : base(request)
+        {
+        }
+
+        protected PagerInfoBaseViewModel(PagerRequest request, int totalCount)
+            : base(request, totalCount)
+        {
+        }
+
+        protected PagerInfoBaseViewModel(PagerRequest request, int totalCount, TData data)
+            : base(request, totalCount)
+        {
+            Datas = data;
+        }
+
+        [DataMember(Name = "datas", Order = 6)]
+        public TData Datas { get; set; }
     }
 }

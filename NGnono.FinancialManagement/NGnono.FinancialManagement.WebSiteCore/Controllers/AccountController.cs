@@ -1,9 +1,16 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
+using NGnono.FinancialManagement.Data.Models;
+using NGnono.FinancialManagement.Models;
+using NGnono.FinancialManagement.Models.Enums;
+using NGnono.FinancialManagement.Repository.Contract;
+using NGnono.FinancialManagement.Repository.Impl;
 using NGnono.FinancialManagement.Services.Contract;
 using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 using NGnono.FinancialManagement.WebSupport.Models;
 using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
 using NGnono.FinancialManagement.WebSupport.Mvc.Filters;
+using NGnono.FinancialManagement.WebSiteCore.Models.Dto.Account;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
@@ -15,10 +22,12 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
     public class AccountController : UserController
     {
         private readonly IUserService _userService;
+        private readonly ICustomerRepository _customerRepository;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, ICustomerRepository customerRepository)
         {
             _userService = userService;
+            _customerRepository = customerRepository;
         }
 
         public ActionResult Login(string returnUrl)
@@ -54,8 +63,10 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-
-            ModelState.AddModelError("", "参数验证失败.");
+            else
+            {
+                ModelState.AddModelError("", "参数验证失败.");
+            }
 
             return View(model);
         }
@@ -108,9 +119,58 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         //// GET: /Account/Register
         [AdminAuthorize]
         [HttpPost]
-        public ActionResult Register(FormCollection formCollection)
+        public ActionResult Register(FormCollection formCollection, RegisterViewModel viewModel, string returnUrl)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var userEntity = new UserEntity();
+                userEntity.CreatedDate = DateTime.Now;
+                userEntity.UpdatedDate = DateTime.Now;
+                userEntity.Description = String.Empty;
+                userEntity.EMail = viewModel.Email;
+                userEntity.Gender = 0;
+                userEntity.LastLoginDate = DateTime.Now;
+                userEntity.Logo = String.Empty;
+                userEntity.Mobile = String.Empty;
+                userEntity.Name = viewModel.UserName;
+                userEntity.Password = viewModel.Password;
+                userEntity.Nickname = viewModel.Nickname;
+                userEntity.Status = (int)DataStatus.Normal;
+                userEntity.UserLevel = (int)UserLevel.User;
+
+                var e = _customerRepository.Insert(userEntity);
+
+                //写认证
+                SetAuthorize(new WebSiteUser(e.Name, e.Id, e.Nickname, UserRole.User));
+
+                if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                {
+                    return Redirect(returnUrl);
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "验证错误.");
+            }
+
+            return View(viewModel);
+        }
+
+        public ActionResult Details()
+        {
+            if (base.CurrentUser == null)
+            {
+                return View("Login");
+            }
+
+            var userModel = _userService.Get(base.CurrentUser.CustomerId);
+
+            var dto = new DetailsDto { User = userModel };
+
+            return View(dto);
         }
     }
 }

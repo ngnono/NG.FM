@@ -67,6 +67,15 @@ namespace NGnono.Framework.Data.EF
 
         #endregion
 
+        #region Properties
+
+        public DbContext DbContext
+        {
+            get { return _unitOfWork.Context; }
+        }
+
+        #endregion
+
         #region methods
 
         private static DbContext GetContext(IUnitOfWork unitOfWork, DbContext context)

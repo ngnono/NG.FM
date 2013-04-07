@@ -11,6 +11,7 @@ using NGnono.FinancialManagement.Models.Filters;
 using NGnono.FinancialManagement.Repository.Contract;
 using NGnono.FinancialManagement.WebSiteCore.Manager;
 using NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill;
+using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 using NGnono.FinancialManagement.WebSiteCore.Utils;
 using NGnono.FinancialManagement.WebSupport.Binder;
 using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
@@ -151,7 +152,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(FormCollection formCollection, BillCreateVo vo)
+        public ActionResult Create(FormCollection formCollection, BillCreateViewModel vo)
         {
             if (!ModelState.IsValid)
             {
@@ -182,7 +183,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Update([FetchBill(KeyName = "billid")]BillEntity model, BillUpdateVo vo)
+        public ActionResult Update([FetchBill(KeyName = "billid")]BillEntity model, BillUpdateViewModel vo)
         {
             if (!ModelState.IsValid)
             {
@@ -268,30 +269,6 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             //TODO:这里的分组没做完
 
             return View(dto);
-        }
-    }
-
-    /// <summary>
-    /// 统计
-    /// </summary>
-    public class TongjiController : Controller
-    {
-        /// <summary>
-        /// 统计设置界面
-        /// 1.支出报表  『分类支出、二级支出、账户支出、商家支出、项目支出、成员支出』
-        /// 2.收入报表  『分类收入、二级收入、账户收入、项目收入、成员收入』
-        /// 3.资产报表  『资产、负债』
-        /// 4.月度报表  『收入、支出、收支对比、预算支出、成员收支』
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult Details()
-        {
-            return View();
         }
     }
 }
