@@ -24,7 +24,7 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Amount).HasColumnName("Amount");
             this.Property(t => t.Mode).HasColumnName("Mode");
             this.Property(t => t.User_Id).HasColumnName("User_Id");
-            this.Property(t => t.Category_Id).HasColumnName("Category_Id");
+            this.Property(t => t.Tag_Id).HasColumnName("Tag_Id");
             this.Property(t => t.Type).HasColumnName("Type");
             this.Property(t => t.Description).HasColumnName("Description");
             this.Property(t => t.DataDateTime).HasColumnName("DataDateTime");
@@ -36,6 +36,15 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.IsDeleted).HasColumnName("IsDeleted");
             this.Property(t => t.ExtendedContentType).HasColumnName("ExtendedContentType");
             this.Property(t => t.ExtendedContent).HasColumnName("ExtendedContent");
+
+            // Relationships
+            this.HasRequired(t => t.Tag)
+                .WithMany(t => t.Bills)
+                .HasForeignKey(d => d.Tag_Id);
+            this.HasRequired(t => t.User)
+                .WithMany(t => t.Bills)
+                .HasForeignKey(d => d.User_Id);
+
         }
     }
 }

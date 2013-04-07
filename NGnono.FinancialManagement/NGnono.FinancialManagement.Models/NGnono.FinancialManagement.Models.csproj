@@ -44,6 +44,7 @@
     <Compile Include="Enums\AccountType.cs" />
     <Compile Include="Enums\CustomerSortOrder.cs" />
     <Compile Include="Enums\DataStatus.cs" />
+    <Compile Include="Enums\DateType.cs" />
     <Compile Include="Enums\SourceType.cs" />
     <Compile Include="Filters\BillFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

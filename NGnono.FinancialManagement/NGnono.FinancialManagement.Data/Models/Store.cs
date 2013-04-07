@@ -5,6 +5,12 @@ namespace NGnono.FinancialManagement.Data.Models
 {
     public partial class StoreEntity : NGnono.Framework.Models.BaseEntity
     {
+        public StoreEntity()
+        {
+            this.Products = new List<ProductEntity>();
+            this.Users = new List<UserEntity>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -20,6 +26,9 @@ namespace NGnono.FinancialManagement.Data.Models
         public int Status { get; set; }
         public int Region_Id { get; set; }
         public int StoreLevel { get; set; }
+        public virtual GroupEntity Group { get; set; }
+        public virtual ICollection<ProductEntity> Products { get; set; }
+        public virtual ICollection<UserEntity> Users { get; set; }
 
 #region Overrides of BaseEntity
 

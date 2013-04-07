@@ -12,6 +12,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public int CreatedUser { get; set; }
         public int Status { get; set; }
         public int Val { get; set; }
+        public virtual UserRoleEntity UserRole { get; set; }
 
 #region Overrides of BaseEntity
 

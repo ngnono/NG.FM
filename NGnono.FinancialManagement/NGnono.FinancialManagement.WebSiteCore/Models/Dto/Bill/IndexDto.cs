@@ -44,7 +44,6 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
 
     }
 
-
     public class IaeVo
     {
         /// <summary>
@@ -56,5 +55,38 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
         /// 支出
         /// </summary>
         public decimal Expenses { get; set; }
+
+        /// <summary>
+        /// 结余（收入-支出）
+        /// </summary>
+        public decimal Balance
+        {
+            get { return Revenue - Expenses; }
+            set { }
+        }
+    }
+
+    public class RunningAccountDto
+    {
+        /// <summary>
+        /// 年
+        /// </summary>
+        public int Year { get; set; }
+
+        /// <summary>
+        /// 年 总收入和支出
+        /// </summary>
+        public IaeVo YearIae { get; set; }
+
+        public Dictionary<int, IaeVo> Data { get; set; }
+    }
+
+    public class AccountDateListDto
+    {
+        public int Year { get; set; }
+
+        public int Month { get; set; }
+
+        public Dictionary<int, List<BillVo>> Data { get; set; }
     }
 }

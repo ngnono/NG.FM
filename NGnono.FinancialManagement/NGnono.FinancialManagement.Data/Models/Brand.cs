@@ -5,6 +5,11 @@ namespace NGnono.FinancialManagement.Data.Models
 {
     public partial class BrandEntity : NGnono.Framework.Models.BaseEntity
     {
+        public BrandEntity()
+        {
+            this.Products = new List<ProductEntity>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string EnglishName { get; set; }
@@ -17,6 +22,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public string WebSite { get; set; }
         public int Status { get; set; }
         public string Group { get; set; }
+        public virtual ICollection<ProductEntity> Products { get; set; }
 
 #region Overrides of BaseEntity
 

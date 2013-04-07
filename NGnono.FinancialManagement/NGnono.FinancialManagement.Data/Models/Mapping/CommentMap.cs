@@ -29,6 +29,12 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.SourceType).HasColumnName("SourceType");
             this.Property(t => t.ReplyUser).HasColumnName("ReplyUser");
             this.Property(t => t.ReplyId).HasColumnName("ReplyId");
+
+            // Relationships
+            this.HasRequired(t => t.User)
+                .WithMany(t => t.Comments)
+                .HasForeignKey(d => d.User_Id);
+
         }
     }
 }

@@ -17,6 +17,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public int SourceType { get; set; }
         public int ReplyUser { get; set; }
         public int ReplyId { get; set; }
+        public virtual UserEntity User { get; set; }
 
 #region Overrides of BaseEntity
 

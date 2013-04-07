@@ -47,6 +47,21 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.RecommendSourceId).HasColumnName("RecommendSourceId");
             this.Property(t => t.RecommendSourceType).HasColumnName("RecommendSourceType");
             this.Property(t => t.SortOrder).HasColumnName("SortOrder");
+
+            // Relationships
+            this.HasRequired(t => t.Brand)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.Brand_Id);
+            this.HasRequired(t => t.Store)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.Store_Id);
+            this.HasRequired(t => t.Tag)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.Tag_Id);
+            this.HasRequired(t => t.User)
+                .WithMany(t => t.Products)
+                .HasForeignKey(d => d.RecommendUser);
+
         }
     }
 }

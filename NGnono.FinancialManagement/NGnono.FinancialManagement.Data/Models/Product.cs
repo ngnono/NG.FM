@@ -26,6 +26,10 @@ namespace NGnono.FinancialManagement.Data.Models
         public int RecommendSourceId { get; set; }
         public int RecommendSourceType { get; set; }
         public int SortOrder { get; set; }
+        public virtual BrandEntity Brand { get; set; }
+        public virtual StoreEntity Store { get; set; }
+        public virtual TagEntity Tag { get; set; }
+        public virtual UserEntity User { get; set; }
 
 #region Overrides of BaseEntity
 

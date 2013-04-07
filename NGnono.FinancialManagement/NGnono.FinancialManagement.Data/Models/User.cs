@@ -5,6 +5,15 @@ namespace NGnono.FinancialManagement.Data.Models
 {
     public partial class UserEntity : NGnono.Framework.Models.BaseEntity
     {
+        public UserEntity()
+        {
+            this.Bills = new List<BillEntity>();
+            this.Comments = new List<CommentEntity>();
+            this.Products = new List<ProductEntity>();
+            this.UserAccounts = new List<UserAccountEntity>();
+            this.UserRoles = new List<UserRoleEntity>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
@@ -23,6 +32,12 @@ namespace NGnono.FinancialManagement.Data.Models
         public string Logo { get; set; }
         public string Description { get; set; }
         public byte Gender { get; set; }
+        public virtual ICollection<BillEntity> Bills { get; set; }
+        public virtual ICollection<CommentEntity> Comments { get; set; }
+        public virtual ICollection<ProductEntity> Products { get; set; }
+        public virtual StoreEntity Store { get; set; }
+        public virtual ICollection<UserAccountEntity> UserAccounts { get; set; }
+        public virtual ICollection<UserRoleEntity> UserRoles { get; set; }
 
 #region Overrides of BaseEntity
 

@@ -5,11 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.Models.Enums;
 using NGnono.FinancialManagement.Models.Filters;
 using NGnono.FinancialManagement.Repository.Contract;
+using NGnono.FinancialManagement.WebSiteCore.Manager;
 using NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill;
 using NGnono.FinancialManagement.WebSiteCore.Utils;
+using NGnono.FinancialManagement.WebSupport.Binder;
 using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
 using NGnono.Framework.Models;
 
@@ -18,10 +21,12 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
     public class BillController : UserController
     {
         private readonly IBillRepository _repository;
+        private readonly MapperManager _mapperManager;
 
         public BillController(IBillRepository repository)
         {
             _repository = repository;
+            _mapperManager = new MapperManager();
         }
 
 
@@ -145,13 +150,51 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Create(FormCollection formCollection, BillCreateVo vo)
+        {
+            if (!ModelState.IsValid)
+            {
+                // 如果我们进行到这一步时某个地方出错，则重新显示表单
+                return View(vo);
+            }
+
+            var newEntity = _mapperManager.BillMapper(vo);
+
+            var entity = this._repository.Insert(newEntity);
+
+            return View("Details", _mapperManager.BillMapper(entity));
+        }
+
         /// <summary>
         /// 详情页，可修改
         /// </summary>
         /// <returns></returns>
-        public ActionResult Details()
+        public ActionResult Details([FetchBill(KeyName = "billid")]BillEntity model)
         {
-            return View();
+            var vo = _mapperManager.BillMapper(model);
+
+            return View(vo);
+        }
+
+        /// <summary>
+        /// 详情页，可修改
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult Update([FetchBill(KeyName = "billid")]BillEntity model, BillUpdateVo vo)
+        {
+            if (!ModelState.IsValid)
+            {
+                // 如果我们进行到这一步时某个地方出错，则重新显示表单
+                return View("Details", vo);
+            }
+
+            this._repository.Update(_mapperManager.BillMapper(vo));
+
+            var entity = this._repository.GetItem(model.Id);
+
+            return View("Details", _mapperManager.BillMapper(entity));
         }
 
         /// <summary>
@@ -168,33 +211,64 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult LiuShui()
+        public ActionResult RunningAccount()
         {
-            return View();
+            var today = DateTime.Now;
+            var yearStartDate = new DateTime(today.Year, 1, 1);
+            var yearEndDate = new DateTime(today.Year + 1, 1, 1);
+
+            var resultEntities = _repository.Get(v => v.Status.Equals(DataStatus.Normal) &&
+                                      v.User_Id.Equals(CurrentUser.CustomerId) &&
+                                      v.DataDateTime >= yearStartDate && v.DataDateTime < yearEndDate);
+
+            var yearIae =
+                new IaeVo
+                {
+                    Expenses = resultEntities.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => v.Amount),
+                    Revenue = resultEntities.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => v.Amount)
+                }
+                ;
+
+
+            var d = new Dictionary<int, IaeVo>(12);
+            for (var i = 1; i <= 12; i++)
+            {
+                var t = new DateTime(today.Year, i, 1);
+                var e = t.AddMonths(1);
+                var en = resultEntities.Where(v => v.DataDateTime >= t && v.DataDateTime < e);
+                var iae = new IaeVo
+                {
+                    Expenses = en.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => v.Amount),
+                    Revenue = en.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => v.Amount)
+                };
+                d.Add(i, iae);
+            }
+
+            var dto = new RunningAccountDto();
+            dto.Year = today.Year;
+            dto.YearIae = yearIae;
+            dto.Data = d;
+
+            return View(dto);
         }
 
-        /// <summary>
-        /// 账户
-        /// 
-        /// 净资产： ￥0.00  负债
-        /// 
-        /// 各账户：
-        /// 现金账户：点击进入-按每月罗列
-        /// 金融账户
-        /// 虚拟账户
-        /// 信用卡账户：
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Account()
+        public ActionResult AccountDateList(int year, int month)
         {
-            return View();
-        }
+            var monthStartDate = new DateTime(year, month, 1);
+            var monthEndDate = monthStartDate.AddMonths(1);
 
-        public ActionResult AccountList()
-        {
-            return View();
-        }
+            var resultEntities = _repository.Get(v => v.Status.Equals(DataStatus.Normal) &&
+                                      v.User_Id.Equals(CurrentUser.CustomerId) &&
+                                      v.DataDateTime >= monthStartDate && v.DataDateTime < monthEndDate).GroupBy(v => v.DataDateTime.Day).OrderByDescending(v => v.Key);
 
+            var dto = new AccountDateListDto();
+            dto.Month = month;
+            dto.Year = year;
+            dto.Data = null;
+            //TODO:这里的分组没做完
+
+            return View(dto);
+        }
     }
 
     /// <summary>

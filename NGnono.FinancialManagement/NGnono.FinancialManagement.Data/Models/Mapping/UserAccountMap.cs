@@ -23,6 +23,12 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.UpdatedUser).HasColumnName("UpdatedUser");
             this.Property(t => t.UpdatedDate).HasColumnName("UpdatedDate");
             this.Property(t => t.Status).HasColumnName("Status");
+
+            // Relationships
+            this.HasRequired(t => t.User)
+                .WithMany(t => t.UserAccounts)
+                .HasForeignKey(d => d.User_Id);
+
         }
     }
 }

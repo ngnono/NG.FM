@@ -59,6 +59,12 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Logo).HasColumnName("Logo");
             this.Property(t => t.Description).HasColumnName("Description");
             this.Property(t => t.Gender).HasColumnName("Gender");
+
+            // Relationships
+            this.HasRequired(t => t.Store)
+                .WithMany(t => t.Users)
+                .HasForeignKey(d => d.Store_Id);
+
         }
     }
 }

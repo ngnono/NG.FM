@@ -43,6 +43,12 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.Region_Id).HasColumnName("Region_Id");
             this.Property(t => t.StoreLevel).HasColumnName("StoreLevel");
+
+            // Relationships
+            this.HasRequired(t => t.Group)
+                .WithMany(t => t.Stores)
+                .HasForeignKey(d => d.Group_Id);
+
         }
     }
 }

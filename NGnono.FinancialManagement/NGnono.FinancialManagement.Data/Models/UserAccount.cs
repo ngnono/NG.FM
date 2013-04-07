@@ -15,6 +15,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public int UpdatedUser { get; set; }
         public System.DateTime UpdatedDate { get; set; }
         public int Status { get; set; }
+        public virtual UserEntity User { get; set; }
 
 #region Overrides of BaseEntity
 

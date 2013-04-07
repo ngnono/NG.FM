@@ -9,7 +9,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public decimal Amount { get; set; }
         public int Mode { get; set; }
         public int User_Id { get; set; }
-        public int Category_Id { get; set; }
+        public int Tag_Id { get; set; }
         public int Type { get; set; }
         public string Description { get; set; }
         public System.DateTime DataDateTime { get; set; }
@@ -21,6 +21,8 @@ namespace NGnono.FinancialManagement.Data.Models
         public bool IsDeleted { get; set; }
         public int ExtendedContentType { get; set; }
         public string ExtendedContent { get; set; }
+        public virtual TagEntity Tag { get; set; }
+        public virtual UserEntity User { get; set; }
 
 #region Overrides of BaseEntity
 
