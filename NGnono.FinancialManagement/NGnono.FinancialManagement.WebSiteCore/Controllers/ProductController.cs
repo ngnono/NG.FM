@@ -58,10 +58,14 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return order;
         }
 
-        private Expression<Func<ProductEntity, bool>> Filter(ProductFilter productFilter)
+        /// <summary>
+        /// Filter
+        /// </summary>
+        /// <param name="productFilter"></param>
+        /// <returns></returns>
+        private static Expression<Func<ProductEntity, bool>> Filter(ProductFilter productFilter)
         {
             var filter = PredicateBuilder.True<ProductEntity>();
-            //always exclude deleted 
 
             if (productFilter.DataStatus != null)
             {
@@ -73,6 +77,21 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                 filter = filter.And(v => v.RecommendUser.Equals(productFilter.UserId.Value));
             }
 
+            if (productFilter.BrandId != null)
+            {
+                filter = filter.And(v => v.Brand_Id.Equals(productFilter.BrandId.Value));
+            }
+
+            if (productFilter.StoreId != null)
+            {
+                filter = filter.And(v => v.Store_Id.Equals(productFilter.StoreId.Value));
+            }
+
+            if (productFilter.TagId != null)
+            {
+                filter = filter.And(v => v.Tag_Id.Equals(productFilter.TagId.Value));
+            }
+
             return filter;
         }
 
@@ -80,15 +99,44 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         {
             var linq = _productRepository.Get(v => v.Id == productId);
 
-            var r1 = linq.Join(_storeRepository.Get(v => v.Status.Equals((int)DataStatus.Normal)), f => f.Store_Id,
-                         p => p.Id, (f, p) => new ProductViewModel
+            var s = linq.Join(_storeRepository.Get(v => v.Status.Equals((int)DataStatus.Normal)), f => f.Store_Id,
+                         p => p.Id, (f, p) => new
                          {
-                             Product = f,
-                             Store = p
+                             P = f,
+                             S = p
                          }).FirstOrDefault();
+            var b =
+                linq.Join(_brandRepository.Get(v => v.Status.Equals((int)DataStatus.Normal)), f => f.Brand_Id,
+                          p => p.Id, (f, p) =>
+                                     new
+                                         {
+                                             B = p,
+                                             P = f
+                                         }).FirstOrDefault();
+            var t = linq.Join(_tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal)), f => f.Tag_Id,
+                          p => p.Id, (f, p) =>
+                                     new
+                                     {
+                                         T = p,
+                                         P = f
+                                     }).FirstOrDefault();
 
+            var prod = linq.FirstOrDefault();
 
-            return r1;
+            if (prod == null)
+            {
+                return null;
+            }
+
+            var result = new ProductViewModel
+                {
+                    Brand = b == null ? null : b.B,
+                    Product = prod,
+                    Store = s == null ? null : s.S,
+                    Tag = t == null ? null : t.T
+                };
+
+            return result;
         }
 
         #endregion

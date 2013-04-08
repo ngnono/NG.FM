@@ -12,5 +12,11 @@ namespace NGnono.FinancialManagement.Models.Filters
         public int? UserId { get; set; }
 
         public DataStatus? DataStatus { get; set; }
+
+        public int? StoreId { get; set; }
+
+        public int? BrandId { get; set; }
+
+        public int? TagId { get; set; }
     }
 }
