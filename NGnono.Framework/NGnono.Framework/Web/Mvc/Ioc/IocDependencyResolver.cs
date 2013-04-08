@@ -36,12 +36,22 @@ namespace NGnono.Framework.Web.Mvc.Ioc
             {
                 return ServiceLocator.Current.Resolve(serviceType);
             }
-            catch(Exception ex)
+            catch (Microsoft.Practices.Unity.ResolutionFailedException ex)
+            {
+                Exception e = ex;
+                while (e != null)
+                {
+                    Logger.LoggerManager.Current().Error(e);
+
+                    e = e.InnerException;
+                }
+            }
+            catch (Exception ex)
             {
                 // 在没有解析到任何对象的情况下，必须返回 null
-                
-                return null;
             }
+
+            return null;
         }
 
         public IEnumerable<object> GetServices(Type serviceType)

@@ -1,12 +1,43 @@
-﻿using System.Collections.Generic;
-using NGnono.FinancialManagement.Data.Models;
+﻿using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 using NGnono.Framework.Mapping;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Manager
 {
-    public class MapperManager
+    public sealed class MapperManager
     {
+        private static MapperManager _instance;
+
+        private static readonly object _syncObj = new object();
+
+        static MapperManager()
+        {
+
+        }
+
+        private MapperManager()
+        {
+        }
+
+        public static MapperManager CurrentInstance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_syncObj)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new MapperManager();
+                        }
+                    }
+                }
+
+                return _instance;
+            }
+        }
+
         #region user
 
         #endregion

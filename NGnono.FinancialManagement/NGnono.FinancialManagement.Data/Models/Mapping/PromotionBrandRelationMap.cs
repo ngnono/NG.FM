@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class PromotionBrandRelationEntityMap : EntityTypeConfiguration<PromotionBrandRelationEntity>
+    public partial class PromotionBrandRelationEntityMap : EntityTypeConfiguration<PromotionBrandRelationEntity>
     {
         public PromotionBrandRelationEntityMap()
         {
@@ -17,6 +17,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Promotion_Id).HasColumnName("Promotion_Id");
             this.Property(t => t.Brand_Id).HasColumnName("Brand_Id");
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
+		Init();
         }
+
+		partial void Init();
     }
 }

@@ -152,7 +152,6 @@ namespace NGnono.FinancialManagement.Services.Impl
         {
             var bindUser = _customerRepository.GetItem(userId);
 
-            bindUser.Store_Id = bindStoreId;
             bindUser.UpdatedDate = DateTime.Now;
             bindUser.UpdatedUser = authUserId;
 
@@ -165,11 +164,6 @@ namespace NGnono.FinancialManagement.Services.Impl
         public UserModel UnStore(int userId, int bindStoreId, int authUserId)
         {
             var bindUser = _customerRepository.GetItem(userId);
-
-            //if (bindStoreId == bindUser.Store_Id)
-            //{
-            bindUser.Store_Id = 0;
-            //}
 
             bindUser.UpdatedDate = DateTime.Now;
             bindUser.UpdatedUser = authUserId;

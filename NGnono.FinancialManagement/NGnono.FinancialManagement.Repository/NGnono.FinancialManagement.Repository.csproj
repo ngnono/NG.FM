@@ -43,7 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Impl\RoleRepository.cs" />
+    <Compile Include="SqlHelperParameterCache.cs" />
     <Compile Include="Contract\IBrandRepository.cs" />
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IBillRepository.cs" />
@@ -54,13 +55,18 @@
     <Compile Include="Contract\IUserRepository.cs" />
     <Compile Include="Impl\BillRepository.cs" />
     <Compile Include="Contract\IVUserRoleRepository.cs" />
-    <Compile Include="Impl\Class1.cs" />
+    <Compile Include="Impl\BrandRepository.cs" />
+    <Compile Include="Impl\ProductRepository.cs" />
+    <Compile Include="Impl\StoreRepository.cs" />
+    <Compile Include="Impl\TagRepository.cs" />
+    <Compile Include="Impl\UserAccountRepository.cs" />
     <Compile Include="Impl\CustomerRepository.cs" />
     <Compile Include="Impl\RepositoryBase.cs" />
     <Compile Include="Impl\UserRepository.cs" />
     <Compile Include="Impl\UserRoleRepository.cs" />
     <Compile Include="Impl\VUserRoleRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NGnono.Framework\NGnono.Framework\NGnono.Framework.csproj">

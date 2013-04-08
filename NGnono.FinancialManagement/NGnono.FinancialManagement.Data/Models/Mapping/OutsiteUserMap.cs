@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class OutsiteUserEntityMap : EntityTypeConfiguration<OutsiteUserEntity>
+    public partial class OutsiteUserEntityMap : EntityTypeConfiguration<OutsiteUserEntity>
     {
         public OutsiteUserEntityMap()
         {
@@ -29,6 +29,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Description).HasColumnName("Description");
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.OutsiteType).HasColumnName("OutsiteType");
+		Init();
         }
+
+		partial void Init();
     }
 }

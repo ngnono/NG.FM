@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class UserAccountEntityMap : EntityTypeConfiguration<UserAccountEntity>
+    public partial class UserAccountEntityMap : EntityTypeConfiguration<UserAccountEntity>
     {
         public UserAccountEntityMap()
         {
@@ -29,6 +29,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
                 .WithMany(t => t.UserAccounts)
                 .HasForeignKey(d => d.User_Id);
 
+		Init();
         }
+
+		partial void Init();
     }
 }

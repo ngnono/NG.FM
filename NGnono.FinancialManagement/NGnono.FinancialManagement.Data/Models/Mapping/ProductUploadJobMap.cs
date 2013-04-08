@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class ProductUploadJobEntityMap : EntityTypeConfiguration<ProductUploadJobEntity>
+    public partial class ProductUploadJobEntityMap : EntityTypeConfiguration<ProductUploadJobEntity>
     {
         public ProductUploadJobEntityMap()
         {
@@ -21,6 +21,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.InUser).HasColumnName("InUser");
             this.Property(t => t.FileName).HasColumnName("FileName");
             this.Property(t => t.Status).HasColumnName("Status");
+		Init();
         }
+
+		partial void Init();
     }
 }

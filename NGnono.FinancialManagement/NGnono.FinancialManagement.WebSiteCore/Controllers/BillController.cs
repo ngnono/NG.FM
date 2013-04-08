@@ -22,12 +22,11 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
     public class BillController : UserController
     {
         private readonly IBillRepository _repository;
-        private readonly MapperManager _mapperManager;
+        private readonly MapperManager _mapperManager = MapperManager.CurrentInstance;
 
         public BillController(IBillRepository repository)
         {
             _repository = repository;
-            _mapperManager = new MapperManager();
         }
 
 

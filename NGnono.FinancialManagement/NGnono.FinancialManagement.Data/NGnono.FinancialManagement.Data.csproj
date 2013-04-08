@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AdminAccessRight.cs" />
     <Compile Include="Models\Bill.cs" />
     <Compile Include="Models\Brand.cs" />
     <Compile Include="Models\Comment.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Like.cs" />
+    <Compile Include="Models\Mapping\AdminAccessRightMap.cs" />
     <Compile Include="Models\Mapping\BillMap.cs" />
     <Compile Include="Models\Mapping\BrandMap.cs" />
     <Compile Include="Models\Mapping\CommentMap.cs" />
@@ -91,6 +93,7 @@
     <Compile Include="Models\Mapping\RemindMap.cs" />
     <Compile Include="Models\Mapping\ResourceMap.cs" />
     <Compile Include="Models\Mapping\ResourceStageMap.cs" />
+    <Compile Include="Models\Mapping\RoleAccessRightMap.cs" />
     <Compile Include="Models\Mapping\RoleMap.cs" />
     <Compile Include="Models\Mapping\SeedMap.cs" />
     <Compile Include="Models\Mapping\ShareHistoryMap.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\ResourceStage.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\RoleAccessRight.cs" />
     <Compile Include="Models\Seed.cs" />
     <Compile Include="Models\ShareHistory.cs" />
     <Compile Include="Models\SpecialTopic.cs" />
@@ -133,6 +137,7 @@
     <Compile Include="Models\VerifyCode.cs" />
     <Compile Include="Models\VUser.cs" />
     <Compile Include="Models\VUserRole.cs" />
+    <Compile Include="Partials\StoreEntityMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +155,7 @@
       <Name>NGnono.Framework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

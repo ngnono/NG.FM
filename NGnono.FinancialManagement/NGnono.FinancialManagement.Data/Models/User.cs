@@ -9,7 +9,6 @@ namespace NGnono.FinancialManagement.Data.Models
         {
             this.Bills = new List<BillEntity>();
             this.Comments = new List<CommentEntity>();
-            this.Products = new List<ProductEntity>();
             this.UserAccounts = new List<UserAccountEntity>();
             this.UserRoles = new List<UserRoleEntity>();
         }
@@ -27,15 +26,11 @@ namespace NGnono.FinancialManagement.Data.Models
         public string EMail { get; set; }
         public int Status { get; set; }
         public int UserLevel { get; set; }
-        public int Store_Id { get; set; }
-        public int Region_Id { get; set; }
         public string Logo { get; set; }
         public string Description { get; set; }
         public byte Gender { get; set; }
         public virtual ICollection<BillEntity> Bills { get; set; }
         public virtual ICollection<CommentEntity> Comments { get; set; }
-        public virtual ICollection<ProductEntity> Products { get; set; }
-        public virtual StoreEntity Store { get; set; }
         public virtual ICollection<UserAccountEntity> UserAccounts { get; set; }
         public virtual ICollection<UserRoleEntity> UserRoles { get; set; }
 

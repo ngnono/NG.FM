@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class StoreEntityMap : EntityTypeConfiguration<StoreEntity>
+    public partial class StoreEntityMap : EntityTypeConfiguration<StoreEntity>
     {
         public StoreEntityMap()
         {
@@ -43,12 +43,18 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.Region_Id).HasColumnName("Region_Id");
             this.Property(t => t.StoreLevel).HasColumnName("StoreLevel");
+            this.Property(t => t.GpsAlt).HasColumnName("GpsAlt");
+            this.Property(t => t.GpsLat).HasColumnName("GpsLat");
+            this.Property(t => t.GpsLng).HasColumnName("GpsLng");
 
             // Relationships
             this.HasRequired(t => t.Group)
                 .WithMany(t => t.Stores)
                 .HasForeignKey(d => d.Group_Id);
 
+		Init();
         }
+
+		partial void Init();
     }
 }

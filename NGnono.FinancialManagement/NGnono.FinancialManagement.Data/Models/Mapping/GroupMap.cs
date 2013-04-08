@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class GroupEntityMap : EntityTypeConfiguration<GroupEntity>
+    public partial class GroupEntityMap : EntityTypeConfiguration<GroupEntity>
     {
         public GroupEntityMap()
         {
@@ -28,6 +28,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.UpdatedDate).HasColumnName("UpdatedDate");
             this.Property(t => t.UpdatedUser).HasColumnName("UpdatedUser");
             this.Property(t => t.Status).HasColumnName("Status");
+		Init();
         }
+
+		partial void Init();
     }
 }

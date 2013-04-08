@@ -30,6 +30,12 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             _customerRepository = customerRepository;
         }
 
+        [LoginAuthorize]
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
@@ -81,12 +87,14 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [LoginAuthorize]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
         [HttpPost]
+        [LoginAuthorize]
         public ActionResult ChangePassword(FormCollection formCollection, ChangePasswordViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -108,16 +116,13 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
         ////
         //// GET: /Account/Register
-        [AdminAuthorize]
         public ActionResult Register()
         {
             return View();
         }
 
-
         ////
         //// GET: /Account/Register
-        [AdminAuthorize]
         [HttpPost]
         public ActionResult Register(FormCollection formCollection, RegisterViewModel viewModel, string returnUrl)
         {
@@ -149,7 +154,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                     return Redirect(returnUrl);
                 }
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
             else
             {
@@ -159,13 +164,9 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return View(viewModel);
         }
 
+        [LoginAuthorize]
         public ActionResult Details()
         {
-            if (base.CurrentUser == null)
-            {
-                return View("Login");
-            }
-
             var userModel = _userService.Get(base.CurrentUser.CustomerId);
 
             var dto = new DetailsDto { User = userModel };

@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class ShareHistoryEntityMap : EntityTypeConfiguration<ShareHistoryEntity>
+    public partial class ShareHistoryEntityMap : EntityTypeConfiguration<ShareHistoryEntity>
     {
         public ShareHistoryEntityMap()
         {
@@ -33,6 +33,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.UpdatedUser).HasColumnName("UpdatedUser");
             this.Property(t => t.UpdatedDate).HasColumnName("UpdatedDate");
             this.Property(t => t.User_Id).HasColumnName("User_Id");
+		Init();
         }
+
+		partial void Init();
     }
 }

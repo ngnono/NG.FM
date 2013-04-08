@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class VUserRoleEntityMap : EntityTypeConfiguration<VUserRoleEntity>
+    public partial class VUserRoleEntityMap : EntityTypeConfiguration<VUserRoleEntity>
     {
         public VUserRoleEntityMap()
         {
@@ -34,6 +34,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Role_Name).HasColumnName("Role_Name");
             this.Property(t => t.Role_Description).HasColumnName("Role_Description");
             this.Property(t => t.Role_Val).HasColumnName("Role_Val");
+		Init();
         }
+
+		partial void Init();
     }
 }

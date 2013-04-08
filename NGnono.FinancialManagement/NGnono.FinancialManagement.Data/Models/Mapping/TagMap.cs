@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class TagEntityMap : EntityTypeConfiguration<TagEntity>
+    public partial class TagEntityMap : EntityTypeConfiguration<TagEntity>
     {
         public TagEntityMap()
         {
@@ -29,6 +29,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.UpdatedDate).HasColumnName("UpdatedDate");
             this.Property(t => t.UpdatedUser).HasColumnName("UpdatedUser");
             this.Property(t => t.CreatedUser).HasColumnName("CreatedUser");
+		Init();
         }
+
+		partial void Init();
     }
 }

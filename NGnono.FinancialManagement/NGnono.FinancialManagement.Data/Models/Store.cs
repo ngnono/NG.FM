@@ -8,7 +8,6 @@ namespace NGnono.FinancialManagement.Data.Models
         public StoreEntity()
         {
             this.Products = new List<ProductEntity>();
-            this.Users = new List<UserEntity>();
         }
 
         public int Id { get; set; }
@@ -26,9 +25,11 @@ namespace NGnono.FinancialManagement.Data.Models
         public int Status { get; set; }
         public int Region_Id { get; set; }
         public int StoreLevel { get; set; }
+        public Nullable<double> GpsAlt { get; set; }
+        public Nullable<decimal> GpsLat { get; set; }
+        public Nullable<decimal> GpsLng { get; set; }
         public virtual GroupEntity Group { get; set; }
         public virtual ICollection<ProductEntity> Products { get; set; }
-        public virtual ICollection<UserEntity> Users { get; set; }
 
 #region Overrides of BaseEntity
 

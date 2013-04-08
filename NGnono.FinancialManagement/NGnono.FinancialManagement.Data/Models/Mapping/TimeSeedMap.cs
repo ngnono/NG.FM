@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class TimeSeedEntityMap : EntityTypeConfiguration<TimeSeedEntity>
+    public partial class TimeSeedEntityMap : EntityTypeConfiguration<TimeSeedEntity>
     {
         public TimeSeedEntityMap()
         {
@@ -26,6 +26,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.KeySeed).HasColumnName("KeySeed");
             this.Property(t => t.Date).HasColumnName("Date");
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
+		Init();
         }
+
+		partial void Init();
     }
 }

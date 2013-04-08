@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class UserEntityMap : EntityTypeConfiguration<UserEntity>
+    public partial class UserEntityMap : EntityTypeConfiguration<UserEntity>
     {
         public UserEntityMap()
         {
@@ -54,17 +54,12 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.EMail).HasColumnName("EMail");
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.UserLevel).HasColumnName("UserLevel");
-            this.Property(t => t.Store_Id).HasColumnName("Store_Id");
-            this.Property(t => t.Region_Id).HasColumnName("Region_Id");
             this.Property(t => t.Logo).HasColumnName("Logo");
             this.Property(t => t.Description).HasColumnName("Description");
             this.Property(t => t.Gender).HasColumnName("Gender");
-
-            // Relationships
-            this.HasRequired(t => t.Store)
-                .WithMany(t => t.Users)
-                .HasForeignKey(d => d.Store_Id);
-
+		Init();
         }
+
+		partial void Init();
     }
 }

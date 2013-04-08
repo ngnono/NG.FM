@@ -18,6 +18,11 @@ namespace NGnono.FinancialManagement.WebSupport.Ioc
             Current.Register<IUserRoleRepository, UserRoleRepository>();
             Current.Register<IVUserRoleRepository, VUserRoleRepository>();
 
+            Current.Register<IRoleRepository, RoleRepository>();
+            Current.Register<IBrandRepository, BrandRepository>();
+            Current.Register<IProductRepository, ProductRepository>();
+            Current.Register<IStoreRepository, StoreRepository>();
+            Current.Register<ITagRepository, TagRepository>();
         }
 
         #endregion

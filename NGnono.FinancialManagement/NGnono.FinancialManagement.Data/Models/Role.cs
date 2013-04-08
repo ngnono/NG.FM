@@ -5,6 +5,11 @@ namespace NGnono.FinancialManagement.Data.Models
 {
     public partial class RoleEntity : NGnono.Framework.Models.BaseEntity
     {
+        public RoleEntity()
+        {
+            this.RoleAccessRights = new List<RoleAccessRightEntity>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -12,6 +17,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public int CreatedUser { get; set; }
         public int Status { get; set; }
         public int Val { get; set; }
+        public virtual ICollection<RoleAccessRightEntity> RoleAccessRights { get; set; }
         public virtual UserRoleEntity UserRole { get; set; }
 
 #region Overrides of BaseEntity

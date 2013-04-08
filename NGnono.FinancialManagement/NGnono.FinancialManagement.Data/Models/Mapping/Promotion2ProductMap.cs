@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class Promotion2ProductEntityMap : EntityTypeConfiguration<Promotion2ProductEntity>
+    public partial class Promotion2ProductEntityMap : EntityTypeConfiguration<Promotion2ProductEntity>
     {
         public Promotion2ProductEntityMap()
         {
@@ -17,6 +17,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.ProdId).HasColumnName("ProdId");
             this.Property(t => t.ProId).HasColumnName("ProId");
             this.Property(t => t.Status).HasColumnName("Status");
+		Init();
         }
+
+		partial void Init();
     }
 }

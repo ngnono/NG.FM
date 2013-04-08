@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class ResourceEntityMap : EntityTypeConfiguration<ResourceEntity>
+    public partial class ResourceEntityMap : EntityTypeConfiguration<ResourceEntity>
     {
         public ResourceEntityMap()
         {
@@ -47,6 +47,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Height).HasColumnName("Height");
             this.Property(t => t.ContentSize).HasColumnName("ContentSize");
             this.Property(t => t.ExtName).HasColumnName("ExtName");
+		Init();
         }
+
+		partial void Init();
     }
 }

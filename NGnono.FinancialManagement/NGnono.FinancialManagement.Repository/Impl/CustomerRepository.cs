@@ -63,11 +63,6 @@ namespace NGnono.FinancialManagement.Repository.Impl
                 filter = filter.And(v => v.Status == (int)dataStatus.Value);
             }
 
-            if (storeId != null)
-            {
-                filter = filter.And(v => v.Store_Id == storeId.Value);
-            }
-
             //TODO: 这块值得商榷
             if (userLevel != null)
             {

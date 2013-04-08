@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class ProductStageEntityMap : EntityTypeConfiguration<ProductStageEntity>
+    public partial class ProductStageEntityMap : EntityTypeConfiguration<ProductStageEntity>
     {
         public ProductStageEntityMap()
         {
@@ -57,6 +57,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.UploadGroupId).HasColumnName("UploadGroupId");
             this.Property(t => t.InDate).HasColumnName("InDate");
             this.Property(t => t.Status).HasColumnName("Status");
+		Init();
         }
+
+		partial void Init();
     }
 }

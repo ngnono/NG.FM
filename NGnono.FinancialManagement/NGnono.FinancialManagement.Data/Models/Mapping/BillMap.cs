@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class BillEntityMap : EntityTypeConfiguration<BillEntity>
+    public partial class BillEntityMap : EntityTypeConfiguration<BillEntity>
     {
         public BillEntityMap()
         {
@@ -45,6 +45,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
                 .WithMany(t => t.Bills)
                 .HasForeignKey(d => d.User_Id);
 
+		Init();
         }
+
+		partial void Init();
     }
 }

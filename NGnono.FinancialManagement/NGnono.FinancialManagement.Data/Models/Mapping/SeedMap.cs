@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class SeedEntityMap : EntityTypeConfiguration<SeedEntity>
+    public partial class SeedEntityMap : EntityTypeConfiguration<SeedEntity>
     {
         public SeedEntityMap()
         {
@@ -20,6 +20,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Name).HasColumnName("Name");
             this.Property(t => t.Id).HasColumnName("Id");
             this.Property(t => t.Value).HasColumnName("Value");
+		Init();
         }
+
+		partial void Init();
     }
 }

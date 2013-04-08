@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class FavoriteEntityMap : EntityTypeConfiguration<FavoriteEntity>
+    public partial class FavoriteEntityMap : EntityTypeConfiguration<FavoriteEntity>
     {
         public FavoriteEntityMap()
         {
@@ -25,6 +25,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Description).HasColumnName("Description");
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.Store_Id).HasColumnName("Store_Id");
+		Init();
         }
+
+		partial void Init();
     }
 }

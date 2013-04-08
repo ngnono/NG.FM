@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class ProductEntityMap : EntityTypeConfiguration<ProductEntity>
+    public partial class ProductEntityMap : EntityTypeConfiguration<ProductEntity>
     {
         public ProductEntityMap()
         {
@@ -58,10 +58,10 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.HasRequired(t => t.Tag)
                 .WithMany(t => t.Products)
                 .HasForeignKey(d => d.Tag_Id);
-            this.HasRequired(t => t.User)
-                .WithMany(t => t.Products)
-                .HasForeignKey(d => d.RecommendUser);
 
+		Init();
         }
+
+		partial void Init();
     }
 }

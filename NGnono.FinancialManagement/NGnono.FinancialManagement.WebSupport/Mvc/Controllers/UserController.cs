@@ -1,10 +1,9 @@
-﻿using System;
+﻿using NGnono.FinancialManagement.WebSupport.Auth;
+using NGnono.FinancialManagement.WebSupport.Models;
+using NGnono.Framework.ServiceLocation;
+using System;
 using System.Web;
 using System.Web.Mvc;
-using NGnono.FinancialManagement.WebSupport.Auth;
-using NGnono.FinancialManagement.WebSupport.Models;
-using NGnono.Framework.Logger;
-using NGnono.Framework.ServiceLocation;
 
 namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
 {
@@ -17,12 +16,12 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
 
         protected void SetAuthorize(WebSiteUser webSiteUser)
         {
-            AuthenticationService.SetAuthorize(base.HttpContext, webSiteUser);
+            AuthenticationService.SetAuthorize(HttpContext, webSiteUser);
         }
 
         protected void Signout()
         {
-            AuthenticationService.Signout(base.HttpContext);
+            AuthenticationService.Signout(HttpContext);
         }
 
         /// <summary>
@@ -40,7 +39,7 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
         /// </summary>
         public WebSiteUser CurrentUser
         {
-            get { return this._currentUser ?? (this._currentUser = this.AuthenticationService.GetCurrentUser(base.HttpContext)); }
+            get { return _currentUser ?? (_currentUser = AuthenticationService.GetCurrentUser(HttpContext)); }
             /*get
             {
                 if (HttpContext.Items["_CurrentUser_"]==null)
@@ -125,7 +124,7 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
         /// </returns>
         protected ViewResult ViewWithAjax(string viewName, string viewNameForAjax)
         {
-            return this.ViewWithAjax(viewName, viewNameForAjax, null);
+            return ViewWithAjax(viewName, viewNameForAjax, null);
         }
 
         /// <summary>
@@ -145,7 +144,7 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
         /// </returns>
         protected ViewResult ViewWithAjax(string viewName, string viewNameForAjax, object model)
         {
-            return this.View(base.Request.IsAjaxRequest() ? viewNameForAjax : viewName, model);
+            return View(base.Request.IsAjaxRequest() ? viewNameForAjax : viewName, model);
         }
 
         /// <summary>
@@ -157,7 +156,7 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
         /// </param>
         protected void AppendErrorSummary(string errMessage)
         {
-            this.ModelState.AddModelError("summary", errMessage);
+            ModelState.AddModelError("summary", errMessage);
         }
 
         protected ActionResult Success(string returnUrl)
@@ -182,8 +181,8 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Controllers
         }
         public bool HasRightForCurrentAction()
         {
-            object action = RouteData.Values["action"];
-            string actionName = string.Empty;
+            var action = RouteData.Values["action"];
+            var actionName = string.Empty;
             if (action != null)
                 actionName = action.ToString();
             return HasRightForAction(actionName);

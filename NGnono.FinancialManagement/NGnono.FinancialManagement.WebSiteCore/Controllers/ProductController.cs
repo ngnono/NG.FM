@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using NGnono.FinancialManagement.Data.Models;
+using NGnono.FinancialManagement.Models;
 using NGnono.FinancialManagement.Models.Enums;
 using NGnono.FinancialManagement.Models.Filters;
 using NGnono.FinancialManagement.Repository.Contract;
@@ -23,14 +25,13 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
     public class ProductController : DefController
     {
         private readonly IProductRepository _productRepository;
-        private readonly MapperManager _mapperManager;
         private readonly IStoreRepository _storeRepository;
         private readonly IBrandRepository _brandRepository;
         private readonly ITagRepository _tagRepository;
+        private readonly MapperManager _mapperManager = MapperManager.CurrentInstance;
 
-        public ProductController(IBrandRepository brandRepository, ITagRepository tagRepository, IProductRepository productRepository, MapperManager mapperManager, IStoreRepository storeRepository)
+        public ProductController(IBrandRepository brandRepository, ITagRepository tagRepository, IProductRepository productRepository, IStoreRepository storeRepository)
         {
-            _mapperManager = mapperManager;
             _productRepository = productRepository;
             _storeRepository = storeRepository;
             _brandRepository = brandRepository;
@@ -280,35 +281,97 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
     public class StoreController : DefController
     {
+        private readonly IStoreRepository _storeRepository;
+
+        public StoreController(IStoreRepository storeRepository)
+        {
+            _storeRepository = storeRepository;
+        }
+
         public ActionResult List()
         {
             return View();
         }
 
-        public ActionResult Details()
+        public RestfulResult GetList()
+        {
+            var entitis = _storeRepository.GetAll();
+
+            var list = new List<StoreViewModel>();
+            foreach (var storeEntity in entitis)
+            {
+                list.Add(Mapper.Map<StoreEntity, StoreViewModel>(storeEntity));
+            }
+
+            return new RestfulResult
+                {
+                    Data = new ExecuteResult<List<StoreViewModel>>(list) { StatusCode = StatusCode.Success }
+                };
+        }
+
+        public ActionResult Details([FetchStore(KeyName = "storeid")]StoreEntity model)
+        {
+            return View(Mapper.Map<StoreEntity, StoreViewModel>(model));
+        }
+
+        [LoginAuthorize]
+        public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
         [LoginAuthorize]
-        public ActionResult Create(FormCollection formCollection)
+        public ActionResult Create(FormCollection formCollection, CreateStoreViewModel vo, [FetchUser(KeyName = "userid")]UserModel userModel)
         {
-            return View("Details");
+            if (ModelState.IsValid)
+            {
+                var entity = Mapper.Map<CreateStoreViewModel, StoreEntity>(vo);
+                entity.CreatedDate = DateTime.Now;
+                entity.CreatedUser = userModel.Id;
+                entity.UpdatedDate = DateTime.Now;
+                entity.UpdatedUser = userModel.Id;
+                entity.Status = (int)DataStatus.Normal;
+
+                _storeRepository.Insert(entity);
+            }
+            else
+            {
+                ModelState.AddModelError("", "参数验证失败.");
+            }
+
+            return View();
         }
 
         [HttpPost]
         [LoginAuthorize]
-        public ActionResult Update(FormCollection formCollection)
+        //[ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "User_Id")]
+        public ActionResult Update(FormCollection formCollection, [FetchStore(KeyName = "storeid")]StoreEntity store, UpdateStoreViewModel vo, [FetchUser(KeyName = "userid")]UserModel userModel)
         {
-            return View("Details");
+            if (ModelState.IsValid)
+            {
+                store = Mapper.Map(vo, store);
+                store.UpdatedDate = DateTime.Now;
+                store.UpdatedUser = userModel.Id;
+
+                _storeRepository.Insert(store);
+            }
+            else
+            {
+                ModelState.AddModelError("", "参数验证失败.");
+            }
+
+            return View();
         }
 
         [HttpPost]
         [LoginAuthorize]
-        public ActionResult Del(FormCollection formCollection)
+        //[ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "User_Id")]
+        public ActionResult Del(FormCollection formCollection, [FetchStore(KeyName = "storeid")]StoreEntity store, [FetchUser(KeyName = "userid")]UserModel userModel)
         {
-            return View("Details");
+            _storeRepository.Delete(store);
+
+            return View();
         }
     }
 }

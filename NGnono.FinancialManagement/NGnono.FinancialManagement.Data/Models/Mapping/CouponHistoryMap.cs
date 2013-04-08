@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class CouponHistoryEntityMap : EntityTypeConfiguration<CouponHistoryEntity>
+    public partial class CouponHistoryEntityMap : EntityTypeConfiguration<CouponHistoryEntity>
     {
         public CouponHistoryEntityMap()
         {
@@ -29,6 +29,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.FromPromotion).HasColumnName("FromPromotion");
             this.Property(t => t.ValidStartDate).HasColumnName("ValidStartDate");
             this.Property(t => t.ValidEndDate).HasColumnName("ValidEndDate");
+		Init();
         }
+
+		partial void Init();
     }
 }

@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class PointHistoryEntityMap : EntityTypeConfiguration<PointHistoryEntity>
+    public partial class PointHistoryEntityMap : EntityTypeConfiguration<PointHistoryEntity>
     {
         public PointHistoryEntityMap()
         {
@@ -33,6 +33,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.CreatedUser).HasColumnName("CreatedUser");
             this.Property(t => t.UpdatedUser).HasColumnName("UpdatedUser");
             this.Property(t => t.UpdatedDate).HasColumnName("UpdatedDate");
+		Init();
         }
+
+		partial void Init();
     }
 }

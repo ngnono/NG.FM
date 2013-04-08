@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class FeedbackEntityMap : EntityTypeConfiguration<FeedbackEntity>
+    public partial class FeedbackEntityMap : EntityTypeConfiguration<FeedbackEntity>
     {
         public FeedbackEntityMap()
         {
@@ -29,6 +29,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.CreatedUser).HasColumnName("CreatedUser");
             this.Property(t => t.UpdatedDate).HasColumnName("UpdatedDate");
             this.Property(t => t.UpdatedUser).HasColumnName("UpdatedUser");
+		Init();
         }
+
+		partial void Init();
     }
 }

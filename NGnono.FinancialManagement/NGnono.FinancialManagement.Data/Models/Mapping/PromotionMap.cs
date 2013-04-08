@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class PromotionEntityMap : EntityTypeConfiguration<PromotionEntity>
+    public partial class PromotionEntityMap : EntityTypeConfiguration<PromotionEntity>
     {
         public PromotionEntityMap()
         {
@@ -42,6 +42,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.IsTop).HasColumnName("IsTop");
             this.Property(t => t.IsProdBindable).HasColumnName("IsProdBindable");
             this.Property(t => t.PublicationLimit).HasColumnName("PublicationLimit");
+		Init();
         }
+
+		partial void Init();
     }
 }

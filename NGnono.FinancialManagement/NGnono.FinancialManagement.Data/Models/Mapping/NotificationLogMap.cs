@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class NotificationLogEntityMap : EntityTypeConfiguration<NotificationLogEntity>
+    public partial class NotificationLogEntityMap : EntityTypeConfiguration<NotificationLogEntity>
     {
         public NotificationLogEntityMap()
         {
@@ -26,6 +26,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Message).HasColumnName("Message");
             this.Property(t => t.InDate).HasColumnName("InDate");
             this.Property(t => t.Status).HasColumnName("Status");
+		Init();
         }
+
+		partial void Init();
     }
 }

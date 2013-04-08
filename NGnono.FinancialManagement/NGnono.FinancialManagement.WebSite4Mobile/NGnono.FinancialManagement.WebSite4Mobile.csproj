@@ -262,6 +262,7 @@
     <Content Include="Views\Shared\_JqMLayout.cshtml" />
     <Content Include="Views\Bill\Index.cshtml" />
     <Content Include="Views\Bill\Create.cshtml" />
+    <Content Include="Views\Shared\_StdHeaderPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

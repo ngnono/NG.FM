@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class VerifyCodeEntityMap : EntityTypeConfiguration<VerifyCodeEntity>
+    public partial class VerifyCodeEntityMap : EntityTypeConfiguration<VerifyCodeEntity>
     {
         public VerifyCodeEntityMap()
         {
@@ -31,6 +31,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.VerifyMode).HasColumnName("VerifyMode");
             this.Property(t => t.VerifySource).HasColumnName("VerifySource");
             this.Property(t => t.Status).HasColumnName("Status");
+		Init();
         }
+
+		partial void Init();
     }
 }

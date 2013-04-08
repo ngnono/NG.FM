@@ -7,27 +7,27 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Vo
     {
         [Required]
         [StringLength(32, MinimumLength = 6)]
-        [Display(Name = "UserName")]
+        [Display(Name = "帐号")]
         public string UserName { get; set; }
 
         [Required]
         [StringLength(32, MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "密码")]
         public string Password { get; set; }
     }
 
     public class RegisterViewModel : BaseViewModel
     {
         [Required]
+        [RegularExpression("^[a-zA-Z]{1}[a-zA-Z0-9_]{5,31}$", ErrorMessage = "用户名必须以字母开头,可包含数字、字母、下划线,最少6位最多32位。")]
         [Display(Name = "用户名")]
         public string UserName { get; set; }
 
-        [Required]
+        [StringLength(32, MinimumLength = 6)]
         [Display(Name = "昵称")]
         public string Nickname { get; set; }
 
-        [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "电子邮件地址")]
         public string Email { get; set; }

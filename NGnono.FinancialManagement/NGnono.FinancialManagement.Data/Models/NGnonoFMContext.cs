@@ -120,6 +120,7 @@ namespace NGnono.FinancialManagement.Data.Models
         #endregion
 
 
+        public DbSet<AdminAccessRightEntity> AdminAccessRights { get; set; }
         public DbSet<BillEntity> Bills { get; set; }
         public DbSet<BrandEntity> Brands { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
@@ -144,6 +145,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public DbSet<ResourceEntity> Resources { get; set; }
         public DbSet<ResourceStageEntity> ResourceStages { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
+        public DbSet<RoleAccessRightEntity> RoleAccessRights { get; set; }
         public DbSet<SeedEntity> Seeds { get; set; }
         public DbSet<ShareHistoryEntity> ShareHistories { get; set; }
         public DbSet<SpecialTopicEntity> SpecialTopics { get; set; }
@@ -167,6 +169,7 @@ namespace NGnono.FinancialManagement.Data.Models
             // 防止黑幕交易 要不然每次都要访问 EdmMetadata这个表 EF4.1后可注释
             modelBuilder.Conventions.Remove<IncludeMetadataConvention>();
 
+            modelBuilder.Configurations.Add(new AdminAccessRightEntityMap());
             modelBuilder.Configurations.Add(new BillEntityMap());
             modelBuilder.Configurations.Add(new BrandEntityMap());
             modelBuilder.Configurations.Add(new CommentEntityMap());
@@ -191,6 +194,7 @@ namespace NGnono.FinancialManagement.Data.Models
             modelBuilder.Configurations.Add(new ResourceEntityMap());
             modelBuilder.Configurations.Add(new ResourceStageEntityMap());
             modelBuilder.Configurations.Add(new RoleEntityMap());
+            modelBuilder.Configurations.Add(new RoleAccessRightEntityMap());
             modelBuilder.Configurations.Add(new SeedEntityMap());
             modelBuilder.Configurations.Add(new ShareHistoryEntityMap());
             modelBuilder.Configurations.Add(new SpecialTopicEntityMap());

@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class BrandEntityMap : EntityTypeConfiguration<BrandEntity>
+    public partial class BrandEntityMap : EntityTypeConfiguration<BrandEntity>
     {
         public BrandEntityMap()
         {
@@ -49,6 +49,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.WebSite).HasColumnName("WebSite");
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.Group).HasColumnName("Group");
+		Init();
         }
+
+		partial void Init();
     }
 }

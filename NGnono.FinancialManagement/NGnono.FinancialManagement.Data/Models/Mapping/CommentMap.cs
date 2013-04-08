@@ -3,7 +3,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace NGnono.FinancialManagement.Data.Models.Mapping
 {
-    public class CommentEntityMap : EntityTypeConfiguration<CommentEntity>
+    public partial class CommentEntityMap : EntityTypeConfiguration<CommentEntity>
     {
         public CommentEntityMap()
         {
@@ -35,6 +35,9 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
                 .WithMany(t => t.Comments)
                 .HasForeignKey(d => d.User_Id);
 
+		Init();
         }
+
+		partial void Init();
     }
 }
