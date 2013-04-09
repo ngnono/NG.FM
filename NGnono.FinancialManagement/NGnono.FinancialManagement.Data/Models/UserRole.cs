@@ -11,8 +11,6 @@ namespace NGnono.FinancialManagement.Data.Models
         public System.DateTime CreatedDate { get; set; }
         public int CreatedUser { get; set; }
         public int Status { get; set; }
-        public virtual RoleEntity Role { get; set; }
-        public virtual UserEntity User { get; set; }
 
 #region Overrides of BaseEntity
 

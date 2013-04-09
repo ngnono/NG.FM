@@ -139,11 +139,11 @@ namespace NGnono.FinancialManagement.WebSupport.Mvc.Filters
             UserController currentController = filterContext.Controller as UserController;
             if (currentController == null)
                 return;
-            if (!currentController.HasRightForAction(controllerName, actionNae))
-            {
-                httpContext.Response.StatusCode = 401;
-                return;
-            }
+            //if (!currentController.HasRightForAction(controllerName, actionNae))
+            //{
+            //    httpContext.Response.StatusCode = 401;
+            //    return;
+            //}
 
         }
     }

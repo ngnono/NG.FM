@@ -10,7 +10,6 @@ namespace NGnono.FinancialManagement.Data.Models
             this.Bills = new List<BillEntity>();
             this.Comments = new List<CommentEntity>();
             this.UserAccounts = new List<UserAccountEntity>();
-            this.UserRoles = new List<UserRoleEntity>();
         }
 
         public int Id { get; set; }
@@ -32,7 +31,6 @@ namespace NGnono.FinancialManagement.Data.Models
         public virtual ICollection<BillEntity> Bills { get; set; }
         public virtual ICollection<CommentEntity> Comments { get; set; }
         public virtual ICollection<UserAccountEntity> UserAccounts { get; set; }
-        public virtual ICollection<UserRoleEntity> UserRoles { get; set; }
 
 #region Overrides of BaseEntity
 

@@ -6,7 +6,7 @@
 }
 
 <ul data-role="listview" data-divider-theme="a" data-inset="true">
-    <li data-role="list-divider" role="heading">3月/2013年
+    <li data-role="list-divider" role="heading">@String.Format("{0}月/{1}年", this.Model.Date.Month, this.Model.Date.Year)
     </li>
     <li data-theme="c">收入总额：￥@this.Model.Whole.Revenue
     </li>
@@ -14,7 +14,7 @@
     </li>
 </ul>
 
-<a data-role="button" href="@Url.Action("Create","Bill")">记帐
+<a data-role="button" href="@Url.Action("Create", "Bill")">记帐
 </a>
 
 <ul data-role="listview" data-split-icon="arrow-r" data-inset="true">

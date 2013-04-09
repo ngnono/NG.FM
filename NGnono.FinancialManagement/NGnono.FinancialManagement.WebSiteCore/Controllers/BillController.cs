@@ -15,18 +15,24 @@ using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 using NGnono.FinancialManagement.WebSiteCore.Utils;
 using NGnono.FinancialManagement.WebSupport.Binder;
 using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
+using NGnono.FinancialManagement.WebSupport.Mvc.Filters;
 using NGnono.Framework.Models;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
+    //http://www.gbin1.com/technology/jqueryplugins/20111228jquerymobileplugins/
+    //http://demo.mobiscroll.com/datetime/date
+    //http://demo.mobiscroll.com/list/treelist#mode=scroller&display=inline&theme=jqm
     public class BillController : UserController
     {
         private readonly IBillRepository _repository;
         private readonly MapperManager _mapperManager = MapperManager.CurrentInstance;
+        private readonly ITagRepository _tagRepository;
 
-        public BillController(IBillRepository repository)
+        public BillController(IBillRepository repository, ITagRepository tagRepository)
         {
             _repository = repository;
+            _tagRepository = tagRepository;
         }
 
 
@@ -51,6 +57,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             var month = DateTime.Now.Month;
 
             var dto = new Models.Dto.Bill.IndexDto();
+            dto.Date = DateTime.Now;
             dto.Month = month.ToString(CultureInfo.InvariantCulture);
             dto.MonthRange = DateTimeUtil.FirstDayOfMonth(DateTime.Now).ToString("M月d日") + " - " +
                              DateTimeUtil.LastDayOfMonth(DateTime.Now).ToString("M月d日");
@@ -145,18 +152,26 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         ///   备注：
         /// </summary>
         /// <returns></returns>
+        [LoginAuthorize]
         public ActionResult Create()
         {
-            return View();
+            var tagList = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList();
+            var dto = new CreateDto { Tags = tagList };
+
+            return View(dto);
         }
 
         [HttpPost]
+        [LoginAuthorize]
         public ActionResult Create(FormCollection formCollection, BillCreateViewModel vo)
         {
             if (!ModelState.IsValid)
             {
                 // 如果我们进行到这一步时某个地方出错，则重新显示表单
-                return View(vo);
+                var tagList = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList();
+                var dto = new CreateDto { Tags = tagList };
+                dto.Vo = vo;
+                return View(dto);
             }
 
             var newEntity = _mapperManager.BillMapper(vo);

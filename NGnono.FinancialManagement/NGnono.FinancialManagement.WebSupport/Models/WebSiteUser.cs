@@ -45,5 +45,14 @@ namespace NGnono.FinancialManagement.WebSupport.Models
         public string NickName { get; set; }
 
         public UserRole Role { get; set; }
+
+        public string ShowName
+        {
+            get
+            {
+                return String.IsNullOrWhiteSpace(NickName) ? LoginName : NickName;
+            }
+            set { }
+        }
     }
 }

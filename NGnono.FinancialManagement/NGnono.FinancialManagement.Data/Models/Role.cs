@@ -18,7 +18,6 @@ namespace NGnono.FinancialManagement.Data.Models
         public int Status { get; set; }
         public int Val { get; set; }
         public virtual ICollection<RoleAccessRightEntity> RoleAccessRights { get; set; }
-        public virtual UserRoleEntity UserRole { get; set; }
 
 #region Overrides of BaseEntity
 

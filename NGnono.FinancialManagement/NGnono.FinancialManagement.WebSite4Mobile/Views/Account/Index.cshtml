@@ -1,17 +1,13 @@
-﻿@model NGnono.FinancialManagement.WebSiteCore.Models.Vo.LoginViewModel
+﻿@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Account.IndexDto
 
 @{
     ViewBag.Title = "您的帐户";
 }
 
 @section Header {
-    @Html.ActionLink("Back", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
+    @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
     <h1>@ViewBag.Title</h1>
 }
-
-<p>
-    以 <strong>@User.Identity.Name</strong> 身份登录。
-</p>
 
 <ul data-role="listview" data-inset="true">
     <li>@Html.ActionLink("更改密码", "ChangePassword")</li>

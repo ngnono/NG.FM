@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
 {
     public class IndexDto
     {
+        public DateTime Date { get; set; }
+
         /// <summary>
         /// 当前月
         /// </summary>
@@ -65,6 +68,13 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
             get { return Revenue - Expenses; }
             set { }
         }
+    }
+
+    public class CreateDto
+    {
+        public List<TagEntity> Tags { get; set; }
+
+        public BillCreateViewModel Vo { get; set; }
     }
 
     public class RunningAccountDto

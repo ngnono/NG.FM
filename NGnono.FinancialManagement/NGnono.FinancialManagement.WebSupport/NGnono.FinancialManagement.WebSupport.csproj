@@ -64,6 +64,7 @@
     <Compile Include="Binder\PagerRequestBinder.cs" />
     <Compile Include="Binder\ProductModelBinder.cs" />
     <Compile Include="Binder\StoreModelBinder.cs" />
+    <Compile Include="Binder\TagModelBinder.cs" />
     <Compile Include="Binder\UserModelBinder.cs" />
     <Compile Include="Configurations\ConfigManager.cs" />
     <Compile Include="Ioc\BaseIocRegister.cs" />

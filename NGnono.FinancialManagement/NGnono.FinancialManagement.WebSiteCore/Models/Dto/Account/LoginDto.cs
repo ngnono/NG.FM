@@ -10,4 +10,8 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Account
     {
         public UserModel User { get; set; }
     }
+
+    public class IndexDto
+    {
+    }
 }

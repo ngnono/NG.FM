@@ -19,14 +19,6 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
             this.Property(t => t.CreatedUser).HasColumnName("CreatedUser");
             this.Property(t => t.Status).HasColumnName("Status");
-
-            // Relationships
-            this.HasRequired(t => t.Role)
-                .WithOptional(t => t.UserRole);
-            this.HasRequired(t => t.User)
-                .WithMany(t => t.UserRoles)
-                .HasForeignKey(d => d.User_Id);
-
 		Init();
         }
 

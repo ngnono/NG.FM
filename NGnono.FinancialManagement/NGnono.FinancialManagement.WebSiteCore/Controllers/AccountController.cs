@@ -66,7 +66,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                         return Redirect(returnUrl);
                     }
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
             }
             else

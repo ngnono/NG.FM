@@ -1,83 +1,172 @@
-﻿@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill.IndexDto
+﻿@using NGnono.FinancialManagement.WebSiteCore.Models.Vo
+@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill.CreateDto
 
 
 @{
     ViewBag.Title = "记账";
 }
 
+@section Header {
+    @Html.Partial("_StdHeaderPartial", new StdHeaderViewModel
+{
+    Title = ViewBag.Title
+})
+}
+
 <form>
     <ul data-role="listview" data-divider-theme="a" data-inset="true">
         <li>
             <fieldset data-role="controlgroup" data-type="horizontal">
-                <input type="radio" name="chbMode" id="chb_mode_1" checked="checked" />
+                <input type="radio" name="mode" id="chb_mode_1" checked="checked" />
                 <label for="chb_mode_1">收入</label>
-                <input type="radio" name="chbMode" id="chb_mode_2" />
+                <input type="radio" name="mode" id="chb_mode_2" />
                 <label for="chb_mode_2">支出</label>
             </fieldset>
         </li>
+    </ul>
 
+    <ul data-role="listview" data-divider-theme="a" data-inset="true">
+        <li data-role="list-divider">分类</li>
         <li>
-            <img id="cameraImage" src="/images/read_more_32x32.png" alt="" /></li>
+            <a id="link_tag" href="#tagSetting" data-transition="pop">请选择....</a>
+            <input type="hidden" id="tag" name="tag" />
+        </li>
+        <li data-role="list-divider">详细信息</li>
+        <li>
+            <label for="amount">金额</label>
+            <input type="text" name="amount" id="amount" value="" />
+        </li>
+
+        <li data-role="list-divider">日期</li>
+        <li>
+            <a id="link_date" href="#dateSetting" data-transition="pop">请选择....</a>
+            <input type="hidden" id="h_dataDateTime" name="dataDateTime" />
+        </li>
+        <li>
+            <label for="description">备注</label>
+            <textarea name="description" id="description"></textarea>
+        </li>
+
+        <li data-role="fieldcontain">
+            <input type="submit" value="保存" />
+        </li>
     </ul>
 
 </form>
 
 @section PageAreas
 {
-    <div data-role="page" id="setting">
-        <div data-role="header">
-            <h1>头像设置</h1>
-        </div>
-        <div data-role="settingContent" id="settingContent">
-            <p>头像</p>
-            <img id="settingImage" src="" />
-            <div class="ui-grid-a">
-                <div class="ui-block-a">
-                    <div data-role="button" id="takePhoto">take photo</div>
-                </div>
-                <div class="ui-block-b">
-                    <div data-role="button" id="upload">upload</div>
-                </div>
-            </div>
 
+    <div data-role="page" id="tagSetting">
+        <div data-role="header">
+            @Html.ActionLink("编辑", "UpdateList", "Tag")
+            <h1>分类设置</h1>
+            @Html.ActionLink("创建", "Create", "Tag")
+        </div>
+        &lt;---- 向左滑动返回
+        <div data-role="content" id="tagSettingContent">
+
+            @if (this.Model.Tags == null || this.Model.Tags.Count == 0)
+            {
+                <ul data-role="listview">
+                    <li>@Html.ActionLink("创建新分类", "Create", "Tag")</li>
+                </ul>
+            }
+            else
+            {
+                <ol data-role="listview">
+                    @foreach (var item in this.Model.Tags)
+                    {
+                        <li id="tagNav_@item.Id">
+                            <a href="javascript:void(0)" onclick="bindTag(@item.Id,'@item.Name')">@item.Name</a>
+                        </li>
+                    }
+                </ol>
+            }
+
+
+        </div>
+    </div>
+
+    <div data-role="page" id="dateSetting">
+        <div data-role="header">
+            <a href="#home">返回</a>
+            <h1>日期设置</h1>
+
+        </div>
+        &lt;---- 向左滑动返回
+        <div data-role="content" id="dateSettingContent">
+            <input id="con_dataDateTime" class="i-txt" />
         </div>
     </div>
 }
 
+@section HeaderStyles
+{
+    <link href="@Url.Content("~/css/mobiscroll.custom-2.5.0.min.css")" rel="stylesheet" type="text/css" />
+}
+@section HeaderScripts
+{
+
+    <script src="@Url.Content("~/js/widgets/mobiscroll.custom-2.5.0.min.js")" type="text/javascript"></script>
+}
 
 @section FooterScripts
 {
     <script type="text/javascript">
+        $(function () {
+            $('#con_dataDateTime').mobiscroll().date({
+                invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
+                theme: 'jqm',
+                display: 'inline',
+                mode: 'scroller',
+                dateOrder: 'mmD ddyy'
+            });
+        });
+
+        $('select.changes').bind('change', function () {
+            var demo = $('#con_dataDateTime').val();
+            alert(demo);
+        });
+
+        function bindTag(tagId, tagName) {
+            $('#tag').val(tagId);
+            $('#link_tag').html(tagName);
+            backHome();
+        }
+
+        function bindDate(date) {
+            $('#h_dataDateTime').val(date);
+            $('#link_date').html(date);
+            
+            backHome();
+        }
+
+        function backHome() {
+            $.mobile.changePage('#home', { transition: "fade" });
+        }
+
         //在页面初始化的时候,利用phonegap初始化我们的应用 
-        $('body').on("pageinit",function(){ 
-           init(); 
-        }); 
+
         //为页面添加swip 事件
         $('#home').on("pageinit", function () {
             //当我们向左滑动的时候,进入setting页面 
-            $('#homeContent').on("swipeleft", function () {
-                $.mobile.changePage('#setting', { transition: "fade" });
+            $('#link_tag').on("client", function () {
+                $.mobile.changePage('#tagSetting', { transition: "fade" });
             });
 
+            $('#link_date').on("client", function () {
+                $.mobile.changePage('#dateSetting', { transition: "fade" });
+            });
         });
-        $('#setting').on("pageinit", function () {
-            //显示头像图片 
-            var saveImage = kget("image");
-            if (saveImage) {
-                //console.log("have image"+saveImage); 
-                var cameraImage = document.getElementById('settingImage');
-                cameraImage.style.visibility = 'visible';
-                cameraImage.src = "data:image/jpeg;base64," + saveImage;
 
-            }
-            //当我们向右滑动的时候,回到主页 
-            $('#settingContent').on("swiperight", function () {
-                $.mobile.changePage('#home', { transition: "fade" });
-            });
-            //进行拍照 
-            $('#takePhoto').on("tap", function () {
-                take_pic();
-            });
+        //当我们向右滑动的时候,回到主页 
+        $('#tagSetting').on("swipeleft", function () {
+            $.mobile.changePage('#home', { transition: "fade" });
+        });
+
+        $('#link_date').on("swipeleft", function () {
+            $.mobile.changePage('#home', { transition: "fade" });
         });
     </script>
 }

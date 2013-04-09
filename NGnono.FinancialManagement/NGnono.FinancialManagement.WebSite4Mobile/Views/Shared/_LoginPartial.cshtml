@@ -1,6 +1,9 @@
-﻿@if (Request.IsAuthenticated)
+﻿@using NGnono.FinancialManagement.WebSupport.Auth
+@if (Request.IsAuthenticated)
 {
-    @Html.ActionLink(User.Identity.Name, "Index", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear" })
+    var u = NGnono.Framework.ServiceLocation.ServiceLocator.Current.Resolve<IAuthenticationService>().GetCurrentUser(Context);
+    
+    @Html.ActionLink(u.ShowName, "Index", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear" })
 }
 else
 {
