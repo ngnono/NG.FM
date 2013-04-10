@@ -165,7 +165,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         [LoginAuthorize]
         public ActionResult Create(FormCollection formCollection, BillCreateViewModel vo)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 // 如果我们进行到这一步时某个地方出错，则重新显示表单
                 var tagList = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList();
@@ -173,12 +173,17 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                 dto.Vo = vo;
                 return View(dto);
             }
-
             var newEntity = _mapperManager.BillMapper(vo);
+            newEntity.CreatedDate = DateTime.Now;
+            newEntity.CreatedUser = base.CurrentUser.CustomerId;
+            newEntity.UpdatedDate = DateTime.Now;
+            newEntity.UpdatedUser = base.CurrentUser.CustomerId;
+            newEntity.Status = (int) DataStatus.Normal;
+            newEntity.ExtendedContent = String.Empty;
 
             var entity = this._repository.Insert(newEntity);
 
-            return View("Details", _mapperManager.BillMapper(entity));
+            return View("Details", entity);
         }
 
         /// <summary>
@@ -187,9 +192,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         /// <returns></returns>
         public ActionResult Details([FetchBill(KeyName = "billid")]BillEntity model)
         {
-            var vo = _mapperManager.BillMapper(model);
-
-            return View(vo);
+            return View(model);
         }
 
         /// <summary>

@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using NGnono.FinancialManagement.Models.Enums;
+using NGnono.Framework;
 using NGnono.Framework.Models;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Models.Vo
@@ -7,21 +10,23 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Vo
     public class BillViewModel
     {
         public int Id { get; set; }
+        [Required]
+        [RegularExpression(RegularDefine.Money, ErrorMessage = "只能输入金额,1~2位小数")]
+        [Display(Name = "金额")]
         public decimal Amount { get; set; }
+        [Range(0, Int32.MaxValue)]
         public int Mode { get; set; }
+        [Range(0, Int32.MaxValue)]
         public int User_Id { get; set; }
+        [Range(0, Int32.MaxValue)]
         public int Tag_Id { get; set; }
+        [Range(0, Int32.MaxValue)]
         public int Type { get; set; }
+        [StringLength(128, MinimumLength = 0)]
+        [Display(Name = "备注")]
         public string Description { get; set; }
+        [DataType(DataType.DateTime)]
         public System.DateTime DataDateTime { get; set; }
-        public System.DateTime CreatedDate { get; set; }
-        public System.DateTime UpdatedDate { get; set; }
-        public int CreatedUser { get; set; }
-        public int UpdatedUser { get; set; }
-        public int Status { get; set; }
-        public bool IsDeleted { get; set; }
-        public int ExtendedContentType { get; set; }
-        public string ExtendedContent { get; set; }
     }
 
     public class BillCollectionViewModel : PagerInfoBaseViewModel

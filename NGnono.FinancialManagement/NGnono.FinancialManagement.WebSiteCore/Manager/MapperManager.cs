@@ -81,6 +81,9 @@ namespace NGnono.FinancialManagement.WebSiteCore.Manager
             }
 
             var target = Mapper.Map<BillViewModel, BillEntity>(source);
+           
+
+
 
             return target;
         }
