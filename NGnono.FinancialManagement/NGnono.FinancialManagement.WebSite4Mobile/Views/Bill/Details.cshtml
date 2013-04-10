@@ -1,5 +1,5 @@
 ﻿@using NGnono.FinancialManagement.WebSiteCore.Models.Vo
-@model NGnono.FinancialManagement.Data.Models.BillEntity
+@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill.DetailDto
 
 @{
     ViewBag.Title = "记账";
@@ -18,13 +18,17 @@
     <ul data-role="listview" data-divider-theme="a" data-inset="true">
         <li>
             <fieldset data-role="controlgroup" data-type="horizontal">
-               
-                <input type="radio" name="type1" id="chb_mode_2" value="2" checked="checked" onclick="$('#type').val(2)" />
+
+                <input type="radio" name="type1" id="chb_mode_2" value="2" onclick="$('#type').val(2)" />
                 <label for="chb_mode_2">收入</label>
-                <input type="radio" name="type1" id="chb_mode_1" value="1" onclick="$('#type').val(1)"/>
+                <input type="radio" name="type1" id="chb_mode_1" value="1" onclick="$('#type').val(1)" />
                 <label for="chb_mode_1">支出</label>
-                
-                @Html.HiddenFor(m => m.Vo.Type, new { id = "type" , value="2" })
+
+                <script type="text/javascript">
+                    $('#chb_mode_@this.Model.Type').attr('checked', 'checked');
+                </script>
+
+                @Html.HiddenFor(m => m.Bill.Type, new { id = "type", value = this.Model.Bill.Type })
             </fieldset>
         </li>
     </ul>
@@ -32,23 +36,23 @@
     <ul data-role="listview" data-divider-theme="a" data-inset="true">
         <li data-role="list-divider">分类</li>
         <li>
-            <a id="link_tag" href="#tagSetting" data-transition="pop">请选择....</a>
-            @Html.HiddenFor(m => m.Vo.Tag_Id, new { id = "tag" })
+            <a id="link_tag" href="#tagSetting" data-transition="pop">@this.Model.Bill.Tag.Name</a>
+            @Html.HiddenFor(m => m.Bill.Tag_Id, new { id = "tag", value = this.Model.Bill.Tag_Id })
         </li>
         <li data-role="list-divider">详细信息</li>
         <li>
-            @Html.LabelFor(m => m.Vo.Amount)
-            @Html.TextBoxFor(m => m.Vo.Amount)
+            @Html.LabelFor(m => m.Bill.Amount)
+            @Html.TextBoxFor(m => m.Bill.Amount)
         </li>
 
         <li data-role="list-divider">日期</li>
         <li>
-            @Html.HiddenFor(m => m.Vo.DataDateTime, new { @class = "i-txt" ,id="con_dataDateTime"})
-@*            <input class="i-txt" id="con_dataDateTime" name="dataDateTime" />*@
+            @Html.HiddenFor(m => m.Bill.DataDateTime, new { @class = "i-txt", id = "con_dataDateTime" })
+            @*            <input class="i-txt" id="con_dataDateTime" name="dataDateTime" />*@
         </li>
         <li>
-            @Html.LabelFor(m => m.Vo.Description)
-            @Html.TextBoxFor(m => m.Vo.Description)
+            @Html.LabelFor(m => m.Bill.Description)
+            @Html.TextBoxFor(m => m.Bill.Description)
         </li>
 
         <li data-role="fieldcontain">
@@ -114,7 +118,7 @@
                 dateOrder: 'mmD ddyy'
             });
 
-            $('#con_dataDateTime').mobiscroll('setValue', '@DateTime.Now.ToString("MM/dd/yyyy")', true);
+            $('#con_dataDateTime').mobiscroll('setValue', '@this.Model.Bill.DataDateTime.ToString("MM/dd/yyyy")', true);
         });
 
 

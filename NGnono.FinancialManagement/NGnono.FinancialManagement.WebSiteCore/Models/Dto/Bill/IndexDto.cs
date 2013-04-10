@@ -100,4 +100,11 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
 
         public Dictionary<int, List<BillViewModel>> Data { get; set; }
     }
+
+    public class DetailDto
+    {
+        public BillEntity Bill { get; set; }
+
+        public List<TagEntity> Tags { get; set; }
+    }
 }

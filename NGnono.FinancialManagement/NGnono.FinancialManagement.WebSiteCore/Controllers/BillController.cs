@@ -16,6 +16,7 @@ using NGnono.FinancialManagement.WebSiteCore.Utils;
 using NGnono.FinancialManagement.WebSupport.Binder;
 using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
 using NGnono.FinancialManagement.WebSupport.Mvc.Filters;
+using NGnono.Framework.Mapping;
 using NGnono.Framework.Models;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
@@ -165,34 +166,46 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         [LoginAuthorize]
         public ActionResult Create(FormCollection formCollection, BillCreateViewModel vo)
         {
+            var tagList = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
             if (!this.ModelState.IsValid)
             {
                 // 如果我们进行到这一步时某个地方出错，则重新显示表单
-                var tagList = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList();
                 var dto = new CreateDto { Tags = tagList };
                 dto.Vo = vo;
                 return View(dto);
             }
+
             var newEntity = _mapperManager.BillMapper(vo);
             newEntity.CreatedDate = DateTime.Now;
             newEntity.CreatedUser = base.CurrentUser.CustomerId;
             newEntity.UpdatedDate = DateTime.Now;
             newEntity.UpdatedUser = base.CurrentUser.CustomerId;
-            newEntity.Status = (int) DataStatus.Normal;
+            newEntity.Status = (int)DataStatus.Normal;
             newEntity.ExtendedContent = String.Empty;
 
             var entity = this._repository.Insert(newEntity);
-
-            return View("Details", entity);
+            var dto2 = new DetailDto()
+                {
+                    Bill = entity,
+                    Tags = tagList
+                };
+            return View("Details", dto2);
         }
 
         /// <summary>
         /// 详情页，可修改
         /// </summary>
         /// <returns></returns>
+        [LoginAuthorize]
+        [ModelOwnerCheck(TakeParameterName = "model", CustomerPropertyName = "User_Id")]
         public ActionResult Details([FetchBill(KeyName = "billid")]BillEntity model)
         {
-            return View(model);
+            var dto = new DetailDto();
+            dto.Bill = model;
+            dto.Tags = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            return View(dto);
         }
 
         /// <summary>
@@ -200,19 +213,39 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [ModelOwnerCheck(TakeParameterName = "model", CustomerPropertyName = "User_Id")]
         public ActionResult Update([FetchBill(KeyName = "billid")]BillEntity model, BillUpdateViewModel vo)
         {
             if (!ModelState.IsValid)
             {
+                var dto = new DetailDto();
+                model.Amount = vo.Amount;
+                model.DataDateTime = vo.DataDateTime;
+                model.Tag_Id = vo.Tag_Id;
+                model.Tag = _tagRepository.GetItem(vo.Tag_Id);
+                model.Type = vo.Type;
+                model.Description = vo.Description;
+                dto.Bill = model;
+
+                dto.Tags = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
                 // 如果我们进行到这一步时某个地方出错，则重新显示表单
-                return View("Details", vo);
+                return View("Details", dto);
             }
 
-            this._repository.Update(_mapperManager.BillMapper(vo));
+            model = Mapper.Map(vo, model);
+            model.UpdatedDate = DateTime.Now;
+            model.UpdatedUser = base.CurrentUser.CustomerId;
 
-            var entity = this._repository.GetItem(model.Id);
+            this._repository.Update(model);
 
-            return View("Details", _mapperManager.BillMapper(entity));
+            var dto2 = new DetailDto
+            {
+                Bill = model,
+                Tags = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList()
+            };
+
+            return View("Details", dto2);
         }
 
         /// <summary>
