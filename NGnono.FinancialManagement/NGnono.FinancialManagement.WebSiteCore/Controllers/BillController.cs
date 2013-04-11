@@ -29,11 +29,13 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         private readonly IBillRepository _repository;
         private readonly MapperManager _mapperManager = MapperManager.CurrentInstance;
         private readonly ITagRepository _tagRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public BillController(IBillRepository repository, ITagRepository tagRepository)
+        public BillController(ICustomerRepository customerRepository, IBillRepository repository, ITagRepository tagRepository)
         {
             _repository = repository;
             _tagRepository = tagRepository;
+            _customerRepository = customerRepository;
         }
 
 
@@ -84,8 +86,8 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
             dto.ThisToday = new IaeVo()
                 {
-                    Expenses = r1.Where(v => v.Type == (int)BillType.Expenses).Sum(v => v.Amount),
-                    Revenue = r1.Where(v => v.Type == (int)BillType.Revenue).Sum(v => v.Amount)
+                    Expenses = r1.Where(v => v.Type == (int)BillType.Expenses).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Revenue = r1.Where(v => v.Type == (int)BillType.Revenue).Sum(v => (decimal?)v.Amount) ?? 0
                 };
 
             var r2 = _repository.GetResult(new BillFilter
@@ -102,8 +104,8 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
             dto.ThisMonth = new IaeVo()
                 {
-                    Expenses = r2.Where(v => v.Type == (int)BillType.Expenses).Sum(v => v.Amount),
-                    Revenue = r2.Where(v => v.Type == (int)BillType.Revenue).Sum(v => v.Amount)
+                    Expenses = r2.Where(v => v.Type == (int)BillType.Expenses).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Revenue = r2.Where(v => v.Type == (int)BillType.Revenue).Sum(v => (decimal?)v.Amount) ?? 0
                 };
 
             var r3 = _repository.GetResult(new BillFilter
@@ -120,8 +122,8 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
             dto.ThisWeek = new IaeVo()
             {
-                Expenses = r3.Where(v => v.Type == (int)BillType.Expenses).Sum(v => v.Amount),
-                Revenue = r3.Where(v => v.Type == (int)BillType.Revenue).Sum(v => v.Amount)
+                Expenses = r3.Where(v => v.Type == (int)BillType.Expenses).Sum(v => (decimal?)v.Amount) ?? 0,
+                Revenue = r3.Where(v => v.Type == (int)BillType.Revenue).Sum(v => (decimal?)v.Amount) ?? 0
             };
 
             var r4 = _repository.GetResult(new BillFilter
@@ -133,8 +135,8 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
             dto.Whole = new IaeVo()
             {
-                Expenses = r4.Where(v => v.Type == (int)BillType.Expenses).Sum(v => v.Amount),
-                Revenue = r4.Where(v => v.Type == (int)BillType.Revenue).Sum(v => v.Amount)
+                Expenses = r4.Where(v => v.Type == (int)BillType.Expenses).Sum(v => (decimal?)v.Amount) ?? 0,
+                Revenue = r4.Where(v => v.Type == (int)BillType.Revenue).Sum(v => (decimal?)v.Amount) ?? 0
             };
 
             return View(dto);
@@ -183,14 +185,18 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             newEntity.UpdatedUser = base.CurrentUser.CustomerId;
             newEntity.Status = (int)DataStatus.Normal;
             newEntity.ExtendedContent = String.Empty;
+            newEntity.User_Id = vo.User_Id;
+            newEntity.User = _customerRepository.GetItem(base.CurrentUser.CustomerId);
 
             var entity = this._repository.Insert(newEntity);
-            var dto2 = new DetailDto()
+
+            return View("success", new SuccessViewModel
                 {
-                    Bill = entity,
-                    Tags = tagList
-                };
-            return View("Details", dto2);
+                    Title = "记账成功",
+                    BackName = "返回记账首页",
+                    BackUrl = Url.Action("Index", "Bill"),
+                    MessageTitle = "记账成功"
+                });
         }
 
         /// <summary>
@@ -199,7 +205,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         /// <returns></returns>
         [LoginAuthorize]
         [ModelOwnerCheck(TakeParameterName = "model", CustomerPropertyName = "User_Id")]
-        public ActionResult Details([FetchBill(KeyName = "billid")]BillEntity model)
+        public ActionResult Update([FetchBill(KeyName = "billid")]BillEntity model)
         {
             var dto = new DetailDto();
             dto.Bill = model;
@@ -214,28 +220,31 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         /// <returns></returns>
         [HttpPost]
         [ModelOwnerCheck(TakeParameterName = "model", CustomerPropertyName = "User_Id")]
-        public ActionResult Update([FetchBill(KeyName = "billid")]BillEntity model, BillUpdateViewModel vo)
+        public ActionResult Update(FormCollection formCollection, [FetchBill(KeyName = "billid")]BillEntity model, BillUpdateViewModel billUpdateViewModel)
         {
             if (!ModelState.IsValid)
             {
                 var dto = new DetailDto();
-                model.Amount = vo.Amount;
-                model.DataDateTime = vo.DataDateTime;
-                model.Tag_Id = vo.Tag_Id;
-                model.Tag = _tagRepository.GetItem(vo.Tag_Id);
-                model.Type = vo.Type;
-                model.Description = vo.Description;
+                model.Amount = billUpdateViewModel.Amount;
+                model.DataDateTime = billUpdateViewModel.DataDateTime;
+                model.Tag_Id = billUpdateViewModel.Tag_Id;
+                model.Tag = _tagRepository.GetItem(billUpdateViewModel.Tag_Id);
+                model.Type = billUpdateViewModel.Type;
+                model.Description = billUpdateViewModel.Description;
                 dto.Bill = model;
+
 
                 dto.Tags = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList();
 
                 // 如果我们进行到这一步时某个地方出错，则重新显示表单
-                return View("Details", dto);
+                return View(dto);
             }
 
-            model = Mapper.Map(vo, model);
+            model = Mapper.Map(billUpdateViewModel, model);
+
             model.UpdatedDate = DateTime.Now;
             model.UpdatedUser = base.CurrentUser.CustomerId;
+            model.User = _customerRepository.GetItem(base.CurrentUser.CustomerId);
 
             this._repository.Update(model);
 
@@ -245,7 +254,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                 Tags = _tagRepository.Get(v => v.Status.Equals((int)DataStatus.Normal) && v.CreatedUser == CurrentUser.CustomerId).ToList()
             };
 
-            return View("Details", dto2);
+            return View("Update", dto2);
         }
 
         /// <summary>
@@ -262,45 +271,159 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
-        public ActionResult RunningAccount()
+        [LoginAuthorize]
+        public ActionResult RunningAccount(int dateType, DateTime currentDate)
         {
-            var today = DateTime.Now;
-            var yearStartDate = new DateTime(today.Year, 1, 1);
-            var yearEndDate = new DateTime(today.Year + 1, 1, 1);
+            var dt = (DateType)dateType;
 
-            var resultEntities = _repository.Get(v => v.Status.Equals(DataStatus.Normal) &&
+            var today = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day);
+            DateTime startDate;
+            DateTime endDate;
+
+            switch (dt)
+            {
+                case DateType.Year:
+                    startDate = new DateTime(today.Year, 1, 1);
+                    endDate = startDate.AddYears(1);
+                    break;
+                case DateType.Week:
+                    startDate = DateTimeUtil.FirstDayOfWeek(today);
+                    endDate = DateTimeUtil.LastDayOfWeek(today).AddDays(1);
+                    break;
+                case DateType.Month:
+                    startDate = new DateTime(today.Year, today.Month, 1);
+                    endDate = startDate.AddMonths(1);
+                    break;
+                default:
+                    startDate = new DateTime(today.Year, today.Month, today.Day);
+                    endDate = startDate.AddDays(1);
+                    break;
+            }
+
+
+            var resultEntities = _repository.Get(v => v.Status.Equals((int)DataStatus.Normal) &&
                                       v.User_Id.Equals(CurrentUser.CustomerId) &&
-                                      v.DataDateTime >= yearStartDate && v.DataDateTime < yearEndDate);
+                                      v.DataDateTime >= startDate && v.DataDateTime < endDate);
 
-            var yearIae =
+            var sumiae =
                 new IaeVo
                 {
-                    Expenses = resultEntities.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => v.Amount),
-                    Revenue = resultEntities.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => v.Amount)
+                    Expenses = resultEntities.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Revenue = resultEntities.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => (decimal?)v.Amount) ?? 0
                 }
                 ;
 
+            Dictionary<int, IaeVo> d;
 
+            switch (dt)
+            {
+                case DateType.Year:
+                    d = YearData(today, resultEntities);
+                    break;
+                case DateType.Week:
+                    d = WeekData(today, resultEntities);
+                    break;
+                case DateType.Month:
+                    d = MonthData(today, resultEntities);
+                    break;
+                default:
+                    d = DayData(today, resultEntities);
+                    break;
+            }
+
+            var dto = new RunningAccountDto { CurrentDate = today, DateType = dt, YearIae = sumiae, Data = d };
+
+            return View(dto);
+        }
+
+        private Dictionary<int, IaeVo> YearData(DateTime dt, IQueryable<BillEntity> resultEntities)
+        {
             var d = new Dictionary<int, IaeVo>(12);
             for (var i = 1; i <= 12; i++)
             {
-                var t = new DateTime(today.Year, i, 1);
+                var t = new DateTime(dt.Year, i, 1);
                 var e = t.AddMonths(1);
                 var en = resultEntities.Where(v => v.DataDateTime >= t && v.DataDateTime < e);
                 var iae = new IaeVo
                 {
-                    Expenses = en.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => v.Amount),
-                    Revenue = en.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => v.Amount)
+                    Expenses = en.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Revenue = en.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Date = t
                 };
                 d.Add(i, iae);
             }
 
-            var dto = new RunningAccountDto();
-            dto.Year = today.Year;
-            dto.YearIae = yearIae;
-            dto.Data = d;
+            return d;
+        }
 
-            return View(dto);
+        private Dictionary<int, IaeVo> MonthData(DateTime dt, IQueryable<BillEntity> resultEntities)
+        {
+            var s = DateTimeUtil.FirstDayOfMonth(dt);
+            var e2 = DateTimeUtil.LastDayOfMonth(dt);
+            var c = (int)((e2 - s).TotalDays) + 1;
+
+            var d = new Dictionary<int, IaeVo>(c);
+
+            for (var i = 0; i < c; i++)
+            {
+                var t = s.AddDays(i);
+                var e = t.AddDays(1);
+                var en = resultEntities.Where(v => v.DataDateTime >= t && v.DataDateTime < e);
+                var iae = new IaeVo
+                {
+                    Expenses = en.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Revenue = en.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Date = t
+                };
+                d.Add(i + 1, iae);
+            }
+
+            return d;
+        }
+
+        private Dictionary<int, IaeVo> DayData(DateTime dt, IQueryable<BillEntity> resultEntities)
+        {
+            var d = new Dictionary<int, IaeVo>(1);
+
+
+            var t = new DateTime(dt.Year, dt.Month, dt.Day);
+            var e = t.AddDays(1);
+            var en = resultEntities.Where(v => v.DataDateTime >= t && v.DataDateTime < e);
+            var iae = new IaeVo
+            {
+                Expenses = en.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => (decimal?)v.Amount) ?? 0,
+                Revenue = en.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => (decimal?)v.Amount) ?? 0,
+                Date = t
+            };
+
+            d.Add(t.Day, iae);
+
+            return d;
+        }
+
+        private Dictionary<int, IaeVo> WeekData(DateTime dt, IQueryable<BillEntity> resultEntities)
+        {
+            var s = DateTimeUtil.FirstDayOfWeek(dt);
+            var e2 = DateTimeUtil.LastDayOfWeek(dt);
+            var c = (int)((e2 - s).TotalDays) + 1;
+
+            var d = new Dictionary<int, IaeVo>(c);
+
+            for (var i = 0; i < c; i++)
+            {
+                var t = s.AddDays(i);
+                var e = t.AddDays(1);
+                var en = resultEntities.Where(v => v.DataDateTime >= t && v.DataDateTime < e);
+                var iae = new IaeVo
+                {
+                    Expenses = en.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Revenue = en.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Date = t
+                };
+                d.Add(i + 1, iae);
+            }
+
+            return d;
         }
 
         public ActionResult AccountDateList(int year, int month)

@@ -1,0 +1,88 @@
+﻿@using NGnono.FinancialManagement.Models.Enums
+@using NGnono.FinancialManagement.WebSiteCore.Models.Vo
+@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill.RunningAccountDto
+
+@{
+    string str;
+    const string formart = "{0}流水";
+    switch (this.Model.DateType)
+    {
+        case DateType.Year:
+            str = String.Format(formart, this.Model.CurrentDate.ToString("yyyy年"));
+            break;
+        case DateType.Month:
+            str = String.Format(formart, this.Model.CurrentDate.ToString("yyyy年MM月"));
+            break;
+        case DateType.Week:
+            str = "按周流水";//, NGnono.FinancialManagement.WebSiteCore.Utils.DateTimeUtil.GetWeekRangeDef(this.Model.CurrentDate));
+            break;
+        default:
+            str = String.Format("按天流水<br/>{0}", this.Model.CurrentDate.ToString("yyyy年MM月dd日"));
+
+            break;
+
+    }
+
+    ViewBag.Title = str;
+}
+
+@section Header {
+    @Html.Partial("_StdHeaderPartial", new StdHeaderViewModel
+{
+    Title = ViewBag.Title
+})
+}
+
+<ul data-role="listview">
+    <li>
+        <h3>结余：</h3>
+        <p>@NGnono.FinancialManagement.WebSiteCore.Utils.DateTimeUtil.GetWeekRangeDef(this.Model.CurrentDate)</p>
+        <p class="ui-li-aside"><strong>￥@this.Model.YearIae.Balance</strong></p>
+    </li>
+    <li>
+        <div class="ui-grid-a">
+            <div class="ui-block-a"><strong>(+)收入</strong> @this.Model.YearIae.Revenue</div>
+            <div class="ui-block-b"><strong>(-)支出</strong> @this.Model.YearIae.Expenses</div>
+        </div>
+
+    </li>
+    <li></li>
+</ul>
+
+
+<ul data-role="listview">
+    @if (this.Model.DateType == DateType.Year)
+    {
+        foreach (var item in this.Model.Data)
+        {
+            if (item.Value != null)
+            {
+        <li><a href="#">
+            <h3>@item.Key 月</h3>
+            <p>@NGnono.FinancialManagement.WebSiteCore.Utils.DateTimeUtil.GetMonthRangeDef(item.Value.Date)</p>
+            <p class="ui-li-aside">(+)@item.Value.Revenue   (-)@item.Value.Expenses ￥@item.Value.Expenses</p>
+        </a></li>
+            }
+        }
+    }
+    else
+    {
+
+        foreach (var item in this.Model.Data)
+        {
+            if (item.Value != null)
+            {
+        <li>
+            <a href="#">
+                <h3>@item.Value.Date.ToString("dd")</h3>
+                <p>@item.Value.Date.DayOfWeek</p>
+                <p class="ui-li-aside">
+                    <br />
+                    <span style="color: red">(+)@item.Value.Revenue</span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green">(-)@item.Value.Expenses</span> &nbsp;&nbsp;&nbsp;&nbsp;￥@item.Value.Expenses
+                </p>
+            </a></li>
+            }
+        }
+    }
+</ul>
+

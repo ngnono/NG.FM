@@ -271,7 +271,9 @@
     <Content Include="Views\Tag\Create.cshtml" />
     <Content Include="Views\Tag\Update.cshtml" />
     <Content Include="Views\Tag\UpdateList.cshtml" />
-    <Content Include="Views\Bill\Details.cshtml" />
+    <Content Include="Views\Bill\Update.cshtml" />
+    <Content Include="Views\Bill\RunningAccount.cshtml" />
+    <Content Include="Views\Shared\_FooterPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NGnono.FinancialManagement.Data.Models;
+using NGnono.FinancialManagement.Models.Enums;
 using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
+using NGnono.Framework.Mapping;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
 {
@@ -43,9 +45,6 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
         public string WeekRange { get; set; }
 
         public string MonthRange { get; set; }
-
-
-
     }
 
     public class IaeVo
@@ -68,6 +67,8 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
             get { return Revenue - Expenses; }
             set { }
         }
+
+        public DateTime Date { get; set; }
     }
 
     public class CreateDto
@@ -79,10 +80,9 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
 
     public class RunningAccountDto
     {
-        /// <summary>
-        /// 年
-        /// </summary>
-        public int Year { get; set; }
+        public DateType DateType { get; set; }
+
+        public DateTime CurrentDate { get; set; }
 
         /// <summary>
         /// 年 总收入和支出
@@ -106,5 +106,15 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
         public BillEntity Bill { get; set; }
 
         public List<TagEntity> Tags { get; set; }
+
+
+        public BillUpdateViewModel BillUpdateViewModel
+        {
+            get
+            {
+                return Bill == null ? null : Mapper.Map<BillEntity, BillUpdateViewModel>(Bill);
+            }
+            set { }
+        }
     }
 }

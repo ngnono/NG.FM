@@ -1,4 +1,5 @@
-﻿@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill.IndexDto
+﻿@using NGnono.FinancialManagement.Models.Enums
+@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill.IndexDto
 
 
 @{
@@ -19,41 +20,46 @@
 
 <ul data-role="listview" data-split-icon="arrow-r" data-inset="true">
     <li>
-        @*<img alt="今天日期的图" src="/images/read_more_32x32.png" />*@
-        <h3>今天</h3>
-        <p>@this.Model.Taday</p>
+        <a href="@Url.Action("RunningAccount", "Bill", new { dateType = (int)DateType.Day, currentDate = this.Model.Date.ToString("yyyy-MM-dd") })">
+            @*<img alt="今天日期的图" src="/images/read_more_32x32.png" />*@
+            <h3>今天</h3>
+            <p>@this.Model.Taday</p>
 
-        <p class="ui-li-aside">
-            <span style="color: green"><strong>￥</strong>@this.Model.ThisToday.Expenses</span>
-            <br />
-            <br />
-            <span style="color: red"><strong>￥</strong>@this.Model.ThisToday.Revenue</span>
-        </p>
-
+            <p class="ui-li-aside">
+                <span style="color: green"><strong>￥</strong>@this.Model.ThisToday.Expenses</span>
+                <br />
+                <br />
+                <span style="color: red"><strong>￥</strong>@this.Model.ThisToday.Revenue</span>
+            </p>
+        </a>
     </li>
     <li>
-        @*<img alt="今天日期的图" src="/images/read_more_32x32.png" style="" />*@
-        <h3>本周</h3>
-        <p>@this.Model.WeekRange</p>
+        <a href="@Url.Action("RunningAccount", "Bill", new { dateType = (int)DateType.Week, currentDate = this.Model.Date.ToString("yyyy-MM-dd") })">
+            @*<img alt="今天日期的图" src="/images/read_more_32x32.png" style="" />*@
+            <h3>本周</h3>
+            <p>@this.Model.WeekRange</p>
 
-        <p class="ui-li-aside">
-            <span style="color: green"><strong>￥</strong>@this.Model.ThisWeek.Expenses</span>
-            <br />
-            <br />
-            <span style="color: red"><strong>￥</strong>@this.Model.ThisWeek.Revenue</span>
-        </p>
+            <p class="ui-li-aside">
+                <span style="color: green"><strong>￥</strong>@this.Model.ThisWeek.Expenses</span>
+                <br />
+                <br />
+                <span style="color: red"><strong>￥</strong>@this.Model.ThisWeek.Revenue</span>
+            </p>
+        </a>
     </li>
     <li>
-        @*<img alt="今天日期的图" src="/images/read_more_32x32.png" />*@
-        <h3>本月</h3>
-        <p>@this.Model.MonthRange</p>
+        <a href="@Url.Action("RunningAccount", "Bill", new { dateType = (int)DateType.Month, currentDate = this.Model.Date.ToString("yyyy-MM-dd") })">
+            @*<img alt="今天日期的图" src="/images/read_more_32x32.png" />*@
+            <h3>本月</h3>
+            <p>@this.Model.MonthRange</p>
 
-        <p class="ui-li-aside">
-            <span style="color: green"><strong>￥</strong>@this.Model.ThisMonth.Expenses</span>
-            <br />
-            <br />
-            <span style="color: red"><strong>￥</strong>@this.Model.ThisMonth.Revenue</span>
+            <p class="ui-li-aside">
+                <span style="color: green"><strong>￥</strong>@this.Model.ThisMonth.Expenses</span>
+                <br />
+                <br />
+                <span style="color: red"><strong>￥</strong>@this.Model.ThisMonth.Revenue</span>
 
-        </p>
+            </p>
+        </a>
     </li>
 </ul>

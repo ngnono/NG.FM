@@ -63,5 +63,33 @@ namespace NGnono.FinancialManagement.WebSiteCore.Utils
         {
             return FirstDayOfWeek(datetime).AddDays(6);
         }
+
+
+        public static string GetWeekRange(DateTime datetime, string fDateFramt, string lDateFramt, string spit)
+        {
+            var f = FirstDayOfWeek(datetime);
+            var l = LastDayOfWeek(datetime);
+
+            return String.Format("{0}{1}{2}",  f.ToString(fDateFramt), spit, l.ToString(lDateFramt));
+        }
+
+        public static string GetWeekRangeDef(DateTime datetime)
+        {
+            return GetWeekRange(datetime, "yyyy年MM月dd日", "MM月dd日", "-");
+        }
+
+
+        public static string GetMonthRange(DateTime datetime, string fDateFramt, string lDateFramt, string spit)
+        {
+            var f = FirstDayOfMonth(datetime);
+            var l = LastDayOfMonth(datetime);
+
+            return String.Format("{0}{1}{2}", f.ToString(fDateFramt), spit, l.ToString(lDateFramt));
+        }
+
+        public static string GetMonthRangeDef(DateTime datetime)
+        {
+            return GetMonthRange(datetime, "yyyy年MM月dd日", "MM月dd日", "-");
+        }
     }
 }
