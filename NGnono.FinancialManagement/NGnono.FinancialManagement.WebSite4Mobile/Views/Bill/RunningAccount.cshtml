@@ -4,7 +4,7 @@
 
 @{
     string str;
-    const string formart = "{0}流水";
+    const string formart = "{0}汇总";
     switch (this.Model.DateType)
     {
         case DateType.Year:
@@ -14,10 +14,10 @@
             str = String.Format(formart, this.Model.CurrentDate.ToString("yyyy年MM月"));
             break;
         case DateType.Week:
-            str = "按周流水";//, NGnono.FinancialManagement.WebSiteCore.Utils.DateTimeUtil.GetWeekRangeDef(this.Model.CurrentDate));
+            str = "按周汇总";//, NGnono.FinancialManagement.WebSiteCore.Utils.DateTimeUtil.GetWeekRangeDef(this.Model.CurrentDate));
             break;
         default:
-            str = String.Format("按天流水<br/>{0}", this.Model.CurrentDate.ToString("yyyy年MM月dd日"));
+            str = String.Format("按天汇总<br/>{0}", this.Model.CurrentDate.ToString("yyyy年MM月dd日"));
 
             break;
 
@@ -57,7 +57,7 @@
         {
             if (item.Value != null)
             {
-        <li><a href="#">
+        <li><a href="@Url.Action("RunningAccount", "Bill", new { dateType = DateType.Month, currentDate = item.Value.Date })">
             <h3>@item.Key 月</h3>
             <p>@NGnono.FinancialManagement.WebSiteCore.Utils.DateTimeUtil.GetMonthRangeDef(item.Value.Date)</p>
             <p class="ui-li-aside">(+)@item.Value.Revenue   (-)@item.Value.Expenses ￥@item.Value.Expenses</p>
@@ -67,13 +67,12 @@
     }
     else
     {
-
         foreach (var item in this.Model.Data)
         {
             if (item.Value != null)
             {
         <li>
-            <a href="#">
+            <a href="@Url.Action("AccountDate", "Bill", new { dt = item.Value.Date })">
                 <h3>@item.Value.Date.ToString("dd")</h3>
                 <p>@item.Value.Date.DayOfWeek</p>
                 <p class="ui-li-aside">

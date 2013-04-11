@@ -426,20 +426,25 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return d;
         }
 
-        public ActionResult AccountDateList(int year, int month)
+        [LoginAuthorize]
+        public ActionResult AccountDate(DateTime dt)
         {
-            var monthStartDate = new DateTime(year, month, 1);
-            var monthEndDate = monthStartDate.AddMonths(1);
-
+            var b = new DateTime(dt.Year, dt.Month, dt.Day);
+            var e = b.AddDays(1);
             var resultEntities = _repository.Get(v => v.Status.Equals(DataStatus.Normal) &&
                                       v.User_Id.Equals(CurrentUser.CustomerId) &&
-                                      v.DataDateTime >= monthStartDate && v.DataDateTime < monthEndDate).GroupBy(v => v.DataDateTime.Day).OrderByDescending(v => v.Key);
+                                      v.DataDateTime >= b && v.DataDateTime < e);
 
-            var dto = new AccountDateListDto();
-            dto.Month = month;
-            dto.Year = year;
-            dto.Data = null;
-            //TODO:这里的分组没做完
+            var sumiae =
+    new IaeVo
+    {
+        Expenses = resultEntities.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => (decimal?)v.Amount) ?? 0,
+        Revenue = resultEntities.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => (decimal?)v.Amount) ?? 0
+    }
+    ;
+
+
+            var dto = new AccountDateDto { Summ = sumiae, CurrentDate = b, Data = resultEntities.ToList() };
 
             return View(dto);
         }

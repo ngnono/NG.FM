@@ -252,7 +252,7 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
     public class ProductPriceController : DefController
     {
-        public ActionResult List()
+        public ActionResult GetList()
         {
             return View();
         }

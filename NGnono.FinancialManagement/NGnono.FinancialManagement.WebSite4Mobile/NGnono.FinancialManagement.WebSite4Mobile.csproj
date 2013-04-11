@@ -274,6 +274,7 @@
     <Content Include="Views\Bill\Update.cshtml" />
     <Content Include="Views\Bill\RunningAccount.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
+    <Content Include="Views\Bill\AccountDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -289,6 +290,10 @@
     <ProjectReference Include="..\NGnono.FinancialManagement.Data\NGnono.FinancialManagement.Data.csproj">
       <Project>{55ccba5f-4a1c-40bd-acd7-0944e6bbb59b}</Project>
       <Name>NGnono.FinancialManagement.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NGnono.FinancialManagement.Models\NGnono.FinancialManagement.Models.csproj">
+      <Project>{86df66b0-0bbe-4825-b1e0-be5df56d4c81}</Project>
+      <Name>NGnono.FinancialManagement.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\NGnono.FinancialManagement.WebSiteCore\NGnono.FinancialManagement.WebSiteCore.csproj">
       <Project>{a85edb8f-2266-4b5f-9ad5-c84617c54152}</Project>

@@ -92,13 +92,13 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Bill
         public Dictionary<int, IaeVo> Data { get; set; }
     }
 
-    public class AccountDateListDto
+    public class AccountDateDto
     {
-        public int Year { get; set; }
+        public DateTime CurrentDate { get; set; }
 
-        public int Month { get; set; }
+        public List<BillEntity> Data { get; set; }
 
-        public Dictionary<int, List<BillViewModel>> Data { get; set; }
+        public IaeVo Summ { get; set; }
     }
 
     public class DetailDto
