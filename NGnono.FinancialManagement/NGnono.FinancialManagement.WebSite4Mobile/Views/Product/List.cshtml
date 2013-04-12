@@ -1,0 +1,102 @@
+﻿@using NGnono.FinancialManagement.Models.Enums
+@using NGnono.FinancialManagement.WebSiteCore.Models.Vo
+@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Product.ListDto
+
+@{
+    ViewBag.Title = "商品大厅";
+}
+
+@section Header {
+    @Html.Partial("_StdHeaderPartial", new StdHeaderViewModel
+{
+    Title = ViewBag.Title
+})
+}
+
+
+<ul data-role="listview" data-split-icon="gear" data-split-theme="d">
+
+    @foreach (var item in this.Model.Datas)
+    {
+        <li>
+            @*<img src="images/album-bb.jpg" />*@
+            <h3><a href="@Url.Action("Details", "Product", new { productid = item.Id })">@item.Name</a></h3>
+            <p>@item.Store.Name</p>
+            <p>@item.Brand.Name</p>
+
+            @if (item.PriceSettings != null && item.PriceSettings.Count > 0)
+            {
+                var s = item.PriceSettings.Where(v => v.Status == (int)DataStatus.Normal).Select(v => new
+                    {
+                        v.Id,
+                        Price = v.Amount,
+                        Date = v.SourceDate
+                    }).OrderByDescending(v => v.Date).FirstOrDefault();
+                var d = item.PriceSettings.Where(v => v.Status == (int)DataStatus.Normal).Select(v => new
+                {
+                    v.Id,
+                    Price = v.Amount,
+                    Date = v.SourceDate
+                }).OrderByDescending(v => v.Price).FirstOrDefault();
+                
+                <p class="ui-li-aside">当前价￥<strong>@s.Price</strong></p>
+                <p class="ui-li-aside">历史最低价￥<strong>@d.Price</strong></p>
+            }
+        </li>
+    }
+
+</ul>
+
+@section FooterScripts
+{
+    <script type="text/javascript">
+        var url = '@Url.Action("List","Product")';
+        var pageIndex = @Model.Index ;
+        @if (this.Model.IsPaged)
+        {
+            if (this.Model.Index == this.Model.TotalPaged)
+            {
+                //last
+            }
+
+            if (this.Model.Index == 1)
+            {
+                //first
+            }
+        }
+
+    </script>
+    <script type="text/javascript">
+
+        $(".ui-content").on({
+            "swipeleft": function (event) {
+                var nextPages = $.mobile.activePage.nextAll("div[data-role='page']");
+                if (nextPages.length !== 0) {
+                    $.mobile.changePage($("div[data-url='" + nextPages.first().attr("data-url") + "']"));
+                } else {
+                    var url = $.mobile.activePage.attr("data-url"), page = 1;
+                    var urlId = url.substr(url.lastIndexOf("/") + 1);
+                    if (urlId.isNumber()) page = parseInt(urlId);
+                    if (page < 10) {
+                        next = _root + "/Index/" + (page + 1).toString();
+                        $.mobile.changePage(next);
+                    }
+                }
+            },
+            "swiperight": function () {
+                var prePages = $.mobile.activePage.prevAll("div[data-role='page']");
+                if (prePages.length !== 0) {
+                    $.mobile.changePage($("div[data-url='" + prePages.first().attr("data-url") + "']"));
+                } else {
+                    var url = $.mobile.activePage.attr("data-url"), page = 1;
+                    var urlId = url.substr(url.lastIndexOf("/") + 1);
+                    if (urlId.isNumber()) page = parseInt(urlId);
+                    if (page > 1) {
+                        prev = _root + "/Index/" + (page - 1).toString();
+                        $.mobile.changePage(prev, { role: "page" });
+                    }
+                }
+            }
+        });
+    </script>
+}

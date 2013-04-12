@@ -177,6 +177,12 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return View(r);
         }
 
+        public ActionResult Index(ListRequest request, PagerRequest pagerRequest)
+        {
+            return List(request, pagerRequest)
+             ;
+        }
+
         public ActionResult List(ListRequest request, PagerRequest pagerRequest)
         {
             var linq = _productRepository.Get(Filter(new ProductFilter
@@ -185,22 +191,16 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                     UserId = request.CustomerId
                 }));
 
-            var r = linq.Join(_storeRepository.Get(v => v.Status.Equals((int)DataStatus.Normal)), f => f.Store_Id,
-                         p => p.Id, (f, p) => new ProductViewModel
-                             {
-                                 Product = f,
-                                 Store = p
-                             });
-            var totalCount = r.Count();
+            var totalCount = linq.Count();
 
-            var result = pagerRequest.PageIndex == 1 ? r.Take(pagerRequest.PageSize) : r.Skip((pagerRequest.PageSize - 1) * pagerRequest.PageSize).Take(pagerRequest.PageSize);
+            var result = pagerRequest.PageIndex == 1 ? linq.Take(pagerRequest.PageSize) : linq.Skip((pagerRequest.PageSize - 1) * pagerRequest.PageSize).Take(pagerRequest.PageSize);
 
-            var dto = new ListDto
+            var dto = new ListDto(pagerRequest, totalCount)
                 {
-                    Products = new ProductCollectionViewModel(pagerRequest, totalCount) { Datas = result.ToList() }
+                    Datas = result.ToList()
                 };
 
-            return View(dto);
+            return View("List", dto);
         }
 
         [LoginAuthorize]

@@ -11,10 +11,10 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Product
 {
     public class DetailsDto : BaseDto
     {
-        public ProductViewModel Product { get; set; }
+        public ProductEntity Product { get; set; }
     }
 
-    public class ListDto : PagerInfoBaseViewModel
+    public class ListDto : PagerInfoBaseViewModel<List<ProductEntity>>
     {
         public ListDto(PagerRequest request) : base(request)
         {
@@ -23,8 +23,6 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Product
         public ListDto(PagerRequest request, int totalCount) : base(request, totalCount)
         {
         }
-
-        public ProductCollectionViewModel Products { get; set; }
     }
 
     public class IndexDto : PagerInfoBaseViewModel<List<ProductEntity>>
