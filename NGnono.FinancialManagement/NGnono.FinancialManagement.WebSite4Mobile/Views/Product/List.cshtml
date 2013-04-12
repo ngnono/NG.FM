@@ -4,6 +4,7 @@
 
 @{
     ViewBag.Title = "商品大厅";
+    var url = Url.Action("List", "Product");
 }
 
 @section Header {
@@ -11,8 +12,9 @@
 {
     Title = ViewBag.Title
 })
-}
 
+
+}
 
 <ul data-role="listview" data-split-icon="gear" data-split-theme="d">
 
@@ -33,11 +35,11 @@
                         Date = v.SourceDate
                     }).OrderByDescending(v => v.Date).FirstOrDefault();
                 var d = item.PriceSettings.Where(v => v.Status == (int)DataStatus.Normal).Select(v => new
-                {
-                    v.Id,
-                    Price = v.Amount,
-                    Date = v.SourceDate
-                }).OrderByDescending(v => v.Price).FirstOrDefault();
+                    {
+                        v.Id,
+                        Price = v.Amount,
+                        Date = v.SourceDate
+                    }).OrderByDescending(v => v.Price).FirstOrDefault();
                 
                 <p class="ui-li-aside">当前价￥<strong>@s.Price</strong></p>
                 <p class="ui-li-aside">历史最低价￥<strong>@d.Price</strong></p>
@@ -47,56 +49,32 @@
 
 </ul>
 
-@section FooterScripts
+@if (this.Model.IsPaged)
 {
-    <script type="text/javascript">
-        var url = '@Url.Action("List","Product")';
-        var pageIndex = @Model.Index ;
-        @if (this.Model.IsPaged)
+    <ul data-role="pagination">
+        if (this.Model.Index == 1)
         {
+        <li class="ui-pagination-next"><a href="@String.Format("{0}?page={1}", url, this.Model.Index + 1)">Next</a></li>
+        }
+        else
             if (this.Model.Index == this.Model.TotalPaged)
             {
-                //last
-            }
-
-            if (this.Model.Index == 1)
-            {
-                //first
-            }
+        <li class="ui-pagination-prev"><a href="@String.Format("{0}?page={1}", url, this.Model.Index - 1)">Prev</a></li>
         }
+            else
+            {
+        <li class="ui-pagination-prev"><a href="@String.Format("{0}?page={1}", url, this.Model.Index - 1)">Prev</a></li>
 
-    </script>
-    <script type="text/javascript">
+        <li class="ui-pagination-next"><a href="@String.Format("{0}?page={1}", url, this.Model.Index + 1)">Next</a></li>
 
-        $(".ui-content").on({
-            "swipeleft": function (event) {
-                var nextPages = $.mobile.activePage.nextAll("div[data-role='page']");
-                if (nextPages.length !== 0) {
-                    $.mobile.changePage($("div[data-url='" + nextPages.first().attr("data-url") + "']"));
-                } else {
-                    var url = $.mobile.activePage.attr("data-url"), page = 1;
-                    var urlId = url.substr(url.lastIndexOf("/") + 1);
-                    if (urlId.isNumber()) page = parseInt(urlId);
-                    if (page < 10) {
-                        next = _root + "/Index/" + (page + 1).toString();
-                        $.mobile.changePage(next);
-                    }
-                }
-            },
-            "swiperight": function () {
-                var prePages = $.mobile.activePage.prevAll("div[data-role='page']");
-                if (prePages.length !== 0) {
-                    $.mobile.changePage($("div[data-url='" + prePages.first().attr("data-url") + "']"));
-                } else {
-                    var url = $.mobile.activePage.attr("data-url"), page = 1;
-                    var urlId = url.substr(url.lastIndexOf("/") + 1);
-                    if (urlId.isNumber()) page = parseInt(urlId);
-                    if (page > 1) {
-                        prev = _root + "/Index/" + (page - 1).toString();
-                        $.mobile.changePage(prev, { role: "page" });
-                    }
-                }
-            }
-        });
-    </script>
+        }
+            
+    </ul>
+}
+
+
+
+@section FooterScripts
+{
+
 }
