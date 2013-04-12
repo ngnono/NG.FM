@@ -1,0 +1,15 @@
+﻿@model NGnono.FinancialManagement.WebSiteCore.Models.Dto.Account.IndexDto
+
+@{
+    ViewBag.Title = "您的帐户";
+}
+
+@section Header {
+    @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
+    <h1>@ViewBag.Title</h1>
+}
+
+<ul data-role="listview" data-inset="true">
+    <li>@Html.ActionLink("更改密码", "ChangePassword")</li>
+    <li>@Html.ActionLink("注销", "LogOff")</li>
+</ul>

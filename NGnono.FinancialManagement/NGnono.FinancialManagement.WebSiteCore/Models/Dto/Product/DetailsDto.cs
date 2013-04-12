@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
+using NGnono.Framework.Models;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Product
 {
@@ -12,8 +14,27 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Product
         public ProductViewModel Product { get; set; }
     }
 
-    public class ListDto : BaseDto
+    public class ListDto : PagerInfoBaseViewModel
     {
+        public ListDto(PagerRequest request) : base(request)
+        {
+        }
+
+        public ListDto(PagerRequest request, int totalCount) : base(request, totalCount)
+        {
+        }
+
         public ProductCollectionViewModel Products { get; set; }
+    }
+
+    public class IndexDto : PagerInfoBaseViewModel<List<ProductEntity>>
+    {
+        public IndexDto(PagerRequest request) : base(request)
+        {
+        }
+
+        public IndexDto(PagerRequest request, int totalCount) : base(request, totalCount)
+        {
+        }
     }
 }

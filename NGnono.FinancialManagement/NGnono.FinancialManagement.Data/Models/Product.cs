@@ -5,6 +5,11 @@ namespace NGnono.FinancialManagement.Data.Models
 {
     public partial class ProductEntity : NGnono.Framework.Models.BaseEntity
     {
+        public ProductEntity()
+        {
+            this.PriceSettings = new List<PriceSettingEntity>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public int Brand_Id { get; set; }
@@ -27,6 +32,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public int RecommendSourceType { get; set; }
         public int SortOrder { get; set; }
         public virtual BrandEntity Brand { get; set; }
+        public virtual ICollection<PriceSettingEntity> PriceSettings { get; set; }
         public virtual StoreEntity Store { get; set; }
         public virtual TagEntity Tag { get; set; }
 

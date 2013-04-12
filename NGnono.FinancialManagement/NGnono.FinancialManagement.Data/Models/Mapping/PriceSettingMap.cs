@@ -17,6 +17,7 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.Amount).HasColumnName("Amount");
             this.Property(t => t.SourceId).HasColumnName("SourceId");
             this.Property(t => t.SourceType).HasColumnName("SourceType");
+            this.Property(t => t.SourceDate).HasColumnName("SourceDate");
             this.Property(t => t.Type).HasColumnName("Type");
             this.Property(t => t.StartDate).HasColumnName("StartDate");
             this.Property(t => t.EndDate).HasColumnName("EndDate");
@@ -26,6 +27,12 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.CreatedDate).HasColumnName("CreatedDate");
             this.Property(t => t.UpdatedUser).HasColumnName("UpdatedUser");
             this.Property(t => t.UpdatedDate).HasColumnName("UpdatedDate");
+
+            // Relationships
+            this.HasRequired(t => t.Product)
+                .WithMany(t => t.PriceSettings)
+                .HasForeignKey(d => d.SourceId);
+
 		Init();
         }
 

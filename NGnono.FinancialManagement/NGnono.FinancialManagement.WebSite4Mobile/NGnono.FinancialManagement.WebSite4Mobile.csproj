@@ -275,6 +275,9 @@
     <Content Include="Views\Bill\RunningAccount.cshtml" />
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
     <Content Include="Views\Bill\AccountDate.cshtml" />
+    <Content Include="Views\Shared\_JqMLayoutV2.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Shared\_DefHeaderPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

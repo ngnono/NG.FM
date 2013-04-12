@@ -9,6 +9,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public decimal Amount { get; set; }
         public int SourceId { get; set; }
         public int SourceType { get; set; }
+        public System.DateTime SourceDate { get; set; }
         public int Type { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
@@ -18,6 +19,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public System.DateTime CreatedDate { get; set; }
         public int UpdatedUser { get; set; }
         public System.DateTime UpdatedDate { get; set; }
+        public virtual ProductEntity Product { get; set; }
 
 #region Overrides of BaseEntity
 

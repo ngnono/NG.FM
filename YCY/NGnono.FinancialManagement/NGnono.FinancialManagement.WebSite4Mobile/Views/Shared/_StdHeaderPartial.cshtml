@@ -1,0 +1,16 @@
+﻿@using NGnono.FinancialManagement.WebSupport.Auth
+@model NGnono.FinancialManagement.WebSiteCore.Models.Vo.StdHeaderViewModel
+
+@Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
+<h1>@this.Model.Title</h1>
+
+@if (Request.IsAuthenticated)
+{
+    var u = NGnono.Framework.ServiceLocation.ServiceLocator.Current.Resolve<IAuthenticationService>().GetCurrentUser(Context);
+    
+    @Html.ActionLink(u.ShowName, "Index", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear" })
+}
+else
+{
+    @Html.ActionLink("登录", "Login", "Account", routeValues: null, htmlAttributes: new { data_icon = "gear" })
+}
