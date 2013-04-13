@@ -18,8 +18,6 @@ namespace NGnono.FinancialManagement.Data.Models
         public string EMail { get; set; }
         public int Status { get; set; }
         public int UserLevel { get; set; }
-        public int Store_Id { get; set; }
-        public int Region_Id { get; set; }
         public string Logo { get; set; }
         public string Description { get; set; }
         public byte Gender { get; set; }
@@ -35,8 +33,8 @@ namespace NGnono.FinancialManagement.Data.Models
         /// </summary>
         public override object EntityId
         {       
-                get { return new Dictionary<string, object> (22){
-                {"User_Id",User_Id}, {"Name",Name}, {"Password",Password}, {"Nickname",Nickname}, {"CreatedUser",CreatedUser}, {"CreatedDate",CreatedDate}, {"UpdatedUser",UpdatedUser}, {"UpdatedDate",UpdatedDate}, {"LastLoginDate",LastLoginDate}, {"Mobile",Mobile}, {"EMail",EMail}, {"Status",Status}, {"UserLevel",UserLevel}, {"Store_Id",Store_Id}, {"Region_Id",Region_Id}, {"Logo",Logo}, {"Description",Description}, {"Gender",Gender}, {"Role_Id",Role_Id}, {"Role_Name",Role_Name}, {"Role_Description",Role_Description}, {"Role_Val",Role_Val} 
+                get { return new Dictionary<string, object> (20){
+                {"User_Id",User_Id}, {"Name",Name}, {"Password",Password}, {"Nickname",Nickname}, {"CreatedUser",CreatedUser}, {"CreatedDate",CreatedDate}, {"UpdatedUser",UpdatedUser}, {"UpdatedDate",UpdatedDate}, {"LastLoginDate",LastLoginDate}, {"Mobile",Mobile}, {"EMail",EMail}, {"Status",Status}, {"UserLevel",UserLevel}, {"Logo",Logo}, {"Description",Description}, {"Gender",Gender}, {"Role_Id",Role_Id}, {"Role_Name",Role_Name}, {"Role_Description",Role_Description}, {"Role_Val",Role_Val} 
                 };}
  
         }

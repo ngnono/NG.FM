@@ -203,6 +203,7 @@
     <Content Include="css\jqm\themes\default\jquery.mobile.theme-1.3.0.css" />
     <Content Include="css\jqm\themes\default\jquery.mobile.theme-1.3.0.min.css" />
     <Content Include="css\jquery.mobile.pagination.css" />
+    <Content Include="js\widgets\jquery.validate.unobtrusive.min.js" />
     <Content Include="js\widgets\jquery.mobile.pagination.js" />
     <Content Include="css\mobiscroll.custom-2.5.0.min.css" />
     <Content Include="css\wp_icons.png" />
@@ -215,6 +216,8 @@
     <Content Include="Configurations\unity.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Configurations\appSettings.config" />
+    <Content Include="Configurations\connectionStrings.config" />
     <None Include="Properties\PublishProfiles\Def.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="images\read_more_32x32.png" />
@@ -280,6 +283,15 @@
     <Content Include="Views\Shared\_JqMLayoutV2.cshtml" />
     <Content Include="Views\Product\List.cshtml" />
     <Content Include="Views\Shared\_DefHeaderPartial.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Product\MyIndex.cshtml" />
+    <Content Include="Views\Store\Create.cshtml" />
+    <Content Include="Views\Store\Update.cshtml" />
+    <Content Include="Views\Store\UpdateList.cshtml" />
+    <Content Include="Views\Brand\Create.cshtml" />
+    <Content Include="Views\Brand\Update.cshtml" />
+    <Content Include="Views\Brand\UpdateList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

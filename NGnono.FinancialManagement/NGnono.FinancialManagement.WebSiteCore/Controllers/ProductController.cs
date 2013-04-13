@@ -22,7 +22,7 @@ using NGnono.Framework.Web.Mvc.ActionResults;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
-    public class ProductController : DefController
+    public class ProductController : UserController
     {
         private readonly IProductRepository _productRepository;
         private readonly IStoreRepository _storeRepository;
@@ -93,6 +93,11 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                 filter = filter.And(v => v.Tag_Id.Equals(productFilter.TagId.Value));
             }
 
+            if (productFilter.IsShare != null)
+            {
+                filter = filter.And(v => v.IsShare == productFilter.IsShare);
+            }
+
             return filter;
         }
 
@@ -143,9 +148,39 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         #endregion
 
         [LoginAuthorize]
+        public ActionResult MyIndex(ListRequest request, PagerRequest pagerRequest)
+        {
+            var linq = _productRepository.Get(Filter(new ProductFilter
+            {
+                DataStatus = DataStatus.Normal,
+                UserId = request.CustomerId
+            }));
+
+            var totalCount = linq.Count();
+
+            var result = pagerRequest.PageIndex == 1 ? linq.Take(pagerRequest.PageSize) : linq.Skip((pagerRequest.PageSize - 1) * pagerRequest.PageSize).Take(pagerRequest.PageSize);
+
+            var dto = new ListDto(pagerRequest, totalCount)
+            {
+                Datas = result.ToList()
+            };
+
+            return View(dto);
+        }
+
+        [LoginAuthorize]
         public ActionResult Create()
         {
-            return View();
+            var model = new CreatedProductViewModel();
+            model.Brands =
+                _brandRepository.Get(
+                    v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            model.Stores = _storeRepository.Get(v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            model.Tags = _tagRepository.Get(v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            return View(model);
         }
 
         [HttpPost]
@@ -156,25 +191,51 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             {
                 var entity = _mapperManager.ProductMapper(model);
 
-                var e = _productRepository.Insert(entity);
+                entity = _productRepository.Insert(entity);
 
-                var r = Get(e.Id);
+                //var r = Get(e.Id);
 
-                return View("Update", r);
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<int>(entity.Id) { StatusCode = StatusCode.Success, Message = "" }
+                };
             }
             else
             {
-                ModelState.AddModelError("", "参数验证失败.");
-            }
+                // 如果我们进行到这一步时某个地方出错，则重新显示表单
+                //var dto = new CreateDto { Tags = tagList };
+                //dto.Vo = vo;
+                //dto.IsError = true;
+                //return View("Success",new SuccessViewModel{});
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
 
-            return View(model);
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<List<string>>(sb) { StatusCode = StatusCode.ClientError, Message = "验证失败" }
+                };
+            }
         }
 
         public ActionResult Details([FetchProduct(KeyName = "productid")]ProductEntity model)
         {
-            var r = Get(model.Id);
+            if (model.IsShare)
+            {
+                return View(model);
+            }
 
-            return View(r);
+            return View(new ProductEntity());
         }
 
         public ActionResult Index(ListRequest request, PagerRequest pagerRequest)
@@ -188,7 +249,8 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             var linq = _productRepository.Get(Filter(new ProductFilter
                 {
                     DataStatus = DataStatus.Normal,
-                    UserId = request.CustomerId
+                    UserId = request.CustomerId,
+                    IsShare = true
                 }));
 
             var totalCount = linq.Count();

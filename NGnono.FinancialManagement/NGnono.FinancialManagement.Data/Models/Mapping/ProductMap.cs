@@ -47,6 +47,7 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.RecommendSourceId).HasColumnName("RecommendSourceId");
             this.Property(t => t.RecommendSourceType).HasColumnName("RecommendSourceType");
             this.Property(t => t.SortOrder).HasColumnName("SortOrder");
+            this.Property(t => t.IsShare).HasColumnName("IsShare");
 
             // Relationships
             this.HasRequired(t => t.Brand)

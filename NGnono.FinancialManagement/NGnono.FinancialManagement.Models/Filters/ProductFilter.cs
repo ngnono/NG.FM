@@ -18,5 +18,7 @@ namespace NGnono.FinancialManagement.Models.Filters
         public int? BrandId { get; set; }
 
         public int? TagId { get; set; }
+
+        public bool? IsShare { get; set; }
     }
 }

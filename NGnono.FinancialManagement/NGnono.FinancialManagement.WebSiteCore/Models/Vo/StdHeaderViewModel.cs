@@ -10,4 +10,9 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Vo
     {
         public string Title { get; set; }
     }
+
+    public class DefHeaderViewModel
+    {
+        public string Title { get; set; }
+    }
 }

@@ -8,7 +8,7 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
         public VUserEntityMap()
         {
             // Primary Key
-            this.HasKey(t => new { t.User_Id, t.Name, t.Password, t.Nickname, t.CreatedUser, t.CreatedDate, t.UpdatedUser, t.UpdatedDate, t.LastLoginDate, t.Mobile, t.EMail, t.Status, t.UserLevel, t.Store_Id, t.Region_Id, t.Logo, t.Description, t.Gender, t.Role_Id, t.Role_Name, t.Role_Description, t.Role_Val });
+            this.HasKey(t => new { t.User_Id, t.Name, t.Password, t.Nickname, t.CreatedUser, t.CreatedDate, t.UpdatedUser, t.UpdatedDate, t.LastLoginDate, t.Mobile, t.EMail, t.Status, t.UserLevel, t.Logo, t.Description, t.Gender, t.Role_Id, t.Role_Name, t.Role_Description, t.Role_Val });
 
             // Properties
             this.Property(t => t.User_Id)
@@ -44,12 +44,6 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             this.Property(t => t.UserLevel)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
-            this.Property(t => t.Store_Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-
-            this.Property(t => t.Region_Id)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             this.Property(t => t.Logo)
@@ -88,8 +82,6 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.EMail).HasColumnName("EMail");
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.UserLevel).HasColumnName("UserLevel");
-            this.Property(t => t.Store_Id).HasColumnName("Store_Id");
-            this.Property(t => t.Region_Id).HasColumnName("Region_Id");
             this.Property(t => t.Logo).HasColumnName("Logo");
             this.Property(t => t.Description).HasColumnName("Description");
             this.Property(t => t.Gender).HasColumnName("Gender");
