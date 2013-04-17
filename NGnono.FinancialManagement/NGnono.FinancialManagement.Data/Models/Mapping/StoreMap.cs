@@ -46,12 +46,6 @@ namespace NGnono.FinancialManagement.Data.Models.Mapping
             this.Property(t => t.GpsAlt).HasColumnName("GpsAlt");
             this.Property(t => t.GpsLat).HasColumnName("GpsLat");
             this.Property(t => t.GpsLng).HasColumnName("GpsLng");
-
-            // Relationships
-            this.HasRequired(t => t.Group)
-                .WithMany(t => t.Stores)
-                .HasForeignKey(d => d.Group_Id);
-
 		Init();
         }
 

@@ -189,6 +189,15 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             if (ModelState.IsValid)
             {
                 var entity = _mapperManager.ProductMapper(model);
+                entity.CreatedDate = DateTime.Now;
+                entity.CreatedUser = base.CurrentUser.CustomerId;
+                entity.UpdatedDate = DateTime.Now;
+                entity.UpdatedUser = base.CurrentUser.CustomerId;
+                entity.Brand = _brandRepository.Find(entity.Brand_Id);
+                entity.Store = _storeRepository.Find(entity.Store_Id);
+                entity.Tag = _tagRepository.Find(entity.Tag_Id);
+                entity.Favorable = string.Empty;
+                entity.RecommendedReason = string.Empty;
 
                 entity = _productRepository.Insert(entity);
 
@@ -229,12 +238,10 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
         public ActionResult Details([FetchProduct(KeyName = "productid")]ProductEntity model)
         {
-            if (model.IsShare)
-            {
-                return View(model);
-            }
 
-            return View(new ProductEntity());
+            return View(model);
+
+
         }
 
         public ActionResult Index(ListRequest request, PagerRequest pagerRequest)

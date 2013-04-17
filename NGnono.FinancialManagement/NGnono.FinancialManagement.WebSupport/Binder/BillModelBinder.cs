@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NGnono.FinancialManagement.Repository.Contract;
 using NGnono.Framework.Web.Mvc.Binders;
 
 namespace NGnono.FinancialManagement.WebSupport.Binder
 {
-    public class BrandModelBinder : ModelBinderBase
+    public class BillModelBinder : ModelBinderBase
     {
-        private readonly IBrandRepository _repository;
+        private readonly IBillRepository _repository;
 
-        public BrandModelBinder(IBrandRepository service)
+        public BillModelBinder(IBillRepository service)
         {
             _repository = service;
         }
@@ -36,10 +32,10 @@ namespace NGnono.FinancialManagement.WebSupport.Binder
         #endregion
     }
 
-    public class FetchBrandAttribute : UseBinderAttribute
+    public class FetchBillAttribute : UseBinderAttribute
     {
-        public FetchBrandAttribute()
-            : base(typeof(BrandModelBinder))
+        public FetchBillAttribute()
+            : base(typeof(BillModelBinder))
         {
         }
     }

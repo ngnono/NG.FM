@@ -60,6 +60,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Binder\BillModelBinder.cs" />
     <Compile Include="Binder\BrandModelBinder.cs" />
     <Compile Include="Binder\PagerRequestBinder.cs" />
     <Compile Include="Binder\ProductModelBinder.cs" />

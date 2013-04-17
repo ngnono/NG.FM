@@ -2,7 +2,7 @@
 @model NGnono.FinancialManagement.WebSiteCore.Models.Vo.CreatedProductViewModel
 
 @{
-    ViewBag.Title = "创建商品";
+    ViewBag.Title = this.Model.Name.Substring(0, this.Model.Name.Length > 10 ? 10 : this.Model.Name.Length);
 }
 
 @section Header {
@@ -12,7 +12,7 @@
 })
 }
 
-@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { id = "form" }))
+@using (Html.BeginForm("Update", "Product", FormMethod.Post, new { id = "form" }))
 {
     @Html.ValidationSummary()
     <ul data-role="listview" data-divider-theme="a" data-inset="true">
@@ -54,7 +54,7 @@
         <li data-role="list-divider">店铺</li>
         <li>
             <a id="link_store" href="#storeSetting" data-transition="pop">请选择....</a>
-            @Html.HiddenFor(m => m.Store_Id, new { id = "store" })
+            @Html.HiddenFor(m => m.Store_Id, new { id = "Store_Id" })
         </li>
     </ul>
     
@@ -62,7 +62,7 @@
         <li data-role="list-divider">品牌</li>
         <li>
             <a id="link_brand" href="#brandSetting" data-transition="pop">请选择....</a>
-            @Html.HiddenFor(m => m.Brand_Id, new { id = "brand" })
+            @Html.HiddenFor(m => m.Brand_Id, new { id = "Brand_Id" })
         </li>
     </ul>
 
@@ -107,13 +107,13 @@
         $("#form").submit(function () {
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("Create", "Product")',
+                url: '@Url.Action("Create", "Bill")',
                 data: $(this).serialize(),
                 dataType: "json",
                 success: function (data) {
                     if (data.isSuccessful == true) {
                         alert("创建成功");
-                        $.mobile.changePage('@Url.Action("Update", "Product")?productid=' + data.data, { transition: "slideup" });
+                        $.mobile.changePage('@Url.Action("Update", "Bill")?billid=' + data.data, { transition: "slideup" });
                     }
                     else {
                         var result = "";

@@ -28,7 +28,6 @@ namespace NGnono.FinancialManagement.Data.Models
         public Nullable<double> GpsAlt { get; set; }
         public Nullable<decimal> GpsLat { get; set; }
         public Nullable<decimal> GpsLng { get; set; }
-        public virtual GroupEntity Group { get; set; }
         public virtual ICollection<ProductEntity> Products { get; set; }
 
 #region Overrides of BaseEntity

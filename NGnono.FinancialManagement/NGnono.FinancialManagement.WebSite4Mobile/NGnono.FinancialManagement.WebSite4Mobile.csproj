@@ -292,6 +292,7 @@
     <Content Include="Views\Brand\Create.cshtml" />
     <Content Include="Views\Brand\Update.cshtml" />
     <Content Include="Views\Brand\UpdateList.cshtml" />
+    <Content Include="Views\Product\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -31,7 +31,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public int RecommendSourceId { get; set; }
         public int RecommendSourceType { get; set; }
         public int SortOrder { get; set; }
-        public bool IsShare { get; set; }
+        public Nullable<bool> IsShare { get; set; }
         public virtual BrandEntity Brand { get; set; }
         public virtual ICollection<PriceSettingEntity> PriceSettings { get; set; }
         public virtual StoreEntity Store { get; set; }

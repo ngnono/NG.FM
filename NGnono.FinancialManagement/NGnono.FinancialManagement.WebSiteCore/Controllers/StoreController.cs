@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.Models;
@@ -15,7 +16,7 @@ using NGnono.Framework.Web.Mvc.ActionResults;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
-    public class StoreController : DefController
+    public class StoreController : UserController
     {
         private readonly IStoreRepository _storeRepository;
 
@@ -58,56 +59,112 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 
         [HttpPost]
         [LoginAuthorize]
-        public ActionResult Create(FormCollection formCollection, CreateStoreViewModel vo, [FetchUser(KeyName = "userid")]UserModel userModel)
+        public ActionResult Create(FormCollection formCollection, CreateStoreViewModel vo)
         {
             if (ModelState.IsValid)
             {
                 var entity = Mapper.Map<CreateStoreViewModel, StoreEntity>(vo);
                 entity.CreatedDate = DateTime.Now;
-                entity.CreatedUser = userModel.Id;
+                entity.CreatedUser = base.CurrentUser.CustomerId;
                 entity.UpdatedDate = DateTime.Now;
-                entity.UpdatedUser = userModel.Id;
+                entity.UpdatedUser = base.CurrentUser.CustomerId;
                 entity.Status = (int)DataStatus.Normal;
 
                 _storeRepository.Insert(entity);
+
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<int>(entity.Id) { StatusCode = StatusCode.Success, Message = "" }
+                };
             }
             else
             {
-                ModelState.AddModelError("", "参数验证失败.");
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
+
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<List<string>>(sb) { StatusCode = StatusCode.ClientError, Message = "验证失败" }
+                };
             }
 
-            return View();
+
         }
 
         [HttpPost]
         [LoginAuthorize]
-        //[ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "User_Id")]
-        public ActionResult Update(FormCollection formCollection, [FetchStore(KeyName = "storeid")]StoreEntity store, UpdateStoreViewModel vo, [FetchUser(KeyName = "userid")]UserModel userModel)
+        [ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "CreatedUser")]
+        public ActionResult Update(FormCollection formCollection, [FetchStore(KeyName = "id")]StoreEntity store, UpdateStoreViewModel vo)
         {
             if (ModelState.IsValid)
             {
                 store = Mapper.Map(vo, store);
                 store.UpdatedDate = DateTime.Now;
-                store.UpdatedUser = userModel.Id;
+                store.UpdatedUser = base.CurrentUser.CustomerId;
 
-                _storeRepository.Insert(store);
+                _storeRepository.Update(store);
+
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<int>(store.Id) { StatusCode = StatusCode.Success, Message = "" }
+                };
             }
             else
             {
                 ModelState.AddModelError("", "参数验证失败.");
-            }
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
 
-            return View();
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<List<string>>(sb) { StatusCode = StatusCode.ClientError, Message = "验证失败" }
+                };
+            }
         }
+
+        [LoginAuthorize]
+        [ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "CreatedUser")]
+        public ActionResult Update([FetchStore(KeyName = "storeid")]StoreEntity store)
+        {
+            var vo = Mapper.Map<StoreEntity, UpdateStoreViewModel>(store);
+
+            return View(vo);
+        }
+
 
         [HttpPost]
         [LoginAuthorize]
-        //[ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "User_Id")]
-        public ActionResult Del(FormCollection formCollection, [FetchStore(KeyName = "storeid")]StoreEntity store, [FetchUser(KeyName = "userid")]UserModel userModel)
+        [ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "CreatedUser")]
+        public ActionResult Del(FormCollection formCollection, [FetchStore(KeyName = "id")]StoreEntity store)
         {
             _storeRepository.Delete(store);
 
-            return View();
+            return new RestfulResult
+            {
+                Data = new ExecuteResult<int>() { StatusCode = StatusCode.Success, Message = "" }
+            };
         }
     }
 }

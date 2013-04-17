@@ -13,15 +13,15 @@ namespace NGnono.FinancialManagement.Data.Models
 {
     public partial class NGnonoFMContext : DbContext
     {
-        private static readonly NGnono.Framework.Logger.ILog _log;
+		private static readonly NGnono.Framework.Logger.ILog _log;
 
         static NGnonoFMContext()
         {
             Database.SetInitializer<NGnonoFMContext>(null);
-            _log = NGnono.Framework.Logger.LoggerManager.Current();
+			_log = NGnono.Framework.Logger.LoggerManager.Current();
         }
 
-        /// <summary>
+		/// <summary>
         /// 正式环境使用，无跟踪
         /// </summary>
         public NGnonoFMContext()
@@ -41,7 +41,7 @@ namespace NGnono.FinancialManagement.Data.Models
 
         #region ef tracing
 
-        public NGnonoFMContext(string nameOrConnectionString)
+		public NGnonoFMContext(string nameOrConnectionString)
             : this(nameOrConnectionString, new InMemoryCache(512), CachingPolicy.CacheAll)
         {
         }
@@ -49,7 +49,7 @@ namespace NGnono.FinancialManagement.Data.Models
         public NGnonoFMContext(string nameOrConnectionString, ICache cacheProvider, CachingPolicy cachingPolicy)
             : base(Framework.Data.EF.EFTracingUtil.GetConnection(nameOrConnectionString), true)
         {
-            var ctx = ((IObjectContextAdapter)this).ObjectContext;
+			var ctx = ((IObjectContextAdapter)this).ObjectContext;
 
             this.ObjectContext = ctx;
 
@@ -69,7 +69,7 @@ namespace NGnono.FinancialManagement.Data.Models
 
         #endregion
 
-        #region Tracing Extensions
+		#region Tracing Extensions
 
         private ObjectContext ObjectContext { get; set; }
 
@@ -162,7 +162,7 @@ namespace NGnono.FinancialManagement.Data.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            Configuration.AutoDetectChangesEnabled = false;
+		Configuration.AutoDetectChangesEnabled = false;
             // 移除复数表名的契约
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
@@ -210,9 +210,9 @@ namespace NGnono.FinancialManagement.Data.Models
             modelBuilder.Configurations.Add(new VUserRoleEntityMap());
         }
 
-        public override int SaveChanges()
-        {
-            try
+		public override int SaveChanges()
+		{
+ try
             {
                 return base.SaveChanges();
             }
@@ -228,9 +228,9 @@ namespace NGnono.FinancialManagement.Data.Models
 
                 throw t;
             }
-        }
+		}
 
-        protected override void Dispose(bool disposing)
+		protected override void Dispose(bool disposing)
         {
             System.Diagnostics.Debug.WriteLine("context closed");
             base.Dispose(disposing);

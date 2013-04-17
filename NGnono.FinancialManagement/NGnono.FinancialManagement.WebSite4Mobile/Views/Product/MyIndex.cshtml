@@ -22,7 +22,7 @@
             <h3><a href="@Url.Action("Details", "Product", new { productid = item.Id })">@item.Name</a></h3>
             <p>@item.Store.Name</p>
             <p>@item.Brand.Name</p>
-            <p>@(item.IsShare ? "已分享" : "未分享")</p>
+            <p>@((item.IsShare == null || !item.IsShare.Value) ? "未分享" : "已分享")</p>
 
             @if (item.PriceSettings != null && item.PriceSettings.Count > 0)
             {

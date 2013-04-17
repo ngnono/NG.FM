@@ -5,11 +5,6 @@ namespace NGnono.FinancialManagement.Data.Models
 {
     public partial class GroupEntity : NGnono.Framework.Models.BaseEntity
     {
-        public GroupEntity()
-        {
-            this.Stores = new List<StoreEntity>();
-        }
-
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -18,7 +13,6 @@ namespace NGnono.FinancialManagement.Data.Models
         public System.DateTime UpdatedDate { get; set; }
         public int UpdatedUser { get; set; }
         public int Status { get; set; }
-        public virtual ICollection<StoreEntity> Stores { get; set; }
 
 #region Overrides of BaseEntity
 
