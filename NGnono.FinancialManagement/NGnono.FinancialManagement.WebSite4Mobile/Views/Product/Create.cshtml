@@ -229,7 +229,7 @@
         <div data-role="header">
             @Html.ActionLink("编辑", "MyUpdateList", "Store")
             <h1>商家设置</h1>
-            @Html.ActionLink("创建", "Create", "Store")
+            <a href="@Url.Action("Create", "Store")">创建</a>
         </div>
         &lt;---- 向左滑动返回
         <div data-role="content" id="storeSettingContent">
@@ -237,7 +237,7 @@
             @if (this.Model.Stores == null || this.Model.Stores.Count == 0)
             {
                 <ul data-role="listview">
-                    <li>@Html.ActionLink("创建新商家", "Create", "Store")</li>
+                    <li>请您建立新商家</li>
                 </ul>
             }
             else

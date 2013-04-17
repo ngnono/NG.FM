@@ -57,6 +57,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Manager\MapperManager.cs" />
     <Compile Include="Models\Dto\Product\DetailsDto.cs" />
