@@ -79,6 +79,12 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Vo
     public class UpdateProductViewModel : CreatedProductViewModel
     {
         public int Id { get; set; }
+
+        public TagEntity Tag { get; set; }
+
+        public BrandEntity Brand { get; set; }
+
+        public StoreEntity Store { get; set; }
     }
 
     public class ProductCollectionViewModel : PagerInfoBaseViewModel<List<ProductViewModel>>

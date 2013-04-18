@@ -12,31 +12,18 @@
 }
 
 
-<div data-role="collapsible" data-collapsed="true" data-theme="c">
-    <ul data-role="listview" data-inset="true">
-        <li>@this.Model.Name</li>
-        <li>
-            <div data-role="collapsible" data-collapsed="true">
-                @this.Model.Description
-            </div>
-        </li>
-
-        <li>
-            <div data-role="collapsible" data-collapsed="true">
-                <h3>品牌</h3>
-                @this.Model.Brand.Name
-            </div>
-        </li>
-        <li>
-            <div data-role="collapsible" data-collapsed="true">
-                <h3>商家信息</h3>
-                <a href="#storePage">商家： @this.Model.Store.Name</a>
-                电话： <a href="tel:@this.Model.Store.Tel">@this.Model.Store.Tel</a>
-            </div>
-        </li>
-    </ul>
-
-</div>
+<ul data-role="listview">
+    <li data-role="list-divider">@this.Model.Name</li>
+    <li>@this.Model.Description</li>
+    <li>￥@this.Model.Price</li>
+    <li data-role="list-divider">品牌</li>
+    <li>@this.Model.Brand.Name</li>
+    <li data-role="list-divider">分类</li>
+    <li>@this.Model.Tag.Name</li>
+    <li data-role="list-divider">商家信息</li>
+    <li><a href="#storePage">@this.Model.Store.Name</a></li>
+    <li><a href="tel:@this.Model.Store.Tel">@this.Model.Store.Tel</a></li>
+</ul>
 
 @section PageAreas
 {
@@ -47,10 +34,10 @@
             </h1>
         </div>
         <div data-role="content" id="storeContent">
-            <ul data-role="listview" data-filter="true">
+            <ul data-role="listview" >
                 <li>@this.Model.Store.Name</li>
                 <li><a href="#storeDetailsPage">
-                    <div id="allmap"></div>
+                    <div id="allmap" style="width: 100%; height: 320px"></div>
                 </a></li>
                 <li>@this.Model.Store.Location</li>
                 <li><a href="tel:@this.Model.Store.Tel">@this.Model.Store.Tel</a></li>
@@ -62,20 +49,20 @@
     <div data-role="page" id="storeDetailsPage">
         <div data-role="header">
             @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
-            <h1>@this.Model.Store.Name.Substring(0, this.Model.Store.Name.Length > 10 ? 10 : this.Model.Store.Name.Length);</li>
+            <h1>@this.Model.Store.Name.Substring(0, this.Model.Store.Name.Length > 10 ? 10 : this.Model.Store.Name.Length)</li>
             </h1>
         </div>
-        <div data-role="content" id="storeContent">
-            <ul data-role="listview" data-filter="true">
+        <div data-role="content" id="storeDetailsContent">
+            <ul data-role="listview" >
                 <li>
-                    <div id="dmap"></div>
+                    <div id="dmap" style="width: 100%; height: 320px"></div>
                 </li>
                 <li>
                     <fieldset data-role="controlgroup" data-type="horizontal">
 
-                        <input type="radio" name="type1" id="chb_mode_2" value="2" checked="checked" />
+                        <input type="radio" name="type1" id="chb_mode_2" value="2" checked="checked" onclick=" this.checked = true; sdinit()" />
                         <label for="chb_mode_2">驾车</label>
-                        <input type="radio" name="type1" id="chb_mode_1" value="1" />
+                        <input type="radio" name="type1" id="chb_mode_1" value="1" onclick="this.checked = true;sdinit()"  />
                         <label for="chb_mode_1">公交</label>
 
 
@@ -106,8 +93,16 @@
             var point = new BMap.Point(@this.Model.Store.Longitude, @this.Model.Store.Latitude);
             // 创建点坐标
             map.centerAndZoom(point, 15);
-            // 初始化地图,设置中心点坐标和地图级别。
-            map.enableScrollWheelZoom();
+
+            addOverlay(map, point.lng, point.lat, null);
+
+            //var mk = new BMap.Marker(point);
+            ////map = new BMap.Map("l-map");
+            //map.addOverlay(mk);
+            //map.panTo(point);
+
+            //// 初始化地图,设置中心点坐标和地图级别。
+            //map.enableScrollWheelZoom();
             //启用滚轮放大缩小
         }
 
@@ -119,41 +114,69 @@
             map.centerAndZoom(point, 15); // 初始化地图,设置中心点坐标和地图级别。
             map.enableScrollWheelZoom();
 
-            var g = getGeo();
-            if (g == '') {
-                return;
-            }
+            getGeo(map);
+            
+        }
 
+        function daohang(map, pc, pe) {
             var val = $('input:radio[name="type1"]:checked').val();
             if (val == null) {
                 alert("请选择出行方式驾车or公交");
                 return false;
             }
 
-            var p1 = new BMap.Point(g.split(',')[0], g.split(',')[1]);
-            var p2 = new BMap.Point(@this.Model.Store.Longitude, @this.Model.Store.Latitude);
-
-            var transit;
             if (val == 2) {
-                transit = new BMap.DrivingRoute(map, { renderOptions: { map: map, autoViewport: true, panel: "r-result" } });
+                jiache(map, pc, pe);
             } else {
-                transit = new BMap.TransitRoute(map, {
-                    renderOptions: { map: map, panel: "r-result" }
-                });
-            }
+                gongjiao(map, pc, pe);
 
+            }
+        }
+
+        function jiache(map,p1,p2) {
+            var transit = new BMap.DrivingRoute(map, { renderOptions: { map: map, autoViewport: true, panel: "r-result" } });
             transit.search(p1, p2);
         }
 
-        function getGeo() {
+        function gongjiao(map,p1,p2) {
+            var transit = new BMap.TransitRoute(map, {
+                renderOptions: { map: map, panel: "r-result" }
+            });
+            transit.search(p1, p2);
+        }
+
+        function addOverlay(map, lng, lat, currentGeo) {
+            var p = new BMap.Point(lng, lat);
+            var marker = new BMap.Marker(p); // 创建标注
+            map.addOverlay(marker); // 将标注添加到地图中
+            map.panTo(p);
+            if (currentGeo != null) {
+                marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+                //创建信息窗口
+                //创建信息窗口
+                var infoWindow1 = new BMap.InfoWindow("您的位置");
+                marker.addEventListener("click", function() { this.openInfoWindow(infoWindow1); });
+            }
+        }
+
+        function getGeo(map) {
+
+
+            var p2 = new BMap.Point(@this.Model.Store.Longitude, @this.Model.Store.Latitude);
+
             var geo = '';
             var geolocation = new BMap.Geolocation();
             geolocation.getCurrentPosition(function(r) {
                 if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-                    var mk = new BMap.Marker(r.point);
-                    map.addOverlay(mk);
-                    map.panTo(r.point);
-                    geo = r.point.lng + ',' + r.point.lat;
+                    //var mk = new BMap.Marker(r.point);
+                    //map.addOverlay(mk);
+                    //map.panTo(r.point);
+                    addOverlay(map, r.point.lng, r.point.lat, 'current');
+                    //geo = r.point.lng + ',' + r.point.lat;
+
+                    var p1 = new BMap.Point(r.point.lng, r.point.lat);
+
+                    daohang(map, p1, p2);
                 } else {
                     alert('failed' + this.getStatus());
                 }
@@ -182,8 +205,8 @@
 
             map.addEventListener("click", showInfo);
         }
-        
-        function showInfo(e){
+
+        function showInfo(e) {
             alert(e.point.lng + ", " + e.point.lat);
         }
     </script>

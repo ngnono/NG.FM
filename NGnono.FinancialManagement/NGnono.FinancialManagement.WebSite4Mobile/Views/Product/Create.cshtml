@@ -113,7 +113,7 @@
                 success: function (data) {
                     if (data.isSuccessful == true) {
                         alert("创建成功");
-                        $.mobile.changePage('@Url.Action("Update", "Product")?productid=' + data.data, { transition: "slideup" });
+                        $.mobile.changePage('@Url.Action("Update", "Product")?productid=' + data.data, { transition: "slideup" },true,true);
                     }
                     else {
                         var result = "";

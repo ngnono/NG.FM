@@ -4,7 +4,7 @@
 
 @{
     ViewBag.Title = "商品大厅";
-    var url = Url.Action("List", "Product");
+    var url = "/product/list";//Url.Action("List", "Product");
 }
 
 @section Header {
@@ -29,17 +29,17 @@
             @if (item.PriceSettings != null && item.PriceSettings.Count > 0)
             {
                 var s = item.PriceSettings.Where(v => v.Status == (int)DataStatus.Normal).Select(v => new
-                    {
-                        v.Id,
-                        Price = v.Amount,
-                        Date = v.SourceDate
-                    }).OrderByDescending(v => v.Date).FirstOrDefault();
+                {
+                    v.Id,
+                    Price = v.Amount,
+                    Date = v.SourceDate
+                }).OrderByDescending(v => v.Date).FirstOrDefault();
                 var d = item.PriceSettings.Where(v => v.Status == (int)DataStatus.Normal).Select(v => new
-                    {
-                        v.Id,
-                        Price = v.Amount,
-                        Date = v.SourceDate
-                    }).OrderByDescending(v => v.Price).FirstOrDefault();
+                {
+                    v.Id,
+                    Price = v.Amount,
+                    Date = v.SourceDate
+                }).OrderByDescending(v => v.Price).FirstOrDefault();
                 
                 <p class="ui-li-aside">当前价￥<strong>@s.Price</strong></p>
                 <p class="ui-li-aside">历史最低价￥<strong>@d.Price</strong></p>
@@ -49,29 +49,78 @@
 
 </ul>
 
-@if (this.Model.IsPaged)
-{
-    <ul data-role="pagination">
+@* @if (this.Model.IsPaged)
+    {
         if (this.Model.Index == 1)
         {
-        <li class="ui-pagination-next"><a href="@String.Format("{0}?page={1}", url, this.Model.Index + 1)">Next</a></li>
+            <script type="text/javascript">
+                $(document).bind('pageshow', pt);
+
+                function pt() {
+                    alert(1);
+                    $('#home').off("swipeleft");
+                    $('#home').on("swipeleft", function() {
+                        $.mobile.changePage('@String.Format("{0}/{1}", url, this.Model.Index + 1)', { transition: "fade" }, false, false);
+                    });
+                }
+
+            </script>
+        }
+        else if (this.Model.Index == this.Model.TotalPaged)
+        {
+            <script type="text/javascript">
+                $(document).bind('pageshow', pt);
+
+                function pt() {
+                    alert(1);
+                    $('#home').off("swiperight");
+                    $('#home').bind("swiperight", function() {
+                        $.mobile.changePage('@String.Format("{0}/{1}", url, this.Model.Index - 1)', { transition: "fade" }, false, false);
+                    });
+                }
+
+            </script>
         }
         else
-            if (this.Model.Index == this.Model.TotalPaged)
-            {
-        <li class="ui-pagination-prev"><a href="@String.Format("{0}?page={1}", url, this.Model.Index - 1)">Prev</a></li>
+        {
+            <script type="text/javascript">
+                $(document).bind('pageshow', pt);
+
+                function pt() {
+                    alert(1);
+                    $('#home').off("swiperight");
+                    $('#home').off("swipeleft");
+                    $('#home').bind("swiperight", function() {
+                        $.mobile.changePage('@String.Format("{0}/{1}", url, this.Model.Index - 1)', { transition: "fade" }, false, false);
+                    });
+                    $('#home').on("swipeleft", function() {
+                        $.mobile.changePage('@String.Format("{0}/{1}", url, this.Model.Index + 1)', { transition: "fade" }, false, false);
+                    });
+                }
+
+            </script>
         }
-            else
-            {
-        <li class="ui-pagination-prev"><a href="@String.Format("{0}?page={1}", url, this.Model.Index - 1)">Prev</a></li>
+    }*@
 
-        <li class="ui-pagination-next"><a href="@String.Format("{0}?page={1}", url, this.Model.Index + 1)">Next</a></li>
+<ul data-role="pagination">
+    @if (this.Model.Index == 1)
+    {
+        <li class="ui-pagination-next"><a href="@String.Format("{0}/{1}", url, this.Model.Index + 1)">Next</a></li>
+    }
+    else
+        if (this.Model.Index == this.Model.TotalPaged)
+        {
+        <li class="ui-pagination-prev"><a href="@String.Format("{0}/{1}", url, this.Model.Index - 1)">Prev</a></li>
+        }
+        else
+        {
+        <li class="ui-pagination-prev"><a href="@String.Format("{0}/{1}", url, this.Model.Index - 1)">Prev</a></li>
+
+        <li class="ui-pagination-next"><a href="@String.Format("{0}/{1}", url, this.Model.Index + 1)">Next</a></li>
 
         }
-            
-    </ul>
-}
 
+</ul>
 
 
 @section FooterScripts

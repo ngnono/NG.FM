@@ -198,6 +198,8 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                 entity.Tag = _tagRepository.Find(entity.Tag_Id);
                 entity.Favorable = string.Empty;
                 entity.RecommendedReason = string.Empty;
+                entity.RecommendUser = base.CurrentUser.CustomerId;
+                entity.Status = (int)DataStatus.Normal;
 
                 entity = _productRepository.Insert(entity);
 
@@ -257,11 +259,11 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                     DataStatus = DataStatus.Normal,
                     UserId = request.CustomerId,
                     IsShare = true
-                }));
+                })).OrderByDescending(v=>v.UpdatedDate);
 
             var totalCount = linq.Count();
 
-            var result = pagerRequest.PageIndex == 1 ? linq.Take(pagerRequest.PageSize) : linq.Skip((pagerRequest.PageSize - 1) * pagerRequest.PageSize).Take(pagerRequest.PageSize);
+            var result = pagerRequest.PageIndex == 1 ? linq.Take(pagerRequest.PageSize) : linq.Skip((pagerRequest.PageIndex - 1) * pagerRequest.PageSize).Take(pagerRequest.PageSize);
 
             var dto = new ListDto(pagerRequest, totalCount)
                 {
@@ -275,9 +277,19 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         [ModelOwnerCheck(TakeParameterName = "model", CustomerPropertyName = "RecommendUser")]
         public ActionResult Update([FetchProduct(KeyName = "productid")]ProductEntity model)
         {
-            var r = Get(model.Id);
+            var vo = Mapper.Map<ProductEntity, UpdateProductViewModel>(model);
 
-            return View(r);
+
+            vo.Brands =
+                _brandRepository.Get(
+                    v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            vo.Stores = _storeRepository.Get(v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            vo.Tags = _tagRepository.Get(v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+
+            return View(vo);
         }
 
         [HttpPost]
@@ -287,18 +299,50 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                model = Mapper.Map(vo, model);
+                var id = model.Id;
 
+                model = Mapper.Map(vo, model);
+                //model.Brand = _brandRepository.Find(vo.Brand_Id);
+                //model.Store = _storeRepository.Find(vo.Store_Id);
+                //model.Tag = _tagRepository.Find(vo.Tag_Id);
+                model.UpdatedDate = DateTime.Now;
+                model.UpdatedUser = base.CurrentUser.CustomerId;
+                model.Id = id;
+                model.RecommendedReason = String.Empty;
+                model.Favorable = String.Empty;
                 _productRepository.Update(model);
 
-                return View(Get(model.Id));
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<int>(model.Id) { StatusCode = StatusCode.Success, Message = "" }
+                };
             }
             else
             {
-                ModelState.AddModelError("", "参数验证失败.");
-            }
+                // 如果我们进行到这一步时某个地方出错，则重新显示表单
+                //var dto = new CreateDto { Tags = tagList };
+                //dto.Vo = vo;
+                //dto.IsError = true;
+                //return View("Success",new SuccessViewModel{});
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
 
-            return View(vo);
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<List<string>>(sb) { StatusCode = StatusCode.ClientError, Message = "验证失败" }
+                };
+            }
         }
 
         [HttpPost]

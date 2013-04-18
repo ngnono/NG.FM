@@ -1,5 +1,5 @@
 ﻿@using NGnono.FinancialManagement.WebSiteCore.Models.Vo
-@model NGnono.FinancialManagement.WebSiteCore.Models.Vo.CreatedProductViewModel
+@model NGnono.FinancialManagement.WebSiteCore.Models.Vo.UpdateProductViewModel
 
 @{
     ViewBag.Title = this.Model.Name.Substring(0, this.Model.Name.Length > 10 ? 10 : this.Model.Name.Length);
@@ -32,7 +32,7 @@
         <li>
             <fieldset data-role="controlgroup" data-type="horizontal">
 
-                <input type="radio" name="isshare" id="chb_mode_2" value="false" checked="checked" onclick="$('isshare').val(false)" />
+                <input type="radio" name="isshare" id="chb_mode_2" value="false" onclick="$('isshare').val(false)" />
                 <label for="chb_mode_2">不分享</label>
                 <input type="radio" name="isshare" id="chb_mode_1" value="true" onclick="$('isshare').val(true)" />
                 <label for="chb_mode_1">分享</label>
@@ -45,7 +45,7 @@
     <ul data-role="listview" data-divider-theme="a" data-inset="true">
         <li data-role="list-divider">分类</li>
         <li>
-            <a id="link_tag" href="#tagSetting" data-transition="pop">请选择....</a>
+            <a id="link_tag" href="#tagSetting" data-transition="pop">@this.Model.Tag.Name</a>
             @Html.HiddenFor(m => m.Tag_Id, new { id = "tag" })
         </li>
     </ul>
@@ -53,16 +53,16 @@
     <ul data-role="listview" data-divider-theme="a" data-inset="true">
         <li data-role="list-divider">店铺</li>
         <li>
-            <a id="link_store" href="#storeSetting" data-transition="pop">请选择....</a>
-            @Html.HiddenFor(m => m.Store_Id, new { id = "Store_Id" })
+            <a id="link_store" href="#storeSetting" data-transition="pop">@this.Model.Store.Name</a>
+            @Html.HiddenFor(m => m.Store_Id, new { id = "store" })
         </li>
     </ul>
     
     <ul data-role="listview" data-divider-theme="a" data-inset="true">
         <li data-role="list-divider">品牌</li>
         <li>
-            <a id="link_brand" href="#brandSetting" data-transition="pop">请选择....</a>
-            @Html.HiddenFor(m => m.Brand_Id, new { id = "Brand_Id" })
+            <a id="link_brand" href="#brandSetting" data-transition="pop">@this.Model.Brand.Name</a>
+            @Html.HiddenFor(m => m.Brand_Id, new { id = "brand" })
         </li>
     </ul>
 
@@ -77,6 +77,8 @@
 
     $('#home').bind('pageinit', pinit);
 
+    $('#chb_mode_@((this.Model.IsShare == null || !this.Model.IsShare.Value)?2:1)').attr('checked', true);
+          
     function pinit() {
 
         $('#dataDateTime').mobiscroll().date({
@@ -87,13 +89,8 @@
             dateOrder: 'mmD ddyy'
         });
 
-        var val = $('input:radio[name="isshare"]:checked').val();
-        if (val == null) {
-            alert("请选择收入or支出");
-            return false;
-        }
+                                                               
 
-        $('#isshare').val(val);
 
 
         $('#dataDateTime').mobiscroll('setValue', '@DateTime.Now.ToString("MM/dd/yyyy")', true);
@@ -105,15 +102,23 @@
 
 
         $("#form").submit(function () {
+            var val = $('input:radio[name="isshare"]:checked').val();
+            if (val == null) {
+                alert("请选择收入or支出");
+                return false;
+            }
+
+            $('#isshare').val(val);
+            
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("Create", "Bill")',
+                url: '@Url.Action("Update", "Product", new { productid = this.Model.Id })',
                 data: $(this).serialize(),
                 dataType: "json",
                 success: function (data) {
                     if (data.isSuccessful == true) {
-                        alert("创建成功");
-                        $.mobile.changePage('@Url.Action("Update", "Bill")?billid=' + data.data, { transition: "slideup" });
+                        alert("保存成功");
+                        $.mobile.changePage('@Url.Action("Update", "Product")?productid=' + data.data, { transition: "slideup" });
                     }
                     else {
                         var result = "";
@@ -290,14 +295,14 @@
             $('#link_store').html(name);
             backHome();
         }
-        
+
         function bindBrand(id, name) {
             $('#brand').val(id);
             $('#link_brand').html(name);
             backHome();
         }
-        
-        
+
+
         function backHome() {
             $.mobile.changePage('#home', { transition: "fade" });
         }
