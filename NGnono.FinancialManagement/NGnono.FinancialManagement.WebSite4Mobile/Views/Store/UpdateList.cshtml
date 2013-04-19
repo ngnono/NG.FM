@@ -1,14 +1,14 @@
 ﻿@using NGnono.FinancialManagement.WebSiteCore.Models.Vo
-@model List<NGnono.FinancialManagement.Data.Models.TagEntity>
+@model List<NGnono.FinancialManagement.Data.Models.StoreEntity>
 
 @{
-    ViewBag.Title = "分类列表";
+    ViewBag.Title = "商家列表";
 }
 
 <ul data-role="listview" data-inset="true">
     @foreach (var item in this.Model)
     {
-        <li>@Html.ActionLink(item.Name, "Update", "Tag", new { tagid = item.Id }, null)</li>
+        <li>@Html.ActionLink(item.Name, "Update", "Store", new { storeid = item.Id }, null)</li>
     }
 </ul>
 

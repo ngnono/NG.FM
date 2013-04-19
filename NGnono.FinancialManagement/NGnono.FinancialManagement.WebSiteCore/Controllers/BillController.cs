@@ -22,6 +22,20 @@ using NGnono.Framework.Web.Mvc.ActionResults;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
+    public  class ChartRequest
+    {
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+    }
+
+    public class ChartDto
+    {
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+    }
+
     //http://www.gbin1.com/technology/jqueryplugins/20111228jquerymobileplugins/
     //http://demo.mobiscroll.com/datetime/date
     //http://demo.mobiscroll.com/list/treelist#mode=scroller&display=inline&theme=jqm
@@ -37,6 +51,19 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             _repository = repository;
             _tagRepository = tagRepository;
             _customerRepository = customerRepository;
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [LoginAuthorize]
+        public ActionResult Chart(ChartRequest request)
+        {
+
+            return View();
         }
 
 

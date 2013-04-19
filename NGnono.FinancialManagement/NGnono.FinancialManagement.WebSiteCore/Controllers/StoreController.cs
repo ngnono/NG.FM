@@ -153,6 +153,17 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return View(vo);
         }
 
+        [LoginAuthorize]
+        public ActionResult UpdateList()
+        {
+            var data =
+                _storeRepository.Get(
+                    v => v.Status == (int) DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId)
+                                .OrderByDescending(v => v.UpdatedDate).ToList();
+
+            return View(data);
+        }
+
 
         [HttpPost]
         [LoginAuthorize]

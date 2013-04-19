@@ -1,0 +1,110 @@
+﻿@using NGnono.FinancialManagement.WebSiteCore.Models.Vo
+@model NGnono.FinancialManagement.WebSiteCore.Controllers.ChartDto
+@{
+    ViewBag.Title = "统计";
+}
+
+@section Header {
+    @Html.Partial("_DefHeaderPartial", new DefHeaderViewModel
+{
+    Title = ViewBag.Title
+})
+}
+
+@using (Html.BeginForm("Chart", "Bill", FormMethod.Get, new { id = "form" }))
+{
+    <ul data-role="listview">
+        <li data-role="list-divider">筛选</li>
+        <li>@Html.Hidden("startDate", "", new { @class = "i-txt", id = "startDate" })</li>
+        <li>@Html.Hidden("endDate", "", new { @class = "i-txt", id = "endDate" })</li>
+        <li data-role="list-divider">统计图</li>
+        <li>
+            <div id="chart10" style="margin-top: 20px; margin-left: 20px; width: 100%; height: 350px;"></div>
+        </li>
+        <li>
+            <input type="submit" value="统计" />
+        </li>
+    </ul>
+
+}
+
+<script type="text/javascript">
+    $(document).on('pageinit', pageInit);
+
+    function chartSet(data) {
+        var plot2 = jQuery.jqplot('chart10',
+          data,
+          {
+              title: '',
+              seriesDefaults: {
+                  shadow: false,
+                  renderer: jQuery.jqplot.PieRenderer,
+                  rendererOptions: {
+                      startAngle: 180,
+                      sliceMargin: 4,
+                      showDataLabels: true
+                  }
+              },
+              legend: { show: true, location: 'w' }
+          }
+      );
+    }
+
+    function chartInit() {
+        var data = [];
+        chartSet(data);
+    }
+
+    function pageInit() {
+        $('#startDate').mobiscroll().date({
+            //invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
+            theme: 'jqm',
+            display: 'inline',
+            mode: 'scroller',
+            dateOrder: 'mmD ddyy'
+        });
+        $('#endDate').mobiscroll().date({
+            //invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
+            theme: 'jqm',
+            display: 'inline',
+            mode: 'scroller',
+            dateOrder: 'mmD ddyy'
+        });
+
+        $('#startDate').mobiscroll('setValue', '@this.Model.StartDate.ToString("MM/dd/yyyy")', true);
+        $('#endDate').mobiscroll('setValue', '@this.Model.EndDate.ToString("MM/dd/yyyy")', true);
+
+
+@*        $("#form").submit(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Create", "Product")',
+                data: $(this).serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.isSuccessful == true) {
+                        alert("创建成功");
+                        $.mobile.changePage('@Url.Action("Update", "Product")?productid=' + data.data, { transition: "slideup" }, true, true);
+                    }
+                    else {
+                        var result = "";
+                        for (var i in data.data) {
+                            result = result + data.data[i] + "\r\n";
+                        }
+                        alert(result);
+                    }
+                },
+                global: false
+            });
+            return false;
+        });*@
+
+        chartInit();
+    }
+
+</script>
+
+@section HeaderScripts
+{
+    <script src="@Url.Content("~/js/widgets/jqplot/plugins/jqplot.pieRenderer.min.js")" type="text/javascript"></script>
+}
