@@ -44,7 +44,7 @@
 <body>
     <div data-role="page" id="home">
         <div data-role="header" id="homeHeader">
-
+            @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
             <h1>@ViewBag.Title</h1>
             @Html.Partial("_LoginPartial")
 
@@ -88,8 +88,8 @@
             </form>
             <script>
                 //$(document).on('pageinit', function() {
-                $('chb_type_@(this.Model.Request.Type)').attr('checked',true);
-                $('chb_mode_@((int)this.Model.Request.BillType)').attr('checked', true);
+                $('#chb_type_@(this.Model.Request.Type)').attr('checked',true);
+                $('#chb_mode_@((int)this.Model.Request.BillType)').attr('checked', true);
                     
                 //});
                 $(document).ready(function () {

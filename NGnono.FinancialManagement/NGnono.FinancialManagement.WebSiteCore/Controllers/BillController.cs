@@ -168,6 +168,10 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             {
                 return BarChartR(request);
             }
+            else
+            {
+                request.Type = 1;
+            }
 
             if (request.BillType == BillType.None)
             {
