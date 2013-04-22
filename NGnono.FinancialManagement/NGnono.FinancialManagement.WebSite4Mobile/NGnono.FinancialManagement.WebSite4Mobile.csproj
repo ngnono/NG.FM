@@ -357,6 +357,10 @@
     <Content Include="Views\Brand\UpdateList.cshtml" />
     <Content Include="Views\Product\Update.cshtml" />
     <Content Include="Views\Bill\Chart.cshtml" />
+    <Content Include="Views\Bill\chartTest.cshtml" />
+    <Content Include="Views\Bill\View1.cshtml" />
+    <Content Include="Views\Bill\View2.cshtml" />
+    <Content Include="Views\Bill\View3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

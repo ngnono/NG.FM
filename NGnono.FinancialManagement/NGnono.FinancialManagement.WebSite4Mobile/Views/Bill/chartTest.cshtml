@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "chartTest";
+    Layout = "~/Views/Shared/_JqMLayoutV2.cshtml";
+}
+
+    <div data-role="chart" id="pie1" style="margin-top: 20px; margin-left: 20px; width: 200px; height: 200px;"></div>
+    <script>
+        $(document).on('pageinit', chartinit);
+        function chartinit() {
+            //var plot1 = $.jqplot('pie1', [[['a', 25], ['b', 14], ['c', 7]]], {
+            //    gridPadding: { top: 0, bottom: 38, left: 0, right: 0 },
+            //    seriesDefaults: {
+            //        renderer: $.jqplot.PieRenderer,
+            //        trendline: { show: false },
+            //        rendererOptions: { padding: 8, showDataLabels: true }
+            //    },
+            //    legend: {
+            //        show: true,
+            //        placement: 'outside',
+            //        rendererOptions: {
+            //            numberRows: 1
+            //        },
+            //        location: 's',
+            //        marginTop: '15px'
+            //    }
+            //});
+            //alert(plot1);
+            
+            $.mobile.changePage('/bill/view2', { transition: "fade" }, false, false);
+        }
+
+
+        
+    </script>
+
+
