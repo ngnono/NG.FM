@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -16,12 +17,42 @@ using NGnono.FinancialManagement.WebSiteCore.Utils;
 using NGnono.FinancialManagement.WebSupport.Binder;
 using NGnono.FinancialManagement.WebSupport.Mvc.Controllers;
 using NGnono.FinancialManagement.WebSupport.Mvc.Filters;
+using NGnono.Framework.Extension;
 using NGnono.Framework.Mapping;
 using NGnono.Framework.Models;
 using NGnono.Framework.Web.Mvc.ActionResults;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
+    public class ChartRequest
+    {
+        /// <summary>
+        /// def 1 pie(分类) 2 bar(收支)
+        /// </summary>
+        public int? Type { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public DateTime? EndDate { get; set; }
+
+        public BillType BillType { get; set; }
+    }
+
+    [DataContract]
+    public class ChartDto
+    {
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+
+        public ChartRequest Request { get; set; }
+
+        [DataMember]
+        public string PieVal { get; set; }
+
+        public string Ticks { get; set; }
+    }
+
     //http://www.gbin1.com/technology/jqueryplugins/20111228jquerymobileplugins/
     //http://demo.mobiscroll.com/datetime/date
     //http://demo.mobiscroll.com/list/treelist#mode=scroller&display=inline&theme=jqm
@@ -39,6 +70,155 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             _customerRepository = customerRepository;
         }
 
+        public ActionResult ChartTest()
+        {
+            return View();
+        }
+
+        public ActionResult View1()
+        {
+            return View();
+        }
+
+        public ActionResult View2(ChartRequest request)
+        {
+            return Chart(request);
+        }
+
+
+        public ActionResult View3()
+        {
+            return View();
+        }
+
+        public ActionResult PieChart(ChartRequest request)
+        {
+            return Chart(request);
+        }
+
+        public ActionResult BarChart(ChartRequest request)
+        {
+            return Chart(request);
+        }
+
+        private ActionResult BarChartR(ChartRequest request)
+        {
+            if (request.StartDate == null)
+            {
+                request.StartDate = DateTime.Now.AddDays(-30);
+            }
+
+            if (request.EndDate == null)
+            {
+                request.EndDate = DateTime.Now;
+            }
+
+            var rest = this._repository.Get(
+                v =>
+                v.Status == (int)DataStatus.Normal && v.DataDateTime >= request.StartDate &&
+                v.DataDateTime <= request.EndDate && v.User_Id == CurrentUser.CustomerId);
+
+            var g = rest.GroupBy(v => v.Tag_Id);
+
+            var list1 = new List<decimal>();
+            var list2 = new List<decimal>();
+            var ticks = new List<string>();
+            foreach (var item in g)
+            {
+                var l = new List<object>(2);
+                var sum1 = item.Where(v => v.Type == (int)BillType.Expenses).Sum(v => (decimal?)v.Amount) ?? 0;
+                var sum2 = item.Where(v => v.Type == (int)BillType.Revenue).Sum(v => (decimal?)v.Amount) ?? 0;
+                var t = item.FirstOrDefault();
+
+                list1.Add(sum1);
+                list2.Add(sum2);
+                ticks.Add(t.Tag.Name);
+            }
+
+            var r = list1.Count == 0 ? "[[[]]]" : String.Format("[{0},{1}]", list1.ToJson(), list2.ToJson());
+
+            var dto = new ChartDto();
+            dto.StartDate = request.StartDate.Value;
+            dto.EndDate = request.EndDate.Value;
+            dto.PieVal = r;
+            dto.Ticks = ticks.ToJson();
+            dto.Request = request;
+
+            return View("View1", dto);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [LoginAuthorize]
+        public ActionResult Chart(ChartRequest request)
+        {
+            if (request.StartDate == null)
+            {
+                request.StartDate = DateTime.Now.AddDays(-30);
+            }
+
+            if (request.EndDate == null)
+            {
+                request.EndDate = DateTime.Now;
+            }
+
+            if (request.Type != null && request.Type == 2)
+            {
+                return BarChartR(request);
+            }
+            else
+            {
+                request.Type = 1;
+            }
+
+            if (request.BillType == BillType.None)
+            {
+                request.BillType = BillType.Revenue;
+            }
+
+            var rest = this._repository.Get(
+                v =>
+                v.Status == (int)DataStatus.Normal && v.DataDateTime >= request.StartDate &&
+                v.DataDateTime <= request.EndDate && v.User_Id == CurrentUser.CustomerId && v.Type == (int)request.BillType);
+
+            var g = rest.GroupBy(v => v.Tag_Id);
+
+            var list = new List<List<object>>();
+
+            foreach (var item in g)
+            {
+                var l = new List<object>(2);
+                var sum = item.Sum(v => v.Amount);
+                var t = item.FirstOrDefault();
+
+                l.Add(t.Tag.Name);
+
+                l.Add(sum);
+                list.Add(l);
+            }
+
+            var r = new List<List<List<object>>>();
+            r.Add(list);
+
+            var dto = new ChartDto();
+            dto.StartDate = request.StartDate.Value;
+            dto.EndDate = request.EndDate.Value;
+            dto.PieVal = list.Count == 0 ? "[[[]]]" : r.ToJson();
+            dto.Request = request;
+
+            return View("View2", dto);
+        }
+
+        [DataContract]
+        public class PieStruct
+        {
+            [DataMember(Name = "name")]
+            public string Name { get; set; }
+            [DataMember(Name = "val")]
+            public decimal Val { get; set; }
+        }
 
         /// <summary>
         ///  区域1

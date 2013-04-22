@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
 using NGnono.FinancialManagement.Data.Models;
-using NGnono.FinancialManagement.Models;
 using NGnono.FinancialManagement.Models.Enums;
 using NGnono.FinancialManagement.Models.Filters;
 using NGnono.FinancialManagement.Repository.Contract;
@@ -22,7 +21,7 @@ using NGnono.Framework.Web.Mvc.ActionResults;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Controllers
 {
-    public class ProductController : DefController
+    public class ProductController : UserController
     {
         private readonly IProductRepository _productRepository;
         private readonly IStoreRepository _storeRepository;
@@ -93,6 +92,11 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
                 filter = filter.And(v => v.Tag_Id.Equals(productFilter.TagId.Value));
             }
 
+            if (productFilter.IsShare != null)
+            {
+                filter = filter.And(v => v.IsShare == productFilter.IsShare);
+            }
+
             return filter;
         }
 
@@ -143,9 +147,39 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         #endregion
 
         [LoginAuthorize]
+        public ActionResult MyIndex(ListRequest request, PagerRequest pagerRequest)
+        {
+            var linq = _productRepository.Get(Filter(new ProductFilter
+            {
+                DataStatus = DataStatus.Normal,
+                UserId = request.CustomerId
+            }));
+
+            var totalCount = linq.Count();
+
+            var result = pagerRequest.PageIndex == 1 ? linq.Take(pagerRequest.PageSize) : linq.Skip((pagerRequest.PageSize - 1) * pagerRequest.PageSize).Take(pagerRequest.PageSize);
+
+            var dto = new ListDto(pagerRequest, totalCount)
+            {
+                Datas = result.ToList()
+            };
+
+            return View(dto);
+        }
+
+        [LoginAuthorize]
         public ActionResult Create()
         {
-            return View();
+            var model = new CreatedProductViewModel();
+            model.Brands =
+                _brandRepository.Get(
+                    v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            model.Stores = _storeRepository.Get(v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            model.Tags = _tagRepository.Get(v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            return View(model);
         }
 
         [HttpPost]
@@ -155,26 +189,67 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             if (ModelState.IsValid)
             {
                 var entity = _mapperManager.ProductMapper(model);
+                entity.CreatedDate = DateTime.Now;
+                entity.CreatedUser = base.CurrentUser.CustomerId;
+                entity.UpdatedDate = DateTime.Now;
+                entity.UpdatedUser = base.CurrentUser.CustomerId;
+                entity.Brand = _brandRepository.Find(entity.Brand_Id);
+                entity.Store = _storeRepository.Find(entity.Store_Id);
+                entity.Tag = _tagRepository.Find(entity.Tag_Id);
+                entity.Favorable = string.Empty;
+                entity.RecommendedReason = string.Empty;
+                entity.RecommendUser = base.CurrentUser.CustomerId;
+                entity.Status = (int)DataStatus.Normal;
 
-                var e = _productRepository.Insert(entity);
+                entity = _productRepository.Insert(entity);
 
-                var r = Get(e.Id);
+                //var r = Get(e.Id);
 
-                return View("Update", r);
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<int>(entity.Id) { StatusCode = StatusCode.Success, Message = "" }
+                };
             }
             else
             {
-                ModelState.AddModelError("", "参数验证失败.");
-            }
+                // 如果我们进行到这一步时某个地方出错，则重新显示表单
+                //var dto = new CreateDto { Tags = tagList };
+                //dto.Vo = vo;
+                //dto.IsError = true;
+                //return View("Success",new SuccessViewModel{});
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
 
-            return View(model);
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<List<string>>(sb) { StatusCode = StatusCode.ClientError, Message = "验证失败" }
+                };
+            }
         }
 
         public ActionResult Details([FetchProduct(KeyName = "productid")]ProductEntity model)
         {
-            var r = Get(model.Id);
 
-            return View(r);
+            return View(model);
+
+
+        }
+
+        public ActionResult Index(ListRequest request, PagerRequest pagerRequest)
+        {
+            return List(request, pagerRequest)
+             ;
         }
 
         public ActionResult List(ListRequest request, PagerRequest pagerRequest)
@@ -182,34 +257,39 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             var linq = _productRepository.Get(Filter(new ProductFilter
                 {
                     DataStatus = DataStatus.Normal,
-                    UserId = request.CustomerId
-                }));
+                    UserId = request.CustomerId,
+                    IsShare = true
+                })).OrderByDescending(v=>v.UpdatedDate);
 
-            var r = linq.Join(_storeRepository.Get(v => v.Status.Equals((int)DataStatus.Normal)), f => f.Store_Id,
-                         p => p.Id, (f, p) => new ProductViewModel
-                             {
-                                 Product = f,
-                                 Store = p
-                             });
-            var totalCount = r.Count();
+            var totalCount = linq.Count();
 
-            var result = pagerRequest.PageIndex == 1 ? r.Take(pagerRequest.PageSize) : r.Skip((pagerRequest.PageSize - 1) * pagerRequest.PageSize).Take(pagerRequest.PageSize);
+            var result = pagerRequest.PageIndex == 1 ? linq.Take(pagerRequest.PageSize) : linq.Skip((pagerRequest.PageIndex - 1) * pagerRequest.PageSize).Take(pagerRequest.PageSize);
 
-            var dto = new ListDto
+            var dto = new ListDto(pagerRequest, totalCount)
                 {
-                    Products = new ProductCollectionViewModel(pagerRequest, totalCount) { Datas = result.ToList() }
+                    Datas = result.ToList()
                 };
 
-            return View(dto);
+            return View("List", dto);
         }
 
         [LoginAuthorize]
         [ModelOwnerCheck(TakeParameterName = "model", CustomerPropertyName = "RecommendUser")]
         public ActionResult Update([FetchProduct(KeyName = "productid")]ProductEntity model)
         {
-            var r = Get(model.Id);
+            var vo = Mapper.Map<ProductEntity, UpdateProductViewModel>(model);
 
-            return View(r);
+
+            vo.Brands =
+                _brandRepository.Get(
+                    v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            vo.Stores = _storeRepository.Get(v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+            vo.Tags = _tagRepository.Get(v => v.Status == (int)DataStatus.Normal && v.CreatedUser == CurrentUser.CustomerId).ToList();
+
+
+            return View(vo);
         }
 
         [HttpPost]
@@ -219,18 +299,50 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                model = Mapper.Map(vo, model);
+                var id = model.Id;
 
+                model = Mapper.Map(vo, model);
+                //model.Brand = _brandRepository.Find(vo.Brand_Id);
+                //model.Store = _storeRepository.Find(vo.Store_Id);
+                //model.Tag = _tagRepository.Find(vo.Tag_Id);
+                model.UpdatedDate = DateTime.Now;
+                model.UpdatedUser = base.CurrentUser.CustomerId;
+                model.Id = id;
+                model.RecommendedReason = String.Empty;
+                model.Favorable = String.Empty;
                 _productRepository.Update(model);
 
-                return View(Get(model.Id));
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<int>(model.Id) { StatusCode = StatusCode.Success, Message = "" }
+                };
             }
             else
             {
-                ModelState.AddModelError("", "参数验证失败.");
-            }
+                // 如果我们进行到这一步时某个地方出错，则重新显示表单
+                //var dto = new CreateDto { Tags = tagList };
+                //dto.Vo = vo;
+                //dto.IsError = true;
+                //return View("Success",new SuccessViewModel{});
+                List<string> sb = new List<string>();
+                //获取所有错误的Key
+                List<string> Keys = ModelState.Keys.ToList();
+                //获取每一个key对应的ModelStateDictionary
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    //将错误描述添加到sb中
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
 
-            return View(vo);
+                return new RestfulResult
+                {
+                    Data = new ExecuteResult<List<string>>(sb) { StatusCode = StatusCode.ClientError, Message = "验证失败" }
+                };
+            }
         }
 
         [HttpPost]
@@ -275,102 +387,6 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
         [LoginAuthorize]
         public ActionResult Del(FormCollection formCollection)
         {
-            return View();
-        }
-    }
-
-    public class StoreController : DefController
-    {
-        private readonly IStoreRepository _storeRepository;
-
-        public StoreController(IStoreRepository storeRepository)
-        {
-            _storeRepository = storeRepository;
-        }
-
-        public ActionResult List()
-        {
-            return View();
-        }
-
-        public RestfulResult GetList()
-        {
-            var entitis = _storeRepository.GetAll();
-
-            var list = new List<StoreViewModel>();
-            foreach (var storeEntity in entitis)
-            {
-                list.Add(Mapper.Map<StoreEntity, StoreViewModel>(storeEntity));
-            }
-
-            return new RestfulResult
-                {
-                    Data = new ExecuteResult<List<StoreViewModel>>(list) { StatusCode = StatusCode.Success }
-                };
-        }
-
-        public ActionResult Details([FetchStore(KeyName = "storeid")]StoreEntity model)
-        {
-            return View(Mapper.Map<StoreEntity, StoreViewModel>(model));
-        }
-
-        [LoginAuthorize]
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [LoginAuthorize]
-        public ActionResult Create(FormCollection formCollection, CreateStoreViewModel vo, [FetchUser(KeyName = "userid")]UserModel userModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var entity = Mapper.Map<CreateStoreViewModel, StoreEntity>(vo);
-                entity.CreatedDate = DateTime.Now;
-                entity.CreatedUser = userModel.Id;
-                entity.UpdatedDate = DateTime.Now;
-                entity.UpdatedUser = userModel.Id;
-                entity.Status = (int)DataStatus.Normal;
-
-                _storeRepository.Insert(entity);
-            }
-            else
-            {
-                ModelState.AddModelError("", "参数验证失败.");
-            }
-
-            return View();
-        }
-
-        [HttpPost]
-        [LoginAuthorize]
-        //[ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "User_Id")]
-        public ActionResult Update(FormCollection formCollection, [FetchStore(KeyName = "storeid")]StoreEntity store, UpdateStoreViewModel vo, [FetchUser(KeyName = "userid")]UserModel userModel)
-        {
-            if (ModelState.IsValid)
-            {
-                store = Mapper.Map(vo, store);
-                store.UpdatedDate = DateTime.Now;
-                store.UpdatedUser = userModel.Id;
-
-                _storeRepository.Insert(store);
-            }
-            else
-            {
-                ModelState.AddModelError("", "参数验证失败.");
-            }
-
-            return View();
-        }
-
-        [HttpPost]
-        [LoginAuthorize]
-        //[ModelOwnerCheck(TakeParameterName = "store", CustomerPropertyName = "User_Id")]
-        public ActionResult Del(FormCollection formCollection, [FetchStore(KeyName = "storeid")]StoreEntity store, [FetchUser(KeyName = "userid")]UserModel userModel)
-        {
-            _storeRepository.Delete(store);
-
             return View();
         }
     }

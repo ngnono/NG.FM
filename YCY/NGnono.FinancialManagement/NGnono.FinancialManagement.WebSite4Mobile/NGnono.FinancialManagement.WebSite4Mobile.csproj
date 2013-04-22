@@ -202,6 +202,72 @@
     <Content Include="css\jqm\themes\default\jquery.mobile.structure-1.3.0.min.css" />
     <Content Include="css\jqm\themes\default\jquery.mobile.theme-1.3.0.css" />
     <Content Include="css\jqm\themes\default\jquery.mobile.theme-1.3.0.min.css" />
+    <Content Include="css\jqplot\jquery.jqplot.min.css" />
+    <Content Include="css\jquery.mobile.pagination.css" />
+    <Content Include="js\widgets\jqplot\jquery.jqplot.js" />
+    <Content Include="js\widgets\jqplot\jquery.jqplot.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.barRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.barRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.BezierCurveRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.BezierCurveRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.blockRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.blockRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.bubbleRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.bubbleRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.canvasAxisLabelRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.canvasAxisLabelRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.canvasAxisTickRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.canvasAxisTickRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.canvasOverlay.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.canvasOverlay.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.canvasTextRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.canvasTextRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.categoryAxisRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.categoryAxisRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.ciParser.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.ciParser.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.cursor.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.cursor.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.dateAxisRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.dateAxisRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.donutRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.donutRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.dragable.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.dragable.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.enhancedLegendRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.enhancedLegendRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.funnelRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.funnelRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.highlighter.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.highlighter.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.json2.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.json2.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.logAxisRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.logAxisRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.mekkoAxisRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.mekkoAxisRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.mekkoRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.mekkoRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.meterGaugeRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.meterGaugeRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.mobile.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.mobile.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.ohlcRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.ohlcRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pieRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pieRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pointLabels.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pointLabels.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pyramidAxisRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pyramidAxisRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pyramidGridRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pyramidGridRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pyramidRenderer.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.pyramidRenderer.min.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.trendline.js" />
+    <Content Include="js\widgets\jqplot\plugins\jqplot.trendline.min.js" />
+    <Content Include="js\widgets\jquery.validate.unobtrusive.min.js" />
+    <Content Include="js\widgets\jquery.mobile.pagination.js" />
     <Content Include="css\mobiscroll.custom-2.5.0.min.css" />
     <Content Include="css\wp_icons.png" />
     <Content Include="css\wp_icons_light.png" />
@@ -213,6 +279,8 @@
     <Content Include="Configurations\unity.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Configurations\appSettings.config" />
+    <Content Include="Configurations\connectionStrings.config" />
     <None Include="Properties\PublishProfiles\Def.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="images\read_more_32x32.png" />
@@ -221,7 +289,7 @@
     <Content Include="js\c\storage.js" />
     <Content Include="js\widgets\cordova.webos-debug.js" />
     <Content Include="js\widgets\cordova.webos.js" />
-    <Content Include="js\base\jquery.js" />
+    <Content Include="js\base\jquery.min.js" />
     <Content Include="js\widgets\jquery.mobile-1.3.0.js" />
     <Content Include="js\widgets\jquery.mobile-1.3.0.min.js" />
     <Content Include="js\widgets\mobiscroll.custom-2.5.0.min.js" />
@@ -276,6 +344,23 @@
     <Content Include="Views\Shared\_FooterPartial.cshtml" />
     <Content Include="Views\Bill\AccountDate.cshtml" />
     <Content Include="Views\Shared\_JqMLayoutV2.cshtml" />
+    <Content Include="Views\Product\List.cshtml" />
+    <Content Include="Views\Shared\_DefHeaderPartial.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Product\MyIndex.cshtml" />
+    <Content Include="Views\Store\Create.cshtml" />
+    <Content Include="Views\Store\Update.cshtml" />
+    <Content Include="Views\Store\UpdateList.cshtml" />
+    <Content Include="Views\Brand\Create.cshtml" />
+    <Content Include="Views\Brand\Update.cshtml" />
+    <Content Include="Views\Brand\UpdateList.cshtml" />
+    <Content Include="Views\Product\Update.cshtml" />
+    <Content Include="Views\Bill\Chart.cshtml" />
+    <Content Include="Views\Bill\chartTest.cshtml" />
+    <Content Include="Views\Bill\View1.cshtml" />
+    <Content Include="Views\Bill\View2.cshtml" />
+    <Content Include="Views\Bill\View3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -284,25 +369,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NGnono.Framework\NGnono.Framework\NGnono.Framework.csproj">
-      <Project>{ac5ac3e2-09f3-4682-ab40-7a70bc4430c1}</Project>
-      <Name>NGnono.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NGnono.FinancialManagement.Data\NGnono.FinancialManagement.Data.csproj">
-      <Project>{55ccba5f-4a1c-40bd-acd7-0944e6bbb59b}</Project>
-      <Name>NGnono.FinancialManagement.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NGnono.FinancialManagement.Models\NGnono.FinancialManagement.Models.csproj">
-      <Project>{86df66b0-0bbe-4825-b1e0-be5df56d4c81}</Project>
-      <Name>NGnono.FinancialManagement.Models</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NGnono.FinancialManagement.WebSiteCore\NGnono.FinancialManagement.WebSiteCore.csproj">
       <Project>{a85edb8f-2266-4b5f-9ad5-c84617c54152}</Project>
       <Name>NGnono.FinancialManagement.WebSiteCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NGnono.FinancialManagement.WebSupport\NGnono.FinancialManagement.WebSupport.csproj">
-      <Project>{30143ebe-7eeb-4f20-8da5-2e05984d5dd8}</Project>
-      <Name>NGnono.FinancialManagement.WebSupport</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

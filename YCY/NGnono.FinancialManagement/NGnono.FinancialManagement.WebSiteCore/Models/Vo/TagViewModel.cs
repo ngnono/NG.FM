@@ -16,4 +16,14 @@ namespace NGnono.FinancialManagement.WebSiteCore.Models.Vo
         [Display(Name = "分类名称")]
         public string Name { get; set; }
     }
+
+    public class BrandCreateViewModel : BaseViewModel
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(14, MinimumLength = 1)]
+        [Display(Name = "品牌名称")]
+        public string Name { get; set; }
+    }
 }

@@ -5,21 +5,34 @@ using System.Text;
 using System.Threading.Tasks;
 using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.WebSiteCore.Models.Vo;
+using NGnono.Framework.Models;
 
 namespace NGnono.FinancialManagement.WebSiteCore.Models.Dto.Product
 {
     public class DetailsDto : BaseDto
     {
-        public ProductViewModel Product { get; set; }
+        public ProductEntity Product { get; set; }
     }
 
-    public class ListDto : BaseDto
+    public class ListDto : PagerInfoBaseViewModel<List<ProductEntity>>
     {
-        public ProductCollectionViewModel Products { get; set; }
+        public ListDto(PagerRequest request) : base(request)
+        {
+        }
+
+        public ListDto(PagerRequest request, int totalCount) : base(request, totalCount)
+        {
+        }
     }
 
-    public class IndexDto : BaseDto
+    public class IndexDto : PagerInfoBaseViewModel<List<ProductEntity>>
     {
-        public List<ProductEntity> Products { get; set; }
+        public IndexDto(PagerRequest request) : base(request)
+        {
+        }
+
+        public IndexDto(PagerRequest request, int totalCount) : base(request, totalCount)
+        {
+        }
     }
 }

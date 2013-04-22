@@ -1,0 +1,17 @@
+﻿@using NGnono.FinancialManagement.WebSiteCore.Models.Vo
+@model List<NGnono.FinancialManagement.Data.Models.StoreEntity>
+
+@{
+    ViewBag.Title = "商家列表";
+}
+
+<ul data-role="listview" data-inset="true">
+    @foreach (var item in this.Model)
+    {
+        <li>@Html.ActionLink(item.Name, "Update", "Store", new { storeid = item.Id }, null)</li>
+    }
+</ul>
+
+@section Header {
+    @Html.Partial("_StdHeaderPartial", new StdHeaderViewModel { Title = ViewBag.Title })
+}
