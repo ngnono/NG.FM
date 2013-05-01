@@ -279,7 +279,9 @@
     <Content Include="Configurations\unity.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Configurations\appSettings.config" />
+    <Content Include="Configurations\appSettings.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Configurations\connectionStrings.config" />
     <None Include="Properties\PublishProfiles\Def.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />

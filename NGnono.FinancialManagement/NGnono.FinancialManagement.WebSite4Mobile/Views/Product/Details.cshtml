@@ -30,7 +30,7 @@
     <div data-role="page" id="storePage">
         <div data-role="header">
             @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
-            <h1>@this.Model.Store.Name.Substring(0, this.Model.Store.Name.Length > 10 ? 10 : this.Model.Store.Name.Length);</li>
+            <h1>@this.Model.Store.Name.Substring(0, this.Model.Store.Name.Length > 10 ? 10 : this.Model.Store.Name.Length);
             </h1>
         </div>
         <div data-role="content" id="storeContent">
@@ -49,7 +49,7 @@
     <div data-role="page" id="storeDetailsPage">
         <div data-role="header">
             @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
-            <h1>@this.Model.Store.Name.Substring(0, this.Model.Store.Name.Length > 10 ? 10 : this.Model.Store.Name.Length)</li>
+            <h1>@this.Model.Store.Name.Substring(0, this.Model.Store.Name.Length > 10 ? 10 : this.Model.Store.Name.Length)
             </h1>
         </div>
         <div data-role="content" id="storeDetailsContent">
