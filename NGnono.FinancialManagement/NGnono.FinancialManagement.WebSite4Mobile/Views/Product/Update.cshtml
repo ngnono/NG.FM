@@ -25,9 +25,9 @@
         <li data-role="list-divider">价格相关</li>
         <li>@Html.LabelFor(m => m.Price)
             @Html.TextBoxFor(m => m.Price)</li>
-        <li>
+        @*        <li>
             @Html.Hidden("dataDateTime", "", new { @class = "i-txt", id = "dataDateTime" })
-        </li>
+        </li>*@
 
         <li>
             <fieldset data-role="controlgroup" data-type="horizontal">
@@ -77,24 +77,24 @@
 
     $('#home').bind('pageinit', pinit);
 
-    $('#chb_mode_@((this.Model.IsShare == null || !this.Model.IsShare.Value)?2:1)').attr('checked', true);
-          
+    $('#chb_mode_@((this.Model.IsShare == null || !this.Model.IsShare.Value) ? 2 : 1)').attr('checked', true);
+
     function pinit() {
 
-        $('#dataDateTime').mobiscroll().date({
-            //invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
-            theme: 'jqm',
-            display: 'inline',
-            mode: 'scroller',
-            dateOrder: 'mmD ddyy'
-        });
-
-                                                               
+        //$('#dataDateTime').mobiscroll().date({
+        //    //invalid: { daysOfWeek: [0, 6], daysOfMonth: ['5/1', '12/24', '12/25'] },
+        //    theme: 'jqm',
+        //    display: 'inline',
+        //    mode: 'scroller',
+        //    dateOrder: 'mmD ddyy'
+        //});
 
 
 
-        $('#dataDateTime').mobiscroll('setValue', '@DateTime.Now.ToString("MM/dd/yyyy")', true);
-        $('#dataDateTime').val('@DateTime.Now.ToString("MM/dd/yyyy")');
+
+
+@*        $('#dataDateTime').mobiscroll('setValue', '@DateTime.Now.ToString("MM/dd/yyyy")', true);
+        $('#dataDateTime').val('@DateTime.Now.ToString("MM/dd/yyyy")');*@
 
         $('#link_tag').on("click", function () {
             $.mobile.changePage('#tagSetting', { transition: "fade" });
@@ -109,7 +109,7 @@
             }
 
             $('#isshare').val(val);
-            
+
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Update", "Product", new { productid = this.Model.Id })',
@@ -152,7 +152,7 @@
 
     <div data-role="page" id="tagSetting">
         <div data-role="header">
-            @Html.ActionLink("编辑", "UpdateList", "Tag")
+            @Html.ActionLink("编辑分类", "UpdateList", "Tag")
             <h1>分类设置</h1>
             @Html.ActionLink("创建", "Create", "Tag")
         </div>
@@ -192,7 +192,7 @@
 
     <div data-role="page" id="brandSetting">
         <div data-role="header">
-            @Html.ActionLink("编辑", "UpdateList", "Brand")
+            @Html.ActionLink("编辑品牌", "UpdateList", "Brand")
             <h1>品牌设置</h1>
             @Html.ActionLink("创建", "Create", "Brand")
         </div>
@@ -232,7 +232,7 @@
 
     <div data-role="page" id="storeSetting">
         <div data-role="header">
-            @Html.ActionLink("编辑", "MyUpdateList", "Store")
+            @Html.ActionLink("编辑商家", "UpdateList", "Store")
             <h1>商家设置</h1>
             <a href="@Url.Action("Create", "Store")" data-ajax="false">创建</a>
         </div>
