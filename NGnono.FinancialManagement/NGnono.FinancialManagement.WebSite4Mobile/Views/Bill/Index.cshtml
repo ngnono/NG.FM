@@ -6,6 +6,13 @@
     ViewBag.Title = "我的财务状况";
 }
 
+
+@section Header
+{
+    @Html.ActionLink("返回", "Index", "Home", null, new { data_icon = "arrow-l", data_rel = "back" })
+    <h1>@ViewBag.Title</h1>
+    <a href="@Url.Action("Search",new {SearchDate=DateTime.Now})" data-icon="gear" class="ui-btn-right" data-ajax="false">Options</a>
+}
 <ul data-role="listview" data-divider-theme="a" data-inset="true">
     <li data-role="list-divider" role="heading">@String.Format("{0}月/{1}年", this.Model.Date.Month, this.Model.Date.Year)
     </li>

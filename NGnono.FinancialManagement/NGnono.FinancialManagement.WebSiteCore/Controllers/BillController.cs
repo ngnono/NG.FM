@@ -147,6 +147,77 @@ namespace NGnono.FinancialManagement.WebSiteCore.Controllers
             return View("View1", dto);
         }
 
+        [LoginAuthorize]
+        public ActionResult Search(DateTime? searchDate)
+        {
+            if (searchDate == null)
+            {
+                searchDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            }
+
+            searchDate = new DateTime(searchDate.Value.Year, 1, 1);
+
+            var dt = DateType.Year;
+
+            DateTime startDate;
+            DateTime endDate;
+            var today = searchDate.Value;
+            switch (dt)
+            {
+                case DateType.Year:
+                    startDate = new DateTime(today.Year, 1, 1);
+                    endDate = startDate.AddYears(1);
+                    break;
+                case DateType.Week:
+                    startDate = DateTimeUtil.FirstDayOfWeek(today);
+                    endDate = DateTimeUtil.LastDayOfWeek(today).AddDays(1);
+                    break;
+                case DateType.Month:
+                    startDate = new DateTime(today.Year, today.Month, 1);
+                    endDate = startDate.AddMonths(1);
+                    break;
+                default:
+                    startDate = new DateTime(today.Year, today.Month, today.Day);
+                    endDate = startDate.AddDays(1);
+                    break;
+            }
+
+
+            var resultEntities = _repository.Get(v => v.Status.Equals((int)DataStatus.Normal) &&
+                                      v.User_Id.Equals(CurrentUser.CustomerId) &&
+                                      v.DataDateTime >= startDate && v.DataDateTime < endDate);
+
+            var sumiae =
+                new IaeVo
+                {
+                    Expenses = resultEntities.Where(v => v.Type.Equals((int)BillType.Expenses)).Sum(v => (decimal?)v.Amount) ?? 0,
+                    Revenue = resultEntities.Where(v => v.Type.Equals((int)BillType.Revenue)).Sum(v => (decimal?)v.Amount) ?? 0
+                }
+                ;
+
+            Dictionary<int, IaeVo> d;
+
+            switch (dt)
+            {
+                case DateType.Year:
+                    d = YearData(today, resultEntities);
+                    break;
+                case DateType.Week:
+                    d = WeekData(today, resultEntities);
+                    break;
+                case DateType.Month:
+                    d = MonthData(today, resultEntities);
+                    break;
+                default:
+                    d = DayData(today, resultEntities);
+                    break;
+            }
+
+            var dto = new RunningAccountDto { CurrentDate = today, DateType = dt, YearIae = sumiae, Data = d };
+
+            return View(dto);
+        }
+
         /// <summary>
         /// 
         /// </summary>

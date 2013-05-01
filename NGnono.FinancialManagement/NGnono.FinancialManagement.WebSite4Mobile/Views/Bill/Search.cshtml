@@ -40,6 +40,15 @@
 
 <ul data-role="listview">
     <li>
+        <div data-role="fieldcontain">
+            <label for="slider">选择日期:</label>
+            <input data-highlight="true" type="range" name="slider" id="slider" value="@this.Model.CurrentDate.Year" min="1990" max="@DateTime.Now.Year" />
+        </div>
+    </li>
+    <li>
+        <a href="@Url.Action("Search")" data-ajax="false" id="search">查询</a>
+    </li>
+    <li>
         <h3>结余：</h3>
         <p>@t1
         </p>
@@ -63,13 +72,14 @@
         {
             if (item.Value != null)
             {
-        <li><a href="@Url.Action("RunningAccount", "Bill", new { dateType = DateType.Month, currentDate = item.Value.Date.ToString("yyyy-MM-dd") })">
+        <li><a href="@Url.Action("RunningAccount", "Bill", new { dateType = (int)DateType.Month, currentDate = item.Value.Date.ToString("yyyy-MM-dd") })">
             <h3>@item.Key 月</h3>
             <p>@NGnono.FinancialManagement.WebSiteCore.Utils.DateTimeUtil.GetMonthRangeDef(item.Value.Date)</p>
-                            <p class="ui-li-aside">
-                    <br />
-                    <span style="color: red">(+)@item.Value.Revenue</span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green">(-)@item.Value.Expenses</span> &nbsp;&nbsp;&nbsp;&nbsp;￥@item.Value.Expenses
-                </p></a></li>
+            <p class="ui-li-aside">
+                <br />
+                <span style="color: red">(+)@item.Value.Revenue</span> &nbsp;&nbsp;&nbsp;&nbsp;<span style="color: green">(-)@item.Value.Expenses</span> &nbsp;&nbsp;&nbsp;&nbsp;￥@item.Value.Expenses
+            </p>
+        </a></li>
             }
         }
     }
@@ -93,3 +103,20 @@
     }
 </ul>
 
+@section FooterScripts
+{
+    <script type="text/javascript">
+        $(document).on('pageinit', init);
+
+
+        function init() {
+
+
+            $("#slider").on("change", function(event, ui) {
+                var d = $('#slider').val();
+                
+                $('#search').attr('href', '@Url.Action("Search")' + '?searchdate=' + d + '-1-1');
+            });
+        }
+    </script>
+}

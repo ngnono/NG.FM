@@ -363,6 +363,7 @@
     <Content Include="Views\Bill\View1.cshtml" />
     <Content Include="Views\Bill\View2.cshtml" />
     <Content Include="Views\Bill\View3.cshtml" />
+    <Content Include="Views\Bill\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -22,7 +22,7 @@
         <li>
             <fieldset data-role="controlgroup" data-type="horizontal">
 
-                <input type="radio" name="type1" id="chb_mode_2" value="2" checked="checked" onclick="$('#type').val(2); " />
+                <input type="radio" name="type1" id="chb_mode_2" value="2" onclick="$('#type').val(2); " />
                 <label for="chb_mode_2">收入</label>
                 <input type="radio" name="type1" id="chb_mode_1" value="1" onclick="$('#type').val(1);" />
                 <label for="chb_mode_1">支出</label>
@@ -62,6 +62,7 @@
 <script type="text/javascript">
 
     $('#home').bind('pageinit', pinit);
+    $('#chb_mode_@(this.Model.BillUpdateViewModel.Type)').attr('checked', true);
 
     function pinit() {
 

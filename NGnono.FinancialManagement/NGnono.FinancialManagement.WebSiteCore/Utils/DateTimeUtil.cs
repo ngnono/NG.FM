@@ -70,7 +70,15 @@ namespace NGnono.FinancialManagement.WebSiteCore.Utils
             var f = FirstDayOfWeek(datetime);
             var l = LastDayOfWeek(datetime);
 
-            return String.Format("{0}{1}{2}",  f.ToString(fDateFramt), spit, l.ToString(lDateFramt));
+            return String.Format("{0}{1}{2}", f.ToString(fDateFramt), spit, l.ToString(lDateFramt));
+        }
+
+        public static string GetYearRange(DateTime datetime, string fDateFramt, string lDateFramt, string spit)
+        {
+            var f = new DateTime(datetime.Year, 1, 1);
+            var l = f.AddYears(1).AddDays(-1);
+
+            return String.Format("{0}{1}{2}", f.ToString(fDateFramt), spit, l.ToString(lDateFramt));
         }
 
         public static string GetWeekRangeDef(DateTime datetime)
@@ -78,6 +86,10 @@ namespace NGnono.FinancialManagement.WebSiteCore.Utils
             return GetWeekRange(datetime, "yyyy年MM月dd日", "MM月dd日", "-");
         }
 
+        public static string GetYearRangeDef(DateTime datetime)
+        {
+            return GetYearRange(datetime, "yyyy年MM月dd日", "MM月dd日", "-");
+        }
 
         public static string GetMonthRange(DateTime datetime, string fDateFramt, string lDateFramt, string spit)
         {
