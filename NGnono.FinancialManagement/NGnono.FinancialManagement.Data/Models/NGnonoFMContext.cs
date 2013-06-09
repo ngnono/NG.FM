@@ -1,12 +1,10 @@
+using EFProviderWrapperToolkit;
+using EFTracingProvider;
+using NGnono.FinancialManagement.Data.Models.Mapping;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using NGnono.FinancialManagement.Data.Models.Mapping;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using EFCachingProvider;
-using EFCachingProvider.Caching;
-using EFProviderWrapperToolkit;
-using EFTracingProvider;
 using System.Data.Objects;
 
 namespace NGnono.FinancialManagement.Data.Models
@@ -41,12 +39,7 @@ namespace NGnono.FinancialManagement.Data.Models
 
         #region ef tracing
 
-		public NGnonoFMContext(string nameOrConnectionString)
-            : this(nameOrConnectionString, new InMemoryCache(512), CachingPolicy.CacheAll)
-        {
-        }
-
-        public NGnonoFMContext(string nameOrConnectionString, ICache cacheProvider, CachingPolicy cachingPolicy)
+        public NGnonoFMContext(string nameOrConnectionString)
             : base(Framework.Data.EF.EFTracingUtil.GetConnection(nameOrConnectionString), true)
         {
 			var ctx = ((IObjectContextAdapter)this).ObjectContext;
@@ -54,16 +47,10 @@ namespace NGnono.FinancialManagement.Data.Models
             this.ObjectContext = ctx;
 
             EFTracingConnection tracingConnection;
+          
             if (ObjectContext.TryUnwrapConnection(out tracingConnection))
             {
-                ctx.GetTracingConnection().CommandExecuting += (s, e) => _log.Debug(e.ToTraceString());
-            }
-
-            EFCachingConnection cachingConnection;
-            if (ObjectContext.TryUnwrapConnection(out cachingConnection))
-            {
-                Cache = cacheProvider;
-                CachingPolicy = cachingPolicy;
+                tracingConnection.CommandExecuting += (s, e) => _log.Debug(e.ToTraceString());
             }
         }
 
@@ -97,28 +84,6 @@ namespace NGnono.FinancialManagement.Data.Models
         }
 
         #endregion
-
-        #region Caching Extensions
-
-        private EFCachingConnection CachingConnection
-        {
-            get { return ObjectContext.UnwrapConnection<EFCachingConnection>(); }
-        }
-
-        public ICache Cache
-        {
-            get { return CachingConnection.Cache; }
-            set { CachingConnection.Cache = value; }
-        }
-
-        public CachingPolicy CachingPolicy
-        {
-            get { return CachingConnection.CachingPolicy; }
-            set { CachingConnection.CachingPolicy = value; }
-        }
-
-        #endregion
-
 
         public DbSet<AdminAccessRightEntity> AdminAccessRights { get; set; }
         public DbSet<BillEntity> Bills { get; set; }

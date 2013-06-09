@@ -7,7 +7,7 @@ namespace NGnono.FinancialManagement.WebSupport.Ioc
     {
         public void Init(HttpApplication context)
         {
-            context.EndRequest += (sender, e) => PerRequestUnityServiceLocator.DisposeOfChildContainer();
+            context.EndRequest += (sender, e) => PerRequestUnityServiceLocator.DisposeOfHttpChildContainer();
         }
 
         public void Dispose()

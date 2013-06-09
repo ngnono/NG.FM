@@ -78,7 +78,7 @@
     <Compile Include="Utils\DateTimeUtil.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NGnono.Framework\NGnono.Framework\NGnono.Framework.csproj">
+    <ProjectReference Include="..\..\..\NGnono.Framework\NGnono.Framework\NGnono.Framework\NGnono.Framework.csproj">
       <Project>{ac5ac3e2-09f3-4682-ab40-7a70bc4430c1}</Project>
       <Name>NGnono.Framework</Name>
     </ProjectReference>
