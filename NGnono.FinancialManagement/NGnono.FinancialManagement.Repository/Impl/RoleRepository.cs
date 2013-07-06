@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.Repository.Contract;
+using NGnono.Framework.Data.EF;
 
 namespace NGnono.FinancialManagement.Repository.Impl
 {
-    public class RoleRepository : RepositoryBase<RoleEntity, int>, IRoleRepository
+    public class RoleRepository : EFRepository<RoleEntity, int>, IRoleRepository
     {
+        protected RoleRepository(DbContext context) : base(context)
+        {
+        }
+
         public override RoleEntity GetItem(int key)
         {
             return base.Find(key);
@@ -36,7 +42,7 @@ namespace NGnono.FinancialManagement.Repository.Impl
         }
         public IEnumerable<RoleEntity> LoadAllEagerly()
         {
-            return Context.Set<RoleEntity>().Include("RoleAccessRights")
+            return DbContext.Set<RoleEntity>().Include("RoleAccessRights")
                 .Include("RoleAccessRights.AdminAccessRight")
                 .AsEnumerable();
         }
@@ -51,7 +57,7 @@ namespace NGnono.FinancialManagement.Repository.Impl
                 var diffRight = oldRights.FirstOrDefault(e => e.Id == diff.Id);
                 if (diffRight != null)
                 {
-                    Context.Set<RoleAccessRightEntity>().Remove(diffRight);
+                    DbContext.Set<RoleAccessRightEntity>().Remove(diffRight);
                 }
             }
             //inserted
@@ -70,12 +76,12 @@ namespace NGnono.FinancialManagement.Repository.Impl
 
         public void InsertWithUserRelation(int User, string[] p)
         {
-            if (Context.Set<UserEntity>().Find(User) == null ||
+            if (DbContext.Set<UserEntity>().Find(User) == null ||
                 p.Length == 0)
                 return;
             foreach (var role in p)
             {
-                Context.Set<UserRoleEntity>().Add(new UserRoleEntity()
+                DbContext.Set<UserRoleEntity>().Add(new UserRoleEntity()
                 {
                     User_Id = User
                     ,
@@ -86,21 +92,21 @@ namespace NGnono.FinancialManagement.Repository.Impl
                     CreatedDate = DateTime.Now
                 });
             }
-            Context.SaveChanges();
+            DbContext.SaveChanges();
         }
         public void DeleteRolesOfUserId(int Id)
         {
-            var roles = Context.Set<UserRoleEntity>().Where(r => r.User_Id == Id);
+            var roles = DbContext.Set<UserRoleEntity>().Where(r => r.User_Id == Id);
             foreach (var role in roles)
             {
-                Context.Set<UserRoleEntity>().Remove(role);
+                DbContext.Set<UserRoleEntity>().Remove(role);
             }
-            Context.SaveChanges();
+            DbContext.SaveChanges();
         }
 
         public void UpdateWithUserRelation(int User, string[] p)
         {
-            List<UserRoleEntity> oldRights = Context.Set<UserRoleEntity>().Where(ur => ur.User_Id == User).ToList();
+            List<UserRoleEntity> oldRights = DbContext.Set<UserRoleEntity>().Where(ur => ur.User_Id == User).ToList();
             var newRights = from nr in p
                             select new UserRoleEntity()
                             {
@@ -115,13 +121,13 @@ namespace NGnono.FinancialManagement.Repository.Impl
                 var diffRight = oldRights.FirstOrDefault(e => e.Id == diff.Id);
                 if (diffRight != null)
                 {
-                    Context.Set<UserRoleEntity>().Remove(diffRight);
+                    DbContext.Set<UserRoleEntity>().Remove(diffRight);
                 }
             }
             //inserted
             foreach (var diff in newRights.Except(oldRights, new UserRoleEntityComparer()))
             {
-                Context.Set<UserRoleEntity>().Add(new UserRoleEntity()
+                DbContext.Set<UserRoleEntity>().Add(new UserRoleEntity()
                 {
                     User_Id = diff.User_Id
                     ,
@@ -132,18 +138,18 @@ namespace NGnono.FinancialManagement.Repository.Impl
                     CreatedDate = DateTime.Now
                 });
             }
-            Context.SaveChanges();
+            DbContext.SaveChanges();
         }
         public IEnumerable<UserEntity> FindAllUsersHavingRoles()
         {
-            return (from ur in Context.Set<UserRoleEntity>()
-                    from u in Context.Set<UserEntity>()
+            return (from ur in DbContext.Set<UserRoleEntity>()
+                    from u in DbContext.Set<UserEntity>()
                     where ur.User_Id == u.Id
                     select u).Distinct();
         }
         public IEnumerable<AdminAccessRightEntity> LoadAllRights()
         {
-            return Context.Set<AdminAccessRightEntity>().AsEnumerable();
+            return DbContext.Set<AdminAccessRightEntity>().AsEnumerable();
         }
         private class RoleAccessRightEntityComparer : EqualityComparer<RoleAccessRightEntity>
         {

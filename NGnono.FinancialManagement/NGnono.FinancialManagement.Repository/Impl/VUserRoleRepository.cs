@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.Repository.Contract;
+using NGnono.Framework.Data.EF;
 
 namespace NGnono.FinancialManagement.Repository.Impl
 {
-    public class VUserRoleRepository : RepositoryBase<VUserRoleEntity, string>, IVUserRoleRepository
+    public class VUserRoleRepository : EFRepository<VUserRoleEntity, string>, IVUserRoleRepository
     {
-        public override VUserRoleEntity GetItem(string key)
+        protected VUserRoleRepository(DbContext context) : base(context)
         {
-            throw new NotImplementedException();
         }
 
         public List<VUserRoleEntity> GetList(int userid)
@@ -21,6 +22,11 @@ namespace NGnono.FinancialManagement.Repository.Impl
         public List<VUserRoleEntity> GetList(List<int> userids)
         {
             return base.Get(v => userids.Any(s => s == v.User_Id)).ToList();
+        }
+
+        public VUserRoleEntity GetItem(int key)
+        {
+            throw new NotImplementedException();
         }
     }
 }

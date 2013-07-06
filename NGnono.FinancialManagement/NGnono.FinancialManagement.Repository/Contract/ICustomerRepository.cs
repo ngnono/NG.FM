@@ -1,12 +1,14 @@
 ﻿using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.Models.Enums;
+using NGnono.Framework.Data;
+using NGnono.Framework.Data.EF;
 using NGnono.Framework.Models;
 using System;
 using System.Collections.Generic;
 
 namespace NGnono.FinancialManagement.Repository.Contract
 {
-    public interface ICustomerRepository : IRepository<UserEntity, int>
+    public interface ICustomerRepository : IEFRepository<UserEntity, int>
     {
         /// <summary>
         /// 获取指定的用户
@@ -126,14 +128,5 @@ namespace NGnono.FinancialManagement.Repository.Contract
         void UpdateWithUserRelation(int User, string[] p);
 
         IEnumerable<UserEntity> FindAllUsersHavingRoles();
-    }
-
-    public interface IUserRoleRepository : IRepository<UserRoleEntity, int>
-    {
-        List<UserRoleEntity> GetListByRoleId(int roleId);
-
-        List<UserRoleEntity> GetListByUserId(int userId);
-
-        IEnumerable<RoleEntity> FindRolesByUserId(int p);
     }
 }

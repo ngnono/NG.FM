@@ -1,18 +1,24 @@
-﻿using NGnono.FinancialManagement.Data.Models;
+﻿using System.Data.Entity;
+using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.Models.Enums;
 using NGnono.FinancialManagement.Repository.Contract;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using NGnono.Framework.Data.EF;
 
 namespace NGnono.FinancialManagement.Repository.Impl
 {
-    public class UserAccountRepository : RepositoryBase<UserAccountEntity, int>, IUserAccountRepository
+    public class UserAccountRepository : EFRepository<UserAccountEntity, int>, IUserAccountRepository
     {
         private readonly int _accountId = 0;
 
         #region Overrides of RepositoryBase<UserAccountEntity,int>
+
+        protected UserAccountRepository(DbContext context) : base(context)
+        {
+        }
 
         /// <summary>
         /// 查找key

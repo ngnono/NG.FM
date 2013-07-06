@@ -43,13 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\IUserRoleRepository.cs" />
     <Compile Include="Impl\RoleRepository.cs" />
     <Compile Include="SqlHelperParameterCache.cs" />
     <Compile Include="Contract\IBrandRepository.cs" />
     <Compile Include="Contract\ICustomerRepository.cs" />
     <Compile Include="Contract\IBillRepository.cs" />
     <Compile Include="Contract\IProductRepository.cs" />
-    <Compile Include="Contract\IRepository.cs" />
     <Compile Include="Contract\IStoreRepository.cs" />
     <Compile Include="Contract\ITagRepository.cs" />
     <Compile Include="Contract\IUserRepository.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="Impl\VUserRoleRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlHelper.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\NGnono.Framework\NGnono.Framework\NGnono.Framework\NGnono.Framework.csproj">

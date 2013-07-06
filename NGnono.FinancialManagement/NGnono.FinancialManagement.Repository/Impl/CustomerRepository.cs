@@ -1,4 +1,5 @@
-﻿using NGnono.FinancialManagement.Data.Models;
+﻿using System.Data.Entity;
+using NGnono.FinancialManagement.Data.Models;
 using NGnono.FinancialManagement.Models;
 using NGnono.FinancialManagement.Models.Enums;
 using NGnono.FinancialManagement.Repository.Contract;
@@ -15,9 +16,10 @@ using System.Linq.Expressions;
 
 namespace NGnono.FinancialManagement.Repository.Impl
 {
-    public class CustomerRepository : RepositoryBase<UserEntity, int>, ICustomerRepository
+    public class CustomerRepository : EFRepository<UserEntity, int>, ICustomerRepository
     {
-        public CustomerRepository()
+        public CustomerRepository(DbContext context)
+            : base(context)
         {
         }
 

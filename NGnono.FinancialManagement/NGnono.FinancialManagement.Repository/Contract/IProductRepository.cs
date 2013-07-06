@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NGnono.FinancialManagement.Data.Models;
+using NGnono.Framework.Data;
+using NGnono.Framework.Data.EF;
 
 namespace NGnono.FinancialManagement.Repository.Contract
 {
-    public interface IProductRepository : IRepository<ProductEntity, int>
+    public interface IProductRepository : IEFRepository<ProductEntity, int>
     {
     }
 }

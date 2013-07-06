@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using NGnono.FinancialManagement.Data.Models;
@@ -11,9 +12,16 @@ using NGnono.Framework.Models;
 
 namespace NGnono.FinancialManagement.Repository.Impl
 {
-    public class BillRepository : RepositoryBase<BillEntity, int>, IBillRepository
+    public class BillRepository : EFRepository<BillEntity, int>, IBillRepository
     {
+        public BillRepository(DbContext context)
+            : base(context)
+        {
+        }
+
         #region methods
+
+
 
         /// <summary>
         /// 
@@ -98,12 +106,12 @@ namespace NGnono.FinancialManagement.Repository.Impl
 
         public IEnumerable<BillEntity> GetResult(BillFilter filter)
         {
-            return base.Get(Filter(filter));
+            throw new NotImplementedException();
         }
 
         public IEnumerable<BillEntity> GetPagedList(PagerRequest pagerRequest, out int totalCount, BillFilter filter, BillSortOrder sortOrder)
         {
-            return base.Get(Filter(filter), out totalCount, pagerRequest.PageIndex, pagerRequest.PageSize, GetOrder(sortOrder));
+            throw new NotImplementedException();
         }
     }
 }
